@@ -164,8 +164,8 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 .btn-next,.btn-submit{width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(200,75,49,0.3);}
 .btn-next:disabled,.btn-submit:disabled{opacity:0.6;cursor:not-allowed;}
 .btn-prev{width:100%;background:var(--bg);color:var(--dark);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;}
-.otp-inputs{display:flex;gap:10px;justify-content:center;margin:16px 0;}
-.otp-input{width:46px;height:54px;border:2px solid var(--border);border-radius:10px;font-size:22px;font-weight:700;text-align:center;font-family:inherit;color:var(--dark);outline:none;transition:border-color 0.2s;}
+.otp-inputs{display:flex;gap:6px;justify-content:center;margin:16px 0;}
+.otp-input{width:38px;height:50px;border:2px solid var(--border);border-radius:10px;font-size:20px;font-weight:700;text-align:center;font-family:inherit;color:var(--dark);outline:none;transition:border-color 0.2s;}
 .otp-input:focus{border-color:var(--brand);}
 
 /* DASHBOARD */
@@ -448,39 +448,28 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <button class="btn-prev" onclick="prevStep(3)">← मागे</button>
     </div>
 
-    <!-- Step 4: Contact + OTP -->
+    <!-- Step 4: Contact + Email OTP -->
     <div class="form-section" id="fs-4">
       <div class="form-group">
         <label class="form-label">आपले नाव <span>*</span></label>
         <input class="form-input" type="text" id="form-name" placeholder="पूर्ण नाव">
       </div>
       <div class="form-group">
-
-        <!-- 🔥 Toggle -->
-<div style="display:flex;gap:8px;margin-bottom:10px;">
-  <button type="button" onclick="setAuthMode('phone')">📱 Phone</button>
-  <button type="button" onclick="setAuthMode('email')">📧 Email</button>
-</div>
-
-<!-- PHONE -->
-<div class="form-group" id="phoneField" style="display:none;">
-</div>
-
-<!-- EMAIL -->
-<div class="form-group" id="emailField">
-  <label class="form-label">ईमेल</label>
-  <input class="form-input" type="email" id="form-email">
-</div>
-
+        <label class="form-label">मोबाईल नंबर <span>*</span> <span style="font-weight:400;color:var(--muted)">(buyers will call this)</span></label>
         <div style="display:flex;gap:8px">
           <input class="form-input" style="width:60px;flex-shrink:0;padding:12px 8px;text-align:center" value="+91" readonly>
-          <input class="form-input" type="tel" id="form-phone" placeholder="Enter phone number" maxlength="10">
+          <input class="form-input" type="tel" id="form-phone" placeholder="9876543210" maxlength="10">
         </div>
       </div>
+      <div class="form-group">
+        <label class="form-label">Email ID <span>*</span> <span style="font-weight:400;color:var(--muted)">(OTP येईल)</span></label>
+        <input class="form-input" type="email" id="form-email" placeholder="yourname@gmail.com">
+      </div>
+
       <div id="otp-section" style="display:none">
-        <div style="text-align:center;margin-bottom:12px">
-          <div style="font-size:14px;font-weight:700;color:var(--dark)">OTP पाठवला आहे ✓</div>
-          <div style="font-size:12px;color:var(--muted)">6-digit OTP enter करा</div>
+        <div style="background:#E8F5E9;border-radius:10px;padding:12px;margin-bottom:12px;text-align:center">
+          <div style="font-size:14px;font-weight:700;color:#2E7D32">📧 OTP पाठवला आहे!</div>
+          <div style="font-size:12px;color:#388E3C;margin-top:3px">Gmail तपासा • 8-digit code enter करा</div>
         </div>
         <div class="otp-inputs" id="otpInputs">
           <input class="otp-input" maxlength="1" oninput="otpInput(this,0)">
@@ -489,12 +478,18 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
           <input class="otp-input" maxlength="1" oninput="otpInput(this,3)">
           <input class="otp-input" maxlength="1" oninput="otpInput(this,4)">
           <input class="otp-input" maxlength="1" oninput="otpInput(this,5)">
+          <input class="otp-input" maxlength="1" oninput="otpInput(this,6)">
+          <input class="otp-input" maxlength="1" oninput="otpInput(this,7)">
+        </div>
+        <div style="text-align:center;margin-top:8px">
+          <button style="background:none;border:none;color:var(--brand);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="resendOTP()">🔄 OTP परत पाठवा (Resend)</button>
         </div>
       </div>
+
       <div style="background:#FFF3E0;border-radius:10px;padding:12px;font-size:12px;color:#E65100;margin-bottom:12px">
-        🔒 आपला नंबर फक्त खरेदीदारांना दिसेल.
+        🔒 Email फक्त OTP साठी. Phone number buyers ला दिसेल.
       </div>
-      <button class="btn-next" id="sendOtpBtn" onclick="sendOTP()">OTP पाठवा 📱</button>
+      <button class="btn-next" id="sendOtpBtn" onclick="sendOTP()">📧 Email OTP पाठवा</button>
       <button class="btn-submit" id="submitBtn" style="display:none" onclick="submitListing()">
         🎉 जाहिरात सबमिट करा
       </button>
@@ -518,23 +513,30 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 
   <!-- Login form (shown if not logged in) -->
   <div id="dash-login-section" style="padding:24px 16px">
-    <div style="font-size:16px;font-weight:800;margin-bottom:16px;color:var(--dark)">📱 Phone नंबरने Login करा</div>
+    <div style="font-size:16px;font-weight:800;margin-bottom:4px;color:var(--dark)">📧 Email OTP ने Login करा</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Gmail वर OTP येईल • No password needed</div>
     <div class="form-group">
-      <label class="form-label">मोबाईल नंबर</label>
-      <input class="form-input" type="tel" id="login-phone" placeholder="9876543210" maxlength="10">
+      <label class="form-label">Email ID</label>
+      <input class="form-input" type="email" id="login-email" placeholder="yourname@gmail.com">
     </div>
     <div id="login-otp-section" style="display:none">
-      <div class="otp-inputs">
+      <div style="background:#E8F5E9;border-radius:10px;padding:12px;margin-bottom:12px;text-align:center">
+        <div style="font-size:13px;font-weight:700;color:#2E7D32">📧 OTP Gmail वर पाठवला!</div>
+        <div style="font-size:11px;color:#388E3C">8-digit code enter करा • Spam folder पण तपासा</div>
+      </div>
+      <div class="otp-inputs" style="flex-wrap:wrap">
         <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,0)">
         <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,1)">
         <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,2)">
         <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,3)">
         <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,4)">
         <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,5)">
+        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,6)">
+        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,7)">
       </div>
-      <button class="btn-submit" onclick="verifyLoginOTP()">✓ Verify & Login</button>
+      <button class="btn-submit" style="margin-top:12px" onclick="verifyLoginOTP()">✓ Verify & Login</button>
     </div>
-    <button class="btn-next" id="loginOtpBtn" onclick="sendLoginOTP()">OTP पाठवा 📱</button>
+    <button class="btn-next" id="loginOtpBtn" onclick="sendLoginOTP()">📧 OTP पाठवा</button>
   </div>
 
   <!-- Dashboard content (shown after login) -->
@@ -882,93 +884,71 @@ function handlePhotos(input) {
 }
 
 async function sendOTP() {
-  let phone = document.getElementById('form-phone')?.value;
-  let email = document.getElementById('form-email')?.value;
-  const name = document.getElementById('form-name').value;
-if (authMode === "phone") {
-  if (!phone || phone.length !== 10) {
-    showToast("⚠ Valid 10-digit number enter करा");
-    return;
-  }
-} else {
-  if (!email) {
-    showToast("⚠ Email enter करा");
-    return;
-  }
-}
+  const name = document.getElementById('form-name').value.trim();
+  const phone = document.getElementById('form-phone').value.trim();
+  const email = document.getElementById('form-email').value.trim();
   if (!name) { showToast('⚠️ नाव भरा'); return; }
+  if (!phone || phone.length !== 10) { showToast('⚠️ Valid 10-digit phone number भरा'); return; }
+  if (!email || !email.includes('@')) { showToast('⚠️ Valid email address भरा'); return; }
   const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = true; btn.textContent = 'OTP पाठवत आहे...';
-  let error;
-
-if (authMode === "phone") {
-  ({ error } = await sb.auth.signInWithOtp({ phone: `+91${phone}` }));
-} else {
-  ({ error } = await sb.auth.signInWithOtp({ email: email }));
-}
+  btn.disabled = true; btn.textContent = '📧 OTP पाठवत आहे...';
+  // Email OTP — sends 8-digit code, NOT magic link
+  const { error } = await sb.auth.signInWithOtp({
+    email: email,
+    options: { shouldCreateUser: true }
+  });
   if (error) {
-    showToast('⚠️ OTP failed: ' + error.message);
-    btn.disabled = false; btn.textContent = 'OTP पाठवा 📱'; return;
+    showToast('⚠️ Error: ' + error.message);
+    btn.disabled = false; btn.textContent = '📧 Email OTP पाठवा'; return;
   }
   document.getElementById('otp-section').style.display = 'block';
   document.getElementById('submitBtn').style.display = 'flex';
-  btn.textContent = `✓ OTP पाठवला +91${phone} वर`;
-  showToast('✅ OTP पाठवला! SMS तपासा.');
+  btn.textContent = `✓ OTP पाठवला ${email} वर`;
+  showToast('✅ Gmail तपासा! 8-digit OTP आला.');
+}
+
+async function resendOTP() {
+  const email = document.getElementById('form-email').value.trim();
+  if (!email) return;
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  showToast('📧 OTP परत पाठवला!');
 }
 
 function otpInput(el, pos) {
-  if (el.value && pos < 5) { document.querySelectorAll('#fs-4 .otp-input')[pos + 1]?.focus(); }
+  if (el.value && pos < 7) { document.querySelectorAll('#fs-4 .otp-input')[pos + 1]?.focus(); }
   const allFilled = Array.from(document.querySelectorAll('#fs-4 .otp-input')).every(i => i.value);
   if (allFilled) document.getElementById('submitBtn').style.display = 'flex';
 }
 
 async function submitListing() {
-
   const otpVal = Array.from(document.querySelectorAll('#fs-4 .otp-input')).map(i => i.value).join('');
-  if (otpVal.length < 6) {
-    showToast("⚠ 6-digit OTP enter करा");
-    return;
-  }
-
+  if (otpVal.length < 8) { showToast('⚠️ 8-digit OTP enter करा'); return; }
   const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Submitting...';
+  btn.disabled = true; btn.textContent = '⏳ Verifying...';
+  const email = document.getElementById('form-email').value.trim();
+  const phone = document.getElementById('form-phone').value.trim();
 
-  const phone = document.getElementById('form-phone')?.value || '';
-  const email = document.getElementById('form-email')?.value || '';
+  // Verify email OTP
+  const { data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({
+    email: email,
+    token: otpVal,
+    type: 'email'
+  });
 
-  let verifyData, verifyErr;
-
-  if (authMode === "phone") {
-    ({ data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({
-      phone: `+91${phone}`,
-      token: otpVal,
-      type: 'sms'
-    }));
-  } else {
-    ({ data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({
-      email: email,
-      token: otpVal,
-      type: 'email'
-    }));
+  if (verifyErr) {
+    showToast('⚠️ Wrong OTP! Gmail तपासा आणि पुन्हा try करा.');
+    btn.disabled = false; btn.textContent = '🎉 जाहिरात सबमिट करा'; return;
   }
-
-  if (verifyErr || !verifyData) {
-    showToast("⚠ Wrong OTP! Try again.");
-    btn.disabled = false;
-    btn.textContent = '🎉 जाहिरात सबमिट करा';
-    return;
-  }
-  
-currentUser = verifyData.user;
+  currentUser = verifyData.user;
+  btn.textContent = '⏳ Uploading...';
 
   // Upload photo if any
   let imgUrl = null;
   if (uploadedPhotoFiles.length > 0) {
     const file = uploadedPhotoFiles[0];
     const ext = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${ext}`;
-    const { data: uploadData, error: uploadErr } = await sb.storage.from('property-images').upload(fileName, file, { cacheControl: '3600', upsert: false });
+    const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error: uploadErr } = await sb.storage.from('property-images').upload(fileName, file, { cacheControl: '3600', upsert: false });
     if (!uploadErr) {
       const { data: { publicUrl } } = sb.storage.from('property-images').getPublicUrl(fileName);
       imgUrl = publicUrl;
@@ -1017,26 +997,34 @@ function resetPostForm() {
 //  AUTH / DASHBOARD
 // ════════════════════════════════════════
 async function sendLoginOTP() {
-  const phone = document.getElementById('login-phone').value;
-  if (!phone || phone.length !== 10) { showToast('⚠️ Valid number enter करा'); return; }
+  const email = document.getElementById('login-email').value.trim();
+  if (!email || !email.includes('@')) { showToast('⚠️ Valid email enter करा'); return; }
   const btn = document.getElementById('loginOtpBtn');
-  btn.disabled = true; btn.textContent = 'Sending...';
-  const { error } = await sb.auth.signInWithOtp({ phone: `+91${phone}` });
-  if (error) { showToast('⚠️ ' + error.message); btn.disabled = false; btn.textContent = 'OTP पाठवा 📱'; return; }
+  btn.disabled = true; btn.textContent = '📧 Sending...';
+  const { error } = await sb.auth.signInWithOtp({
+    email: email,
+    options: { shouldCreateUser: true }
+  });
+  if (error) { showToast('⚠️ ' + error.message); btn.disabled = false; btn.textContent = '📧 OTP पाठवा'; return; }
   document.getElementById('login-otp-section').style.display = 'block';
   btn.style.display = 'none';
-  showToast('✅ OTP पाठवला!');
+  showToast('✅ Gmail तपासा! OTP पाठवला.');
 }
 
 function loginOtpInput(el, pos) {
-  if (el.value && pos < 5) document.querySelectorAll('#login-otp-section .otp-input')[pos + 1]?.focus();
+  if (el.value && pos < 7) document.querySelectorAll('#login-otp-section .otp-input')[pos + 1]?.focus();
 }
 
 async function verifyLoginOTP() {
   const otpVal = Array.from(document.querySelectorAll('#login-otp-section .otp-input')).map(i => i.value).join('');
-  const phone = document.getElementById('login-phone').value;
-  const { data, error } = await sb.auth.verifyOtp({ phone: `+91${phone}`, token: otpVal, type: 'sms' });
-  if (error) { showToast('⚠️ Wrong OTP!'); return; }
+  const email = document.getElementById('login-email').value.trim();
+  if (otpVal.length < 8) { showToast('⚠️ 8-digit OTP enter करा'); return; }
+  const { data, error } = await sb.auth.verifyOtp({
+    email: email,
+    token: otpVal,
+    type: 'email'
+  });
+  if (error) { showToast('⚠️ Wrong OTP! पुन्हा try करा.'); return; }
   currentUser = data.user;
   updateDashboardUI();
   showToast('✅ Login successful!');
@@ -1050,11 +1038,11 @@ async function updateDashboardUI() {
   }
   document.getElementById('dash-login-section').style.display = 'none';
   document.getElementById('dash-content').style.display = 'block';
-  const phone = currentUser.phone || '';
-  document.getElementById('dash-name').textContent = phone;
-  document.getElementById('dash-phone').textContent = phone;
-  document.getElementById('profile-name').textContent = phone;
-  document.getElementById('profile-phone').textContent = phone;
+  const displayName = currentUser.email || currentUser.phone || 'User';
+  document.getElementById('dash-name').textContent = displayName;
+  document.getElementById('dash-phone').textContent = displayName;
+  document.getElementById('profile-name').textContent = displayName;
+  document.getElementById('profile-phone').textContent = displayName;
   await loadMyListings();
   await loadMyInquiries();
 }
@@ -1200,27 +1188,6 @@ function showPage(page) {
   window.scrollTo(0, 0);
 }
 
-let authMode = "email"; // default
-
-function setAuthMode(mode) {
-  authMode = mode;
-
-  const phoneField = document.getElementById('phoneField');
-  const emailField = document.getElementById('emailField');
-  const btn = document.getElementById('sendOtpBtn');
-
-  if (mode === "phone") {
-    phoneField.style.display = 'block';
-    emailField.style.display = 'none';
-    btn.textContent = "OTP पाठवा 📱";
-  } else {
-    phoneField.style.display = 'none';
-    emailField.style.display = 'block';
-    btn.textContent = "OTP पाठवा 📧";
-  }
-}
-
-setAuthMode("email");
 
 // ════════════════════════════════════════
 //  UTILITIES

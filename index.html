@@ -455,10 +455,26 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
         <input class="form-input" type="text" id="form-name" placeholder="पूर्ण नाव">
       </div>
       <div class="form-group">
-        <label class="form-label">मोबाईल नंबर <span>*</span></label>
+
+        <!-- 🔥 Toggle -->
+<div style="display:flex;gap:8px;margin-bottom:10px;">
+  <button type="button" onclick="setAuthMode('phone')">📱 Phone</button>
+  <button type="button" onclick="setAuthMode('email')">📧 Email</button>
+</div>
+
+<!-- PHONE -->
+<div class="form-group" id="phoneField" style="display:none;">
+</div>
+
+<!-- EMAIL -->
+<div class="form-group" id="emailField">
+  <label class="form-label">ईमेल</label>
+  <input class="form-input" type="email" id="form-email">
+</div>
+
         <div style="display:flex;gap:8px">
           <input class="form-input" style="width:60px;flex-shrink:0;padding:12px 8px;text-align:center" value="+91" readonly>
-          <input class="form-input" type="tel" id="form-phone" placeholder="9876543210" maxlength="10">
+          <input class="form-input" type="tel" id="form-phone" placeholder="Enter phone number" maxlength="10">
         </div>
       </div>
       <div id="otp-section" style="display:none">
@@ -866,13 +882,30 @@ function handlePhotos(input) {
 }
 
 async function sendOTP() {
-  const phone = document.getElementById('form-phone').value;
+  let phone = document.getElementById('form-phone')?.value;
+  let email = document.getElementById('form-email')?.value;
   const name = document.getElementById('form-name').value;
-  if (!phone || phone.length !== 10) { showToast('⚠️ Valid 10-digit number enter करा'); return; }
+if (authMode === "phone") {
+  if (!phone || phone.length !== 10) {
+    showToast("⚠ Valid 10-digit number enter करा");
+    return;
+  }
+} else {
+  if (!email) {
+    showToast("⚠ Email enter करा");
+    return;
+  }
+}
   if (!name) { showToast('⚠️ नाव भरा'); return; }
   const btn = document.getElementById('sendOtpBtn');
   btn.disabled = true; btn.textContent = 'OTP पाठवत आहे...';
-  const { error } = await sb.auth.signInWithOtp({ phone: `+91${phone}` });
+  let error;
+
+if (authMode === "phone") {
+  ({ error } = await sb.auth.signInWithOtp({ phone: `+91${phone}` }));
+} else {
+  ({ error } = await sb.auth.signInWithOtp({ email: email }));
+}
   if (error) {
     showToast('⚠️ OTP failed: ' + error.message);
     btn.disabled = false; btn.textContent = 'OTP पाठवा 📱'; return;
@@ -890,15 +923,44 @@ function otpInput(el, pos) {
 }
 
 async function submitListing() {
+
   const otpVal = Array.from(document.querySelectorAll('#fs-4 .otp-input')).map(i => i.value).join('');
-  if (otpVal.length < 6) { showToast('⚠️ 6-digit OTP enter करा'); return; }
+  if (otpVal.length < 6) {
+    showToast("⚠ 6-digit OTP enter करा");
+    return;
+  }
+
   const btn = document.getElementById('submitBtn');
-  btn.disabled = true; btn.textContent = '⏳ Submitting...';
-  // Verify OTP
-  const phone = document.getElementById('form-phone').value;
-  const { data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({ phone: `+91${phone}`, token: otpVal, type: 'sms' });
-  if (verifyErr) { showToast('⚠️ Wrong OTP! Try again.'); btn.disabled = false; btn.textContent = '🎉 जाहिरात सबमिट करा'; return; }
-  currentUser = verifyData.user;
+  btn.disabled = true;
+  btn.textContent = '⏳ Submitting...';
+
+  const phone = document.getElementById('form-phone')?.value || '';
+  const email = document.getElementById('form-email')?.value || '';
+
+  let verifyData, verifyErr;
+
+  if (authMode === "phone") {
+    ({ data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({
+      phone: `+91${phone}`,
+      token: otpVal,
+      type: 'sms'
+    }));
+  } else {
+    ({ data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({
+      email: email,
+      token: otpVal,
+      type: 'email'
+    }));
+  }
+
+  if (verifyErr || !verifyData) {
+    showToast("⚠ Wrong OTP! Try again.");
+    btn.disabled = false;
+    btn.textContent = '🎉 जाहिरात सबमिट करा';
+    return;
+  }
+  
+currentUser = verifyData.user;
 
   // Upload photo if any
   let imgUrl = null;
@@ -1137,6 +1199,28 @@ function showPage(page) {
   if (page === 'dash') document.getElementById('bn-dash').classList.add('active');
   window.scrollTo(0, 0);
 }
+
+let authMode = "email"; // default
+
+function setAuthMode(mode) {
+  authMode = mode;
+
+  const phoneField = document.getElementById('phoneField');
+  const emailField = document.getElementById('emailField');
+  const btn = document.getElementById('sendOtpBtn');
+
+  if (mode === "phone") {
+    phoneField.style.display = 'block';
+    emailField.style.display = 'none';
+    btn.textContent = "OTP पाठवा 📱";
+  } else {
+    phoneField.style.display = 'none';
+    emailField.style.display = 'block';
+    btn.textContent = "OTP पाठवा 📧";
+  }
+}
+
+setAuthMode("email");
 
 // ════════════════════════════════════════
 //  UTILITIES

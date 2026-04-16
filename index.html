@@ -4,53 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#C84B31">
-<meta name="description" content="विदर्भ प्रॉपर्टीज - परतवाडा/अचलपूर मधील जमीन, घर आणि मालमत्ता">
+<meta name="description" content="विदर्भ प्रॉपर्टीज - परतवाडा/अचलपूर मधील जमीन, घर आणि मालमत्ता खरेदी-विक्री">
 <title>Vidarbh Properties | विदर्भ प्रॉपर्टीज</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<!-- ══ SUPABASE SDK ══ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-:root {
-  --brand:#C84B31; --brand-dark:#9E2F17; --brand-light:#F5E6E2;
-  --gold:#E9C46A; --green:#2A9D8F; --dark:#1A1A2E;
-  --text:#2D2D2D; --muted:#777; --border:#E8E0DC;
-  --bg:#FBF7F5; --white:#FFFFFF;
-  --shadow:0 2px 12px rgba(200,75,49,0.10); --r:14px;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+:root{--brand:#C84B31;--brand-dark:#9E2F17;--brand-light:#F5E6E2;--gold:#E9C46A;--green:#2A9D8F;--dark:#1A1A2E;--text:#2D2D2D;--muted:#777;--border:#E8E0DC;--bg:#FBF7F5;--white:#FFFFFF;--shadow:0 2px 12px rgba(200,75,49,0.10);--r:14px;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{font-family:'Mukta',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-
-/* NAV */
-nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky;top:0;z-index:100;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 8px rgba(200,75,49,0.12);}
-.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;cursor:pointer;}
-.nav-logo-icon{width:34px;height:34px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:800;}
-.nav-logo-text{font-size:17px;font-weight:800;color:var(--brand);line-height:1;}
+nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky;top:0;z-index:100;padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 8px rgba(200,75,49,0.12);}
+.nav-logo{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.nav-logo-icon{width:34px;height:34px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:800;flex-shrink:0;}
+.nav-logo-text{font-size:15px;font-weight:800;color:var(--brand);line-height:1;}
 .nav-logo-sub{font-size:9px;color:var(--muted);display:block;}
-.nav-actions{display:flex;gap:8px;align-items:center;}
-.btn-lang{background:var(--brand-light);color:var(--brand);border:none;border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
-.btn-post-nav{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(200,75,49,0.3);}
-
+.nav-actions{display:flex;gap:6px;align-items:center;}
+.btn-lang{background:var(--brand-light);color:var(--brand);border:none;border-radius:6px;padding:5px 8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-post-nav{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(200,75,49,0.3);}
+.btn-login-nav{background:var(--white);color:var(--dark);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all 0.2s;max-width:110px;overflow:hidden;}
+.btn-login-nav.logged-in{background:var(--brand-light);border-color:var(--brand);color:var(--brand);}
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.open{display:flex;}
+.modal-box{background:var(--white);border-radius:20px;padding:24px 20px 28px;width:100%;max-width:380px;animation:popIn 0.25s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.modal-title{font-size:18px;font-weight:800;color:var(--dark);}
+.modal-close{background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
 /* PAGES */
 .page{display:none;}.page.active{display:block;}
-
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 60%,#5C1A0A 100%);padding:28px 16px 24px;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,0.06);border-radius:50%;}
+.hero::after{content:'';position:absolute;bottom:-30px;left:-20px;width:150px;height:150px;background:rgba(244,162,97,0.12);border-radius:50%;}
 .hero-title{color:#fff;font-size:22px;font-weight:800;line-height:1.25;margin-bottom:4px;position:relative;}
 .hero-sub{color:rgba(255,255,255,0.8);font-size:13px;margin-bottom:18px;}
-.search-bar{background:#fff;border-radius:12px;display:flex;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.2);position:relative;z-index:1;}
+.search-bar{background:#fff;border-radius:12px;display:flex;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:1;position:relative;}
 .search-bar input{flex:1;border:none;outline:none;padding:14px 16px;font-size:15px;font-family:inherit;color:var(--text);background:transparent;}
 .search-bar input::placeholder{color:#AAA;}
 .search-btn{background:var(--brand);color:#fff;border:none;padding:0 20px;font-size:20px;cursor:pointer;display:flex;align-items:center;}
 .hero-stats{display:flex;gap:20px;margin-top:16px;position:relative;z-index:1;}
-.hero-stat{text-align:center;}
 .hero-stat-num{color:#fff;font-size:20px;font-weight:800;line-height:1;}
 .hero-stat-lbl{color:rgba(255,255,255,0.7);font-size:10px;margin-top:2px;}
-
 /* CATEGORIES */
 .section{padding:20px 16px;}
 .section-title{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
@@ -61,24 +57,21 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 .cat-icon{font-size:24px;}
 .cat-label{font-size:11px;font-weight:700;color:var(--text);text-align:center;line-height:1.2;}
 .cat-label-mr{font-size:10px;color:var(--muted);}
-
 /* FILTER BAR */
 .filter-bar{padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
 .filter-bar::-webkit-scrollbar{display:none;}
 .filter-chip{background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;cursor:pointer;font-family:inherit;transition:all 0.2s;flex-shrink:0;}
 .filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
-
 /* AD BANNER */
 .ad-banner{margin:0 16px 16px;background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--gold);position:relative;}
 .ad-banner::before{content:'AD';position:absolute;top:4px;right:6px;font-size:9px;color:var(--muted);font-weight:700;}
 .ad-text{font-size:13px;font-weight:700;color:#5D4037;}
 .ad-sub{font-size:11px;color:#795548;margin-top:2px;}
 .ad-cta{background:#F57C00;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;}
-
-/* LISTING CARDS */
+/* CARDS */
 .listings-grid{display:flex;flex-direction:column;gap:14px;padding:0 16px;}
-.listing-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform 0.2s;border:1px solid var(--border);animation:fadeUp 0.4s ease both;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.listing-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform 0.2s;border:1px solid var(--border);animation:fadeUp 0.35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .card-img-wrap{position:relative;height:180px;overflow:hidden;background:#f0e8e4;}
 .card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
 .listing-card:hover .card-img-wrap img{transform:scale(1.03);}
@@ -88,67 +81,57 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 .card-save{position:absolute;top:8px;right:10px;background:rgba(255,255,255,0.9);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .card-body{padding:14px;}
 .card-price{font-size:20px;font-weight:800;color:var(--brand);line-height:1;margin-bottom:4px;}
-.card-price span{font-size:12px;font-weight:500;color:var(--muted);}
 .card-title{font-size:14px;font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:6px;}
-.card-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
 .card-tag{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--muted);font-weight:600;}
-.card-loc{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.card-loc{font-size:12px;color:var(--muted);}
 .card-actions{display:flex;gap:8px;margin-top:10px;}
 .btn-call{flex:1;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-wa{flex:1;background:#25D366;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
-
 /* SKELETON */
 .skel{background:linear-gradient(90deg,#F0E8E4 25%,#F8F2EF 50%,#F0E8E4 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skel-card{background:var(--white);border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin:0 16px 14px;}
-
+.skel-card{background:var(--white);border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:14px;}
 /* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
-.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px;cursor:pointer;border:none;background:none;font-family:inherit;transition:all 0.15s;}
-.bn-item.active .bn-icon{color:var(--brand);}
-.bn-item.active .bn-label{color:var(--brand);font-weight:700;}
-.bn-item.post{background:var(--brand);margin:6px 8px;border-radius:12px;color:#fff !important;box-shadow:0 4px 12px rgba(200,75,49,0.4);}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px;cursor:pointer;border:none;background:none;font-family:inherit;}
+.bn-item.active .bn-icon,.bn-item.active .bn-label{color:var(--brand);}
+.bn-item.active .bn-label{font-weight:700;}
+.bn-item.post{background:var(--brand);margin:6px 8px;border-radius:12px;box-shadow:0 4px 12px rgba(200,75,49,0.4);}
 .bn-item.post .bn-icon,.bn-item.post .bn-label{color:#fff !important;}
 .bn-icon{font-size:20px;color:var(--muted);line-height:1;}
 .bn-label{font-size:10px;font-weight:600;color:var(--muted);margin-top:2px;}
-
-/* DETAIL PAGE */
+/* DETAIL */
 .detail-gallery{height:260px;overflow:hidden;position:relative;background:#000;}
-.detail-gallery img{width:100%;height:100%;object-fit:cover;opacity:0.9;}
-.gallery-nav{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
-.g-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);}
-.g-dot.active{background:#fff;width:18px;border-radius:3px;}
+.detail-gallery img{width:100%;height:100%;object-fit:cover;opacity:0.92;}
 .detail-back{position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.9);border:none;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;}
 .detail-content{padding:16px;padding-bottom:90px;}
-.detail-badges{display:flex;gap:8px;margin-bottom:10px;}
+.detail-badges{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
 .d-badge{background:var(--brand-light);color:var(--brand);font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;}
-.d-badge.verified{background:#E8F5E9;color:var(--green);}
+.d-badge.ver{background:#E8F5E9;color:var(--green);}
 .detail-price{font-size:28px;font-weight:800;color:var(--brand);line-height:1;margin-bottom:4px;}
 .detail-title{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:12px;line-height:1.3;}
-.detail-specs{background:var(--bg);border-radius:12px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;border:1px solid var(--border);}
-.spec-item label{font-size:10px;color:var(--muted);font-weight:600;display:block;text-transform:uppercase;letter-spacing:0.5px;}
-.spec-item span{font-size:15px;font-weight:700;color:var(--dark);}
+.detail-specs{background:var(--bg);border-radius:12px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;border:1px solid var(--border);}
+.spec-item label{font-size:10px;color:var(--muted);font-weight:600;display:block;text-transform:uppercase;}
+.spec-item span{font-size:14px;font-weight:700;color:var(--dark);}
 .detail-section-title{font-size:14px;font-weight:800;color:var(--dark);margin-bottom:8px;}
-.detail-desc{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:16px;}
-.detail-map{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:12px;height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid #90CAF9;}
+.detail-desc{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:16px;white-space:pre-wrap;}
+.detail-map{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid #90CAF9;font-size:13px;color:#1976D2;font-weight:700;}
 .seller-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .seller-avatar{width:48px;height:48px;border-radius:50%;background:var(--brand-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.seller-name{font-size:15px;font-weight:700;}
-.seller-type{font-size:11px;color:var(--muted);}
-.seller-verified{font-size:11px;color:var(--green);font-weight:600;}
 .detail-action-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--border);padding:12px 16px;display:flex;gap:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom));z-index:100;}
 .btn-share-sm{background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:18px;cursor:pointer;}
-
-/* POST FORM */
+/* FORM */
 .form-wizard{padding:16px;padding-bottom:80px;}
-.wizard-steps{display:flex;gap:0;margin-bottom:24px;background:var(--bg);border-radius:10px;padding:4px;border:1px solid var(--border);}
+.wizard-steps{display:flex;margin-bottom:24px;background:var(--bg);border-radius:10px;padding:4px;border:1px solid var(--border);}
 .wizard-step{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:11px;font-weight:600;color:var(--muted);transition:all 0.2s;}
 .wizard-step.active{background:var(--brand);color:#fff;}
 .wizard-step.done{background:var(--green);color:#fff;}
 .form-section{display:none;}.form-section.active{display:block;}
 .form-group{margin-bottom:16px;}
 .form-label{display:block;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;}
-.form-label span{color:var(--brand);}
+.req{color:var(--brand);}
+.hint{font-weight:400;color:var(--muted);font-size:11px;}
 .form-input,.form-select,.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s;}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--brand);}
 .form-textarea{min-height:100px;resize:vertical;}
@@ -161,13 +144,18 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 .photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;cursor:pointer;background:var(--bg);}
 .photo-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
 .photo-thumb{width:70px;height:70px;border-radius:8px;object-fit:cover;border:2px solid var(--border);}
-.btn-next,.btn-submit{width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(200,75,49,0.3);}
+.btn-next,.btn-submit{width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(200,75,49,0.3);transition:opacity 0.2s;}
 .btn-next:disabled,.btn-submit:disabled{opacity:0.6;cursor:not-allowed;}
 .btn-prev{width:100%;background:var(--bg);color:var(--dark);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;}
-.otp-inputs{display:flex;gap:6px;justify-content:center;margin:16px 0;}
-.otp-input{width:38px;height:50px;border:2px solid var(--border);border-radius:10px;font-size:20px;font-weight:700;text-align:center;font-family:inherit;color:var(--dark);outline:none;transition:border-color 0.2s;}
+/* OTP */
+.otp-inputs{display:flex;gap:7px;justify-content:center;margin:14px 0;}
+.otp-input{width:42px;height:52px;border:2px solid var(--border);border-radius:10px;font-size:22px;font-weight:700;text-align:center;font-family:inherit;color:var(--dark);outline:none;transition:border-color 0.2s;}
 .otp-input:focus{border-color:var(--brand);}
-
+/* INFO BOX */
+.info-box{border-radius:10px;padding:12px 14px;font-size:12px;font-weight:600;margin-bottom:12px;}
+.info-green{background:#E8F5E9;color:#2E7D32;}
+.info-orange{background:#FFF3E0;color:#E65100;}
+.info-blue{background:#E3F2FD;color:#1565C0;}
 /* DASHBOARD */
 .dash-header{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:20px 16px;color:#fff;}
 .dash-stats-row{display:flex;gap:10px;margin-top:14px;}
@@ -180,83 +168,121 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 .my-listing-item{background:var(--white);margin:0 16px 12px;border-radius:12px;display:flex;gap:12px;padding:12px;border:1px solid var(--border);box-shadow:var(--shadow);}
 .my-listing-img{width:75px;height:75px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4;}
 .my-listing-body{flex:1;min-width:0;}
-.my-listing-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px;}
+.my-listing-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .my-listing-price{font-size:15px;font-weight:800;color:var(--brand);}
 .status-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;}
 .status-active{background:#E8F5E9;color:#2E7D32;}
 .status-pending{background:#FFF3E0;color:#E65100;}
 .status-sold{background:#E3F2FD;color:#1565C0;}
 .my-listing-actions{display:flex;gap:6px;margin-top:6px;}
-.btn-sm-edit{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-family:inherit;}
-.btn-sm-delete{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1.5px solid #FFCDD2;background:#FFF5F5;color:#C62828;cursor:pointer;font-family:inherit;}
-
+.btn-sm{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-sm-del{border:1.5px solid #FFCDD2;background:#FFF5F5;color:#C62828;}
 /* ADMIN */
-.admin-listing-row{background:var(--white);border-radius:12px;margin:0 16px 10px;padding:12px;border:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;}
-.admin-listing-row img{width:65px;height:65px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4;}
-.admin-actions{display:flex;gap:8px;margin-top:8px;}
-.btn-approve{background:#E8F5E9;color:#2E7D32;border:1.5px solid #A5D6A7;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
-.btn-reject{background:#FFEBEE;color:#C62828;border:1.5px solid #FFCDD2;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
-
+.admin-row{background:var(--white);border-radius:12px;margin:0 16px 10px;padding:12px;border:1px solid var(--border);display:flex;gap:10px;}
+.admin-row img{width:65px;height:65px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4;}
+.admin-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.btn-approve{background:#E8F5E9;color:#2E7D32;border:1.5px solid #A5D6A7;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-reject{background:#FFEBEE;color:#C62828;border:1.5px solid #FFCDD2;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
 /* SUCCESS */
 .success-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;padding:32px;}
 .success-icon{font-size:72px;margin-bottom:16px;}
 .success-title{font-size:22px;font-weight:800;color:var(--dark);margin-bottom:8px;}
 .success-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:280px;}
 .btn-home{background:var(--brand);color:#fff;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:24px;}
-
-/* TOAST */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;z-index:200;white-space:nowrap;pointer-events:none;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;display:none;align-items:flex-end;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal-sheet{background:var(--white);border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:480px;animation:slideUp 0.3s ease;}
-@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
-.modal-title{font-size:16px;font-weight:800;margin-bottom:14px;}
-.modal-apply{width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:16px;}
-
-/* LOADING OVERLAY */
-.loading-overlay{position:fixed;inset:0;background:rgba(251,247,245,0.9);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
-.loading-spinner{width:48px;height:48px;border:4px solid var(--brand-light);border-top-color:var(--brand);border-radius:50%;animation:spin 0.8s linear infinite;}
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:rgba(251,247,245,0.92);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.spin{width:44px;height:44px;border:4px solid var(--brand-light);border-top-color:var(--brand);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:14px;font-weight:700;color:var(--brand);}
-
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;z-index:400;white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* SHEET */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;display:none;align-items:flex-end;justify-content:center;}
+.sheet-overlay.open{display:flex;}
+.sheet{background:var(--white);border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:480px;animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
 #page-home{padding-bottom:80px;}
 </style>
 </head>
 <body>
 
-<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-spinner"></div>
-  <div class="loading-text">लोड होत आहे...</div>
+  <div class="spin"></div>
+  <div style="font-size:14px;font-weight:700;color:var(--brand)">लोड होत आहे...</div>
 </div>
 
 <!-- NAV -->
 <nav>
   <div class="nav-logo" onclick="showPage('home')">
     <div class="nav-logo-icon">VP</div>
-    <div>
-      <div class="nav-logo-text">VidarbhProperties</div>
-      <div class="nav-logo-sub">विदर्भ प्रॉपर्टीज</div>
-    </div>
+    <div><div class="nav-logo-text">VidarbhProperties</div><div class="nav-logo-sub">विदर्भ प्रॉपर्टीज</div></div>
   </div>
   <div class="nav-actions">
     <button class="btn-lang" onclick="toggleLang()" id="langBtn">मराठी</button>
-    <button class="btn-post-nav" onclick="showPage('post')">+ जाहिरात</button>
+    <button class="btn-login-nav" id="navLoginBtn" onclick="openLoginModal()">
+      <span id="navLoginIcon">👤</span>
+      <span id="navLoginText" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Login</span>
+    </button>
+    <button class="btn-post-nav" onclick="checkLoginPost()">+ जाहिरात</button>
   </div>
 </nav>
 
-<!-- ══════════ HOME PAGE ══════════ -->
+<!-- LOGIN MODAL -->
+<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeModal('loginOverlay')">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-title" id="lmTitle">Login / Sign Up</div>
+      <button class="modal-close" onclick="closeModal('loginOverlay')">✕</button>
+    </div>
+    <div class="modal-sub" id="lmSub">Email OTP ने login करा • No password needed</div>
+    <!-- s1: email input -->
+    <div id="lm-s1">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="lm-email" placeholder="yourname@gmail.com"
+          onkeydown="if(event.key==='Enter')sendLoginOTP()">
+      </div>
+      <button class="btn-next" id="lmBtn" onclick="sendLoginOTP()">📧 OTP पाठवा</button>
+    </div>
+    <!-- s2: OTP verify -->
+    <div id="lm-s2" style="display:none">
+      <div class="info-box info-green">📧 Gmail तपासा! <strong>6-digit OTP</strong> पाठवला.<br>Spam folder पण तपासा.</div>
+      <div class="otp-inputs" id="lm-otp">
+        <input class="otp-input" maxlength="1" oninput="onav(this,0,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,1,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,2,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,3,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,4,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,5,'lm-otp')">
+      </div>
+      <button class="btn-next" onclick="verifyLoginOTP()">✓ Verify & Login</button>
+      <div style="text-align:center;margin-top:10px;display:flex;gap:16px;justify-content:center">
+        <button style="background:none;border:none;color:var(--brand);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="sendLoginOTP()">🔄 Resend OTP</button>
+        <button style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:inherit" onclick="document.getElementById('lm-s1').style.display='block';document.getElementById('lm-s2').style.display='none'">← बदलवा</button>
+      </div>
+    </div>
+    <!-- s3: logged in -->
+    <div id="lm-s3" style="display:none;text-align:center;padding:8px 0">
+      <div style="font-size:44px;margin-bottom:10px">✅</div>
+      <div style="font-size:16px;font-weight:800;color:var(--dark)">Login झाले!</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px" id="lm-show-email"></div>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <button class="btn-call" style="border-radius:10px;flex:1" onclick="closeModal('loginOverlay');showPage('dash')">📋 My Listings</button>
+        <button style="flex:1;background:var(--bg);color:var(--dark);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <div class="hero">
     <div class="hero-title" id="hero-title">परतवाडा / अचलपूर मधील<br>मालमत्ता शोधा 🏡</div>
     <div class="hero-sub" id="hero-sub">जमीन, घर, दुकान – थेट मालकाशी संपर्क</div>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="परिसर, गाव शोधा..." oninput="debounceSearch()">
-      <button class="search-btn">🔍</button>
+      <input type="text" id="searchInput" placeholder="परिसर, गाव शोधा... (e.g. Paratwada plot)" oninput="dbSearch()">
+      <button class="search-btn" onclick="loadListings(true)">🔍</button>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-num" id="stat-total">–</div><div class="hero-stat-lbl">Listings</div></div>
@@ -264,344 +290,279 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <div class="hero-stat"><div class="hero-stat-num">Paratwada</div><div class="hero-stat-lbl">& Achalpur</div></div>
     </div>
   </div>
-
   <div class="section">
     <div class="section-title">श्रेणी | Categories</div>
     <div class="categories">
-      <button class="cat-btn active" onclick="filterByCategory('all',this)"><span class="cat-icon">🏘️</span><span class="cat-label">All<br><span class="cat-label-mr">सर्व</span></span></button>
-      <button class="cat-btn" onclick="filterByCategory('Plot',this)"><span class="cat-icon">🌿</span><span class="cat-label">Plot<br><span class="cat-label-mr">जमीन</span></span></button>
-      <button class="cat-btn" onclick="filterByCategory('House',this)"><span class="cat-icon">🏠</span><span class="cat-label">House<br><span class="cat-label-mr">घर</span></span></button>
-      <button class="cat-btn" onclick="filterByCategory('Farm',this)"><span class="cat-icon">🌾</span><span class="cat-label">Farm<br><span class="cat-label-mr">शेत</span></span></button>
+      <button class="cat-btn active" onclick="filterCat('all',this)"><span class="cat-icon">🏘️</span><span class="cat-label">All<br><span class="cat-label-mr">सर्व</span></span></button>
+      <button class="cat-btn" onclick="filterCat('Plot',this)"><span class="cat-icon">🌿</span><span class="cat-label">Plot<br><span class="cat-label-mr">जमीन</span></span></button>
+      <button class="cat-btn" onclick="filterCat('House',this)"><span class="cat-icon">🏠</span><span class="cat-label">House<br><span class="cat-label-mr">घर</span></span></button>
+      <button class="cat-btn" onclick="filterCat('Farm',this)"><span class="cat-icon">🌾</span><span class="cat-label">Farm<br><span class="cat-label-mr">शेत</span></span></button>
     </div>
   </div>
-
   <div class="filter-bar">
-    <button class="filter-chip active" onclick="setPriceFilter(0,9999999999,this)">सर्व</button>
-    <button class="filter-chip" onclick="setPriceFilter(0,500000,this)">&lt; ₹5L</button>
-    <button class="filter-chip" onclick="setPriceFilter(500000,1000000,this)">₹5L–10L</button>
-    <button class="filter-chip" onclick="setPriceFilter(1000000,2500000,this)">₹10L–25L</button>
-    <button class="filter-chip" onclick="setPriceFilter(2500000,5000000,this)">₹25L–50L</button>
-    <button class="filter-chip" onclick="setPriceFilter(5000000,9999999999,this)">₹50L+</button>
-    <button class="filter-chip" onclick="openFilterModal()">⚙️ Filter</button>
+    <button class="filter-chip active" onclick="setPrice(0,9e9,this)">सर्व</button>
+    <button class="filter-chip" onclick="setPrice(0,500000,this)">&lt;₹5L</button>
+    <button class="filter-chip" onclick="setPrice(500000,1000000,this)">₹5–10L</button>
+    <button class="filter-chip" onclick="setPrice(1000000,2500000,this)">₹10–25L</button>
+    <button class="filter-chip" onclick="setPrice(2500000,5000000,this)">₹25–50L</button>
+    <button class="filter-chip" onclick="setPrice(5000000,9e9,this)">₹50L+</button>
+    <button class="filter-chip" onclick="openSheet()">⚙️ Filter</button>
   </div>
-
   <div class="ad-banner">
     <div><div class="ad-text">🏦 SBI Home Loan</div><div class="ad-sub">8.5% व्याजदर • त्वरित मंजुरी</div></div>
-    <button class="ad-cta" onclick="showToast('SBI साठी संपर्क करा: 1800-11-2211')">अर्ज करा</button>
+    <button class="ad-cta" onclick="showToast('SBI: 1800-11-2211')">अर्ज करा</button>
   </div>
-
   <div class="section-title" style="padding:0 16px 10px">ताज्या जाहिराती | Latest Listings</div>
-  <div id="listingsGrid"></div>
+  <div id="listingsGrid" class="listings-grid"></div>
   <div id="loadMoreWrap" style="padding:16px;text-align:center;display:none">
-    <button onclick="loadMoreListings()" style="background:var(--brand-light);color:var(--brand);border:2px solid var(--brand);border-radius:10px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">
-      अधिक पहा | Load More
-    </button>
+    <button onclick="loadMore()" style="background:var(--brand-light);color:var(--brand);border:2px solid var(--brand);border-radius:10px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">अधिक पहा | Load More</button>
   </div>
 </div>
 
-<!-- ══════════ DETAIL PAGE ══════════ -->
+<!-- DETAIL PAGE -->
 <div id="page-detail" class="page">
   <div class="detail-gallery" style="position:relative">
     <button class="detail-back" onclick="showPage('home')">←</button>
-    <img id="detail-img" src="" alt="" onerror="this.src='https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image'">
-    <div class="gallery-nav"><div class="g-dot active"></div><div class="g-dot"></div><div class="g-dot"></div></div>
+    <img id="d-img" src="" alt="" onerror="this.src='https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image'">
   </div>
   <div class="detail-content">
     <div class="detail-badges">
-      <span class="d-badge" id="detail-cat-badge">–</span>
-      <span class="d-badge verified" id="detail-verified-badge">–</span>
+      <span class="d-badge" id="d-cat">–</span>
+      <span class="d-badge" id="d-ver">–</span>
     </div>
-    <div class="detail-price" id="detail-price">–</div>
-    <div class="detail-title" id="detail-title">–</div>
+    <div class="detail-price" id="d-price">–</div>
+    <div class="detail-title" id="d-title">–</div>
     <div class="detail-specs">
-      <div class="spec-item"><label>क्षेत्रफळ / Area</label><span id="spec-area">–</span></div>
-      <div class="spec-item"><label>प्रकार / Type</label><span id="spec-type">–</span></div>
-      <div class="spec-item"><label>📍 स्थान</label><span id="spec-loc">–</span></div>
-      <div class="spec-item"><label>📅 पोस्ट केले</label><span id="spec-date">–</span></div>
+      <div class="spec-item"><label>Area</label><span id="d-area">–</span></div>
+      <div class="spec-item"><label>Type</label><span id="d-type">–</span></div>
+      <div class="spec-item"><label>📍 Location</label><span id="d-loc">–</span></div>
+      <div class="spec-item"><label>📅 Posted</label><span id="d-date">–</span></div>
     </div>
     <div class="detail-section-title">वर्णन | Description</div>
-    <div class="detail-desc" id="detail-desc">–</div>
-    <div class="detail-section-title">नकाशा | Location</div>
-    <div class="detail-map"><span style="font-weight:700;font-size:13px">📍 Paratwada, Amravati Dist.</span></div>
+    <div class="detail-desc" id="d-desc">–</div>
+    <div class="detail-section-title">📍 Location</div>
+    <div class="detail-map">📍 Paratwada / Achalpur, Amravati</div>
     <div class="detail-section-title">विक्रेता | Seller</div>
     <div class="seller-card">
-      <div class="seller-avatar" id="detail-avatar">👤</div>
+      <div class="seller-avatar" id="d-avatar">👤</div>
       <div>
-        <div class="seller-name" id="detail-seller-name">–</div>
-        <div class="seller-type" id="detail-seller-type">–</div>
-        <div class="seller-verified" id="detail-seller-verified">–</div>
+        <div style="font-size:15px;font-weight:700" id="d-seller">–</div>
+        <div style="font-size:11px;color:var(--muted)" id="d-stype">–</div>
+        <div style="font-size:11px;color:var(--green);font-weight:600" id="d-sver">–</div>
       </div>
     </div>
   </div>
   <div class="detail-action-bar">
-    <button class="btn-share-sm" onclick="shareListingLink()">🔗</button>
+    <button class="btn-share-sm" onclick="shareLink()">🔗</button>
     <button class="btn-call" style="flex:1.2" onclick="handleCall()">📞 Call Owner</button>
-    <button class="btn-wa" style="flex:1.2" onclick="handleWhatsApp()">💬 WhatsApp</button>
+    <button class="btn-wa" style="flex:1.2" onclick="handleWA()">💬 WhatsApp</button>
   </div>
 </div>
 
-<!-- ══════════ POST LISTING PAGE ══════════ -->
+<!-- POST LISTING PAGE -->
 <div id="page-post" class="page">
   <div style="background:var(--brand);padding:16px;color:#fff">
     <div style="display:flex;align-items:center;gap:10px">
-      <button onclick="showPage('home')" style="background:rgba(255,255,255,0.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
-      <div>
-        <div style="font-size:18px;font-weight:800">जाहिरात द्या | Post Property</div>
-        <div style="font-size:11px;opacity:0.8">Free • Direct Contact • No Broker Fee</div>
-      </div>
+      <button onclick="showPage('home')" style="background:rgba(255,255,255,0.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">←</button>
+      <div><div style="font-size:18px;font-weight:800">जाहिरात द्या | Post Property</div><div style="font-size:11px;opacity:0.8">Free • Direct Contact • No Broker Fee</div></div>
     </div>
   </div>
   <div class="form-wizard">
     <div class="wizard-steps">
-      <div class="wizard-step active" id="step-1">1. प्रकार</div>
-      <div class="wizard-step" id="step-2">2. Details</div>
-      <div class="wizard-step" id="step-3">3. फोटो</div>
-      <div class="wizard-step" id="step-4">4. Contact</div>
+      <div class="wizard-step active" id="ws-1">1. प्रकार</div>
+      <div class="wizard-step" id="ws-2">2. Details</div>
+      <div class="wizard-step" id="ws-3">3. फोटो</div>
+      <div class="wizard-step" id="ws-4">4. Submit</div>
     </div>
-
-    <!-- Step 1: Category -->
+    <!-- Step 1 -->
     <div class="form-section active" id="fs-1">
       <div class="form-group">
-        <div class="form-label">मालमत्तेचा प्रकार <span>*</span></div>
+        <div class="form-label">मालमत्तेचा प्रकार <span class="req">*</span></div>
         <div class="cat-select-grid">
-          <div class="cat-select-item active" onclick="selectCategory(this,'House')"><span class="cat-select-icon">🏠</span><div class="cat-select-label">House / घर</div></div>
-          <div class="cat-select-item" onclick="selectCategory(this,'Plot')"><span class="cat-select-icon">🌿</span><div class="cat-select-label">Plot / जमीन</div></div>
-          <div class="cat-select-item" onclick="selectCategory(this,'Farm')"><span class="cat-select-icon">🌾</span><div class="cat-select-label">Farm / शेत</div></div>
-          <div class="cat-select-item" onclick="selectCategory(this,'Shop')"><span class="cat-select-icon">🏪</span><div class="cat-select-label">Shop / दुकान</div></div>
+          <div class="cat-select-item active" onclick="selCat(this,'House')"><span class="cat-select-icon">🏠</span><div class="cat-select-label">House / घर</div></div>
+          <div class="cat-select-item" onclick="selCat(this,'Plot')"><span class="cat-select-icon">🌿</span><div class="cat-select-label">Plot / जमीन</div></div>
+          <div class="cat-select-item" onclick="selCat(this,'Farm')"><span class="cat-select-icon">🌾</span><div class="cat-select-label">Farm / शेत</div></div>
+          <div class="cat-select-item" onclick="selCat(this,'Shop')"><span class="cat-select-icon">🏪</span><div class="cat-select-label">Shop / दुकान</div></div>
         </div>
       </div>
       <div class="form-group">
-        <div class="form-label">आपण कोण आहात? <span>*</span></div>
+        <div class="form-label">आपण कोण आहात? <span class="req">*</span></div>
         <div style="display:flex;gap:10px">
           <label style="flex:1;display:flex;align-items:center;gap:8px;padding:12px;border:2px solid var(--brand);border-radius:10px;cursor:pointer;background:var(--brand-light)">
-            <input type="radio" name="poster_type" value="Owner" checked style="accent-color:var(--brand)">
+            <input type="radio" name="ptype" value="Owner" checked style="accent-color:var(--brand)">
             <div><div style="font-weight:700;font-size:13px">🏡 Owner / मालक</div></div>
           </label>
           <label style="flex:1;display:flex;align-items:center;gap:8px;padding:12px;border:2px solid var(--border);border-radius:10px;cursor:pointer">
-            <input type="radio" name="poster_type" value="Broker" style="accent-color:var(--brand)">
+            <input type="radio" name="ptype" value="Broker" style="accent-color:var(--brand)">
             <div><div style="font-weight:700;font-size:13px">🤝 Broker / दलाल</div></div>
           </label>
         </div>
       </div>
-      <button class="btn-next" onclick="nextStep(1)">पुढे जा | Next →</button>
+      <button class="btn-next" onclick="goStep(2)">पुढे जा | Next →</button>
     </div>
-
-    <!-- Step 2: Details -->
+    <!-- Step 2 -->
     <div class="form-section" id="fs-2">
       <div class="form-group">
-        <label class="form-label">शीर्षक / Title <span>*</span></label>
-        <input class="form-input" type="text" id="form-title" placeholder="उदा: 2 BHK घर परतवाडा मध्ये">
+        <label class="form-label">Title / शीर्षक <span class="req">*</span></label>
+        <input class="form-input" type="text" id="f-title" placeholder="उदा: 2 BHK घर परतवाडा मध्ये, जवळ बाजारपेठ">
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">किंमत ₹ <span>*</span></label>
-          <input class="form-input" type="number" id="form-price" placeholder="1500000">
+          <label class="form-label">किंमत ₹ <span class="req">*</span></label>
+          <input class="form-input" type="number" id="f-price" placeholder="1500000">
         </div>
         <div class="form-group">
-          <label class="form-label">क्षेत्रफळ</label>
-          <input class="form-input" type="text" id="form-area" placeholder="1500 sqft">
+          <label class="form-label">Area / क्षेत्रफळ</label>
+          <input class="form-input" type="text" id="f-area" placeholder="1500 sqft">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Bedrooms</label>
-          <select class="form-select" id="form-bhk">
+          <select class="form-select" id="f-bhk">
             <option value="">N/A</option>
             <option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4+ BHK</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Property Age</label>
-          <select class="form-select" id="form-age">
-            <option>New</option><option>&lt; 5 Years</option><option>5–10 Years</option><option>10+ Years</option>
+          <select class="form-select" id="f-age">
+            <option>New</option><option>&lt;5 Years</option><option>5–10 Years</option><option>10+ Years</option>
           </select>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">पत्ता / Location <span>*</span></label>
-        <input class="form-input" type="text" id="form-location" placeholder="गाव/परिसर, Paratwada">
+        <label class="form-label">Location / पत्ता <span class="req">*</span></label>
+        <input class="form-input" type="text" id="f-loc" placeholder="गाव/परिसर, उदा: Civil Lines, Paratwada">
       </div>
       <div class="form-group">
-        <label class="form-label">वर्णन / Description</label>
-        <textarea class="form-textarea" id="form-desc" placeholder="मालमत्तेचे वर्णन, सुविधा, जवळचे landmark..."></textarea>
+        <label class="form-label">Description / वर्णन</label>
+        <textarea class="form-textarea" id="f-desc" placeholder="मालमत्तेचे वर्णन, सुविधा, जवळचे landmarks..."></textarea>
       </div>
-      <button class="btn-next" onclick="nextStep(2)">पुढे जा | Next →</button>
-      <button class="btn-prev" onclick="prevStep(2)">← मागे</button>
+      <button class="btn-next" onclick="goStep(3)">पुढे जा | Next →</button>
+      <button class="btn-prev" onclick="goStep(1)">← मागे</button>
     </div>
-
-    <!-- Step 3: Photos -->
+    <!-- Step 3 -->
     <div class="form-section" id="fs-3">
       <div class="form-group">
-        <label class="form-label">फोटो अपलोड करा <span>*</span></label>
+        <label class="form-label">फोटो <span class="hint">(max 5, optional)</span></label>
         <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
           <div style="font-size:40px;margin-bottom:8px">📷</div>
           <div style="font-weight:700;color:var(--dark)">फोटो निवडा / Take Photo</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:4px">Max 5 photos • Auto compressed</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">JPG/PNG • Auto compressed</div>
         </div>
         <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
         <div class="photo-preview" id="photoPreview"></div>
       </div>
-      <div style="background:var(--brand-light);border-radius:10px;padding:12px;font-size:12px;color:var(--brand);font-weight:600;margin-bottom:12px">
-        💡 दिवसाच्या उजेडात काढलेले स्पष्ट फोटो जास्त खरेदीदार आकर्षित करतात!
-      </div>
-      <button class="btn-next" onclick="nextStep(3)">पुढे जा | Next →</button>
-      <button class="btn-prev" onclick="prevStep(3)">← मागे</button>
+      <div class="info-box info-blue">💡 दिवसाच्या उजेडात काढलेले स्पष्ट फोटो जास्त buyers आकर्षित करतात!</div>
+      <button class="btn-next" onclick="goStep(4)">पुढे जा | Next →</button>
+      <button class="btn-prev" onclick="goStep(2)">← मागे</button>
     </div>
-
-    <!-- Step 4: Contact + Email OTP -->
+    <!-- Step 4 -->
     <div class="form-section" id="fs-4">
-      <div class="form-group">
-        <label class="form-label">आपले नाव <span>*</span></label>
-        <input class="form-input" type="text" id="form-name" placeholder="पूर्ण नाव">
+      <div id="fs4-nologin" style="display:none;text-align:center;padding:24px 0">
+        <div style="font-size:44px;margin-bottom:12px">🔐</div>
+        <div style="font-size:16px;font-weight:800;margin-bottom:8px">Submit करण्यापूर्वी Login करा</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Email OTP ने verify करा — Free</div>
+        <button class="btn-next" onclick="openLoginModal()">👤 Login / Sign Up</button>
+        <button class="btn-prev" onclick="goStep(3)">← मागे</button>
       </div>
-      <div class="form-group">
-        <label class="form-label">मोबाईल नंबर <span>*</span> <span style="font-weight:400;color:var(--muted)">(buyers will call this)</span></label>
-        <div style="display:flex;gap:8px">
-          <input class="form-input" style="width:60px;flex-shrink:0;padding:12px 8px;text-align:center" value="+91" readonly>
-          <input class="form-input" type="tel" id="form-phone" placeholder="9876543210" maxlength="10">
+      <div id="fs4-form">
+        <div class="info-box info-green" id="fs4-userinfo">Loading...</div>
+        <div class="form-group">
+          <label class="form-label">आपले नाव <span class="req">*</span></label>
+          <input class="form-input" type="text" id="f-name" placeholder="पूर्ण नाव">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email ID <span>*</span> <span style="font-weight:400;color:var(--muted)">(OTP येईल)</span></label>
-        <input class="form-input" type="email" id="form-email" placeholder="yourname@gmail.com">
-      </div>
-
-      <div id="otp-section" style="display:none">
-        <div style="background:#E8F5E9;border-radius:10px;padding:12px;margin-bottom:12px;text-align:center">
-          <div style="font-size:14px;font-weight:700;color:#2E7D32">📧 OTP पाठवला आहे!</div>
-          <div style="font-size:12px;color:#388E3C;margin-top:3px">Gmail तपासा • 8-digit code enter करा</div>
+        <div class="form-group">
+          <label class="form-label">Contact Phone <span class="req">*</span><br><span class="hint">हा नंबर buyers ला दिसेल – Call / WhatsApp साठी</span></label>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" style="width:60px;flex-shrink:0;text-align:center;padding:12px 6px" value="+91" readonly>
+            <input class="form-input" type="tel" id="f-phone" placeholder="9876543210" maxlength="10">
+          </div>
         </div>
-        <div class="otp-inputs" id="otpInputs">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,0)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,1)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,2)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,3)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,4)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,5)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,6)">
-          <input class="otp-input" maxlength="1" oninput="otpInput(this,7)">
-        </div>
-        <div style="text-align:center;margin-top:8px">
-          <button style="background:none;border:none;color:var(--brand);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" onclick="resendOTP()">🔄 OTP परत पाठवा (Resend)</button>
-        </div>
+        <div class="info-box info-orange">🔒 Email फक्त account साठी. Phone number buyers ला दिसेल.</div>
+        <button class="btn-submit" id="submitBtn" onclick="submitListing()">🎉 जाहिरात सबमिट करा</button>
+        <button class="btn-prev" onclick="goStep(3)">← मागे</button>
       </div>
-
-      <div style="background:#FFF3E0;border-radius:10px;padding:12px;font-size:12px;color:#E65100;margin-bottom:12px">
-        🔒 Email फक्त OTP साठी. Phone number buyers ला दिसेल.
-      </div>
-      <button class="btn-next" id="sendOtpBtn" onclick="sendOTP()">📧 Email OTP पाठवा</button>
-      <button class="btn-submit" id="submitBtn" style="display:none" onclick="submitListing()">
-        🎉 जाहिरात सबमिट करा
-      </button>
-      <button class="btn-prev" onclick="prevStep(4)">← मागे</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ DASHBOARD PAGE ══════════ -->
+<!-- DASHBOARD PAGE -->
 <div id="page-dash" class="page">
   <div class="dash-header">
-    <div style="font-size:14px;opacity:0.8">नमस्कार 👋</div>
-    <div style="font-size:20px;font-weight:800" id="dash-name">लॉगिन करा</div>
-    <div style="font-size:12px;opacity:0.7;margin-top:2px" id="dash-phone"></div>
+    <div style="font-size:13px;opacity:0.8">नमस्कार 👋</div>
+    <div style="font-size:19px;font-weight:800" id="dash-name">–</div>
+    <div style="font-size:11px;opacity:0.7;margin-top:2px" id="dash-email">–</div>
     <div class="dash-stats-row">
-      <div class="dash-stat-card"><div class="dash-stat-n" id="dash-stat-listings">0</div><div class="dash-stat-l">Listings</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-n" id="dash-stat-views">–</div><div class="dash-stat-l">Views</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-n" id="dash-stat-inq">0</div><div class="dash-stat-l">Inquiries</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-n" id="ds-l">0</div><div class="dash-stat-l">Listings</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-n">–</div><div class="dash-stat-l">Views</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-n" id="ds-i">0</div><div class="dash-stat-l">Inquiries</div></div>
     </div>
   </div>
-
-  <!-- Login form (shown if not logged in) -->
-  <div id="dash-login-section" style="padding:24px 16px">
-    <div style="font-size:16px;font-weight:800;margin-bottom:4px;color:var(--dark)">📧 Email OTP ने Login करा</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Gmail वर OTP येईल • No password needed</div>
-    <div class="form-group">
-      <label class="form-label">Email ID</label>
-      <input class="form-input" type="email" id="login-email" placeholder="yourname@gmail.com">
-    </div>
-    <div id="login-otp-section" style="display:none">
-      <div style="background:#E8F5E9;border-radius:10px;padding:12px;margin-bottom:12px;text-align:center">
-        <div style="font-size:13px;font-weight:700;color:#2E7D32">📧 OTP Gmail वर पाठवला!</div>
-        <div style="font-size:11px;color:#388E3C">8-digit code enter करा • Spam folder पण तपासा</div>
-      </div>
-      <div class="otp-inputs" style="flex-wrap:wrap">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,0)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,1)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,2)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,3)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,4)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,5)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,6)">
-        <input class="otp-input" maxlength="1" oninput="loginOtpInput(this,7)">
-      </div>
-      <button class="btn-submit" style="margin-top:12px" onclick="verifyLoginOTP()">✓ Verify & Login</button>
-    </div>
-    <button class="btn-next" id="loginOtpBtn" onclick="sendLoginOTP()">📧 OTP पाठवा</button>
+  <div id="dash-nologin" style="padding:32px 16px;text-align:center;display:none">
+    <div style="font-size:50px;margin-bottom:12px">🔐</div>
+    <div style="font-size:17px;font-weight:800;margin-bottom:8px;color:var(--dark)">Login करा</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px">आपल्या जाहिराती पाहण्यासाठी</div>
+    <button class="btn-next" onclick="openLoginModal()">👤 Login / Create Account</button>
   </div>
-
-  <!-- Dashboard content (shown after login) -->
   <div id="dash-content" style="display:none">
     <div class="dash-tabs">
-      <button class="dash-tab active" onclick="dashTab(this,'my-listings-tab')">माझ्या जाहिराती</button>
-      <button class="dash-tab" onclick="dashTab(this,'inquiries-tab')">Inquiries</button>
-      <button class="dash-tab" onclick="dashTab(this,'profile-tab')">Profile</button>
+      <button class="dash-tab active" onclick="dashTab(this,'dt-l')">जाहिराती</button>
+      <button class="dash-tab" onclick="dashTab(this,'dt-i')">Inquiries</button>
+      <button class="dash-tab" onclick="dashTab(this,'dt-p')">Profile</button>
     </div>
-    <div id="my-listings-tab" style="padding-top:14px">
+    <div id="dt-l" style="padding-top:14px">
       <div id="myListingsGrid"></div>
       <div style="padding:16px">
-        <button class="btn-post-nav" style="width:100%;border-radius:12px;padding:14px;font-size:15px" onclick="showPage('post')">
-          + नवीन जाहिरात द्या
-        </button>
+        <button class="btn-post-nav" style="width:100%;border-radius:12px;padding:14px;font-size:15px;justify-content:center" onclick="showPage('post')">+ नवीन जाहिरात द्या</button>
       </div>
     </div>
-    <div id="inquiries-tab" style="display:none;padding:16px">
-      <div id="inquiriesGrid"></div>
+    <div id="dt-i" style="display:none;padding:16px">
+      <div class="info-box info-blue">Inquiry tracking — जेव्हा कुणी Call/WhatsApp करतो, ते येथे दिसेल.</div>
+      <div id="myInqGrid"></div>
     </div>
-    <div id="profile-tab" style="display:none;padding:16px">
+    <div id="dt-p" style="display:none;padding:16px">
       <div style="text-align:center;padding:20px 0">
         <div style="font-size:60px;margin-bottom:8px">👤</div>
-        <div style="font-size:18px;font-weight:800" id="profile-name">–</div>
-        <div style="font-size:13px;color:var(--muted)" id="profile-phone">–</div>
+        <div style="font-size:18px;font-weight:800" id="p-name">–</div>
+        <div style="font-size:13px;color:var(--muted)" id="p-email">–</div>
       </div>
-      <button style="width:100%;margin-top:14px;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="logout()">
-        Logout
-      </button>
+      <button style="width:100%;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="doLogout()">Logout</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ ADMIN PAGE ══════════ -->
+<!-- ADMIN PAGE -->
 <div id="page-admin" class="page">
   <div style="background:var(--dark);padding:16px;color:#fff;display:flex;align-items:center;gap:10px">
-    <button onclick="showPage('home')" style="background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
+    <button onclick="showPage('home')" style="background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">←</button>
     <div><div style="font-size:18px;font-weight:800">🛡️ Admin Panel</div><div style="font-size:11px;opacity:0.7">Listing Review & Management</div></div>
   </div>
   <div id="admin-login" style="padding:24px 16px">
     <div style="font-size:15px;font-weight:700;margin-bottom:16px">Admin Password</div>
-    <input class="form-input" type="password" id="admin-pass" placeholder="Enter admin password">
+    <input class="form-input" type="password" id="admin-pass" placeholder="Password" onkeydown="if(event.key==='Enter')adminLogin()">
     <button class="btn-next" style="margin-top:12px" onclick="adminLogin()">Login →</button>
   </div>
   <div id="admin-content" style="display:none;padding-top:12px">
-    <div style="padding:0 16px 12px;display:flex;gap:8px">
-      <button class="filter-chip active" id="admin-tab-pending" onclick="loadAdminListings('pending',this)">⏳ Pending</button>
-      <button class="filter-chip" id="admin-tab-approved" onclick="loadAdminListings('approved',this)">✓ Approved</button>
-      <button class="filter-chip" id="admin-tab-all" onclick="loadAdminListings('all',this)">All</button>
+    <div style="padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto">
+      <button class="filter-chip active" id="at-p" onclick="loadAdminTab('pending',this)">⏳ Pending</button>
+      <button class="filter-chip" id="at-a" onclick="loadAdminTab('approved',this)">✓ Approved</button>
+      <button class="filter-chip" id="at-all" onclick="loadAdminTab('all',this)">All</button>
     </div>
-    <div id="adminListingsGrid"></div>
+    <div id="adminGrid"></div>
   </div>
 </div>
 
-<!-- ══════════ SUCCESS PAGE ══════════ -->
+<!-- SUCCESS PAGE -->
 <div id="page-success" class="page">
   <div class="success-screen">
     <div class="success-icon">🎉</div>
     <div class="success-title">जाहिरात सबमिट झाली!</div>
     <div class="success-sub">Admin 24 तासांत Review करेल.<br>मंजूर झाल्यावर Live होईल.</div>
     <div style="background:var(--brand-light);border-radius:12px;padding:14px;margin-top:16px;width:100%;max-width:320px">
-      <div style="font-size:13px;font-weight:700;color:var(--brand);margin-bottom:6px">📣 Share करा!</div>
-      <button style="width:100%;margin-top:6px;background:#25D366;color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareOnWhatsApp()">
-        💬 WhatsApp वर शेअर करा
-      </button>
+      <div style="font-size:13px;font-weight:700;color:var(--brand);margin-bottom:6px">📣 मित्रांना Share करा!</div>
+      <button style="width:100%;margin-top:6px;background:#25D366;color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" onclick="window.open('https://wa.me/?text='+encodeURIComponent('मालमत्ता खरेदी-विक्री: https://vidarbhproperties.in'),'_blank')">💬 WhatsApp Share</button>
     </div>
     <button class="btn-home" onclick="showPage('home')">🏡 Home</button>
   </div>
@@ -610,642 +571,484 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 <!-- BOTTOM NAV -->
 <div class="bottom-nav" id="bottomNav">
   <button class="bn-item active" id="bn-home" onclick="showPage('home')"><span class="bn-icon">🏡</span><span class="bn-label">Home</span></button>
-  <button class="bn-item" id="bn-search" onclick="showPage('home');setTimeout(()=>document.getElementById('searchInput').focus(),200)"><span class="bn-icon">🔍</span><span class="bn-label">शोधा</span></button>
-  <button class="bn-item post" onclick="showPage('post')"><span class="bn-icon">➕</span><span class="bn-label">Post</span></button>
+  <button class="bn-item" onclick="showPage('home');setTimeout(()=>document.getElementById('searchInput').focus(),200)"><span class="bn-icon">🔍</span><span class="bn-label">शोधा</span></button>
+  <button class="bn-item post" onclick="checkLoginPost()"><span class="bn-icon">➕</span><span class="bn-label">Post</span></button>
   <button class="bn-item" onclick="showToast('Saved – Coming soon!')"><span class="bn-icon">🔖</span><span class="bn-label">Saved</span></button>
   <button class="bn-item" id="bn-dash" onclick="showPage('dash')"><span class="bn-icon">👤</span><span class="bn-label">My Ads</span></button>
 </div>
 
-<!-- FILTER MODAL -->
-<div class="modal-overlay" id="filterModal" onclick="closeFilterModal(event)">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ Filter करा</div>
-    <div style="margin-bottom:12px">
-      <label style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-        <input type="checkbox" id="filter-owner-only" style="width:18px;height:18px;accent-color:var(--brand)">
-        <span style="font-size:14px;font-weight:600">फक्त मालक (Owner Only)</span>
-      </label>
-      <label style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-        <input type="checkbox" id="filter-verified-only" style="width:18px;height:18px;accent-color:var(--brand)" checked>
-        <span style="font-size:14px;font-weight:600">Verified Only ✓</span>
-      </label>
-    </div>
-    <div style="font-weight:700;font-size:13px;margin-bottom:8px">BHK</div>
+<!-- FILTER SHEET -->
+<div class="sheet-overlay" id="filterSheet" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:16px;font-weight:800;margin-bottom:14px">⚙️ Filter करा</div>
+    <label style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <input type="checkbox" id="fo-owner" style="width:18px;height:18px;accent-color:var(--brand)">
+      <span style="font-size:14px;font-weight:600">फक्त मालक (Owner Only)</span>
+    </label>
+    <label style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <input type="checkbox" id="fo-verified" style="width:18px;height:18px;accent-color:var(--brand)">
+      <span style="font-size:14px;font-weight:600">Verified Only ✓</span>
+    </label>
+    <div style="font-weight:700;font-size:13px;margin:12px 0 8px">BHK</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="filter-chip active" onclick="toggleBhkFilter(this,'')">Any</button>
-      <button class="filter-chip" onclick="toggleBhkFilter(this,'1 BHK')">1 BHK</button>
-      <button class="filter-chip" onclick="toggleBhkFilter(this,'2 BHK')">2 BHK</button>
-      <button class="filter-chip" onclick="toggleBhkFilter(this,'3 BHK')">3 BHK</button>
+      <button class="filter-chip active" onclick="selBhk(this,'')">Any</button>
+      <button class="filter-chip" onclick="selBhk(this,'1 BHK')">1 BHK</button>
+      <button class="filter-chip" onclick="selBhk(this,'2 BHK')">2 BHK</button>
+      <button class="filter-chip" onclick="selBhk(this,'3 BHK')">3 BHK</button>
     </div>
-    <button class="modal-apply" onclick="applyFilters()">Apply ✓</button>
+    <button style="width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:16px" onclick="applyFilter()">✓ Apply Filter</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════
-//  SUPABASE CONFIG — Replace with your values!
-// ════════════════════════════════════════
-const SUPABASE_URL = 'https://vfsyuhjuzoslhjpqpcju.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmc3l1aGp1em9zbGhqcHFwY2p1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNzEyMTAsImV4cCI6MjA5MTc0NzIxMH0._0g71VyYHLFaY4TRsFiKUhpXHMgQRLIM47seYRrid2s'; // ← Get from Supabase Project Settings → API
-const ADMIN_PASSWORD = 'vidarbh@admin2024'; // ← Change this to a secret password
+// ═══════════════════════════════════════
+//  CONFIG — Your Supabase credentials
+// ═══════════════════════════════════════
+const SB_URL  = 'https://vfsyuhjuzoslhjpqpcju.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmc3l1aGp1em9zbGhqcHFwY2p1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNzEyMTAsImV4cCI6MjA5MTc0NzIxMH0._0g71VyYHLFaY4TRsFiKUhpXHMgQRLIM47seYRrid2s';
+const ADMIN_P = 'Vidarbh@Admin2024'; // ← Change this!
+const EDGE    = `${SB_URL}/functions/v1/send-otp`;
 
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = supabase.createClient(SB_URL, SB_ANON);
 
-// ════════════════════════════════════════
+// ═══════════════════════════════════════
 //  STATE
-// ════════════════════════════════════════
-let lang = 'mr';
-let activeCat = 'all';
-let priceMin = 0, priceMax = 9999999999;
-let bhkFilter = '';
-let ownerOnlyFilter = false;
-let verifiedOnlyFilter = false;
-let currentListing = null;
-let currentUser = null;
-let selectedCategory = 'House';
-let uploadedPhotoFiles = [];
-let pageOffset = 0;
-const PAGE_SIZE = 10;
-let searchDebounce = null;
+// ═══════════════════════════════════════
+let lang='mr', activeCat='all', pMin=0, pMax=9e9;
+let bhkF='', ownerOnly=false, verOnly=false;
+let curL=null, curUser=null, selCatV='House';
+let photoFiles=[], pageOff=0, srchTimer=null;
+const PG=10;
 
-// ════════════════════════════════════════
+// ═══════════════════════════════════════
 //  INIT
-// ════════════════════════════════════════
+// ═══════════════════════════════════════
 async function init() {
-  // Check existing session
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    updateDashboardUI();
-  }
-  // Auth state listener
-  sb.auth.onAuthStateChange((event, session) => {
-    currentUser = session?.user || null;
-    updateDashboardUI();
+  // Restore user from localStorage
+  const saved = localStorage.getItem('vp_user');
+  if (saved) { try { curUser=JSON.parse(saved); updateNavBtn(); } catch(e){} }
+  try { await Promise.all([loadListings(true), loadStats()]); } catch(e){}
+  document.getElementById('loadingOverlay').style.display='none';
+}
+
+// ═══════════════════════════════════════
+//  OTP SYSTEM — Resend via Edge Function
+// ═══════════════════════════════════════
+let pendingEmail='';
+
+async function sendOTPvia(email) {
+  // Generate 6-digit OTP
+  const otp = String(Math.floor(100000 + Math.random()*900000));
+  // Store in Supabase
+  await sb.from('email_otps').delete().eq('email', email);
+  const {error:e} = await sb.from('email_otps').insert({email, otp});
+  if (e) throw new Error('DB: '+e.message);
+  // Call Edge Function (sends via Resend)
+  const r = await fetch(EDGE, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
+    body: JSON.stringify({email, otp})
   });
-  await loadListings(true);
-  await loadStats();
-  hideLoading();
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error||'Send failed: '+r.status);
+  return true;
 }
 
-function hideLoading() {
-  document.getElementById('loadingOverlay').style.display = 'none';
+async function verifyOTP(email, token) {
+  const {data,error} = await sb.from('email_otps')
+    .select('*').eq('email',email).eq('otp',token)
+    .gte('created_at', new Date(Date.now()-10*60*1000).toISOString())
+    .single();
+  if (error||!data) return false;
+  await sb.from('email_otps').delete().eq('email',email);
+  return true;
 }
 
-// ════════════════════════════════════════
-//  STATS
-// ════════════════════════════════════════
-async function loadStats() {
-  const { count: total } = await sb.from('properties').select('*', { count: 'exact', head: true }).eq('status', 'approved');
-  const { count: verified } = await sb.from('properties').select('*', { count: 'exact', head: true }).eq('status', 'approved').eq('verified', true);
-  document.getElementById('stat-total').textContent = (total || 0) + '+';
-  document.getElementById('stat-verified').textContent = verified || 0;
-}
-
-// ════════════════════════════════════════
-//  LOAD LISTINGS
-// ════════════════════════════════════════
-async function loadListings(reset = false) {
-  if (reset) { pageOffset = 0; document.getElementById('listingsGrid').innerHTML = renderSkeletons(); }
-  const q = document.getElementById('searchInput').value.trim();
-
-  let query = sb.from('properties')
-    .select('*')
-    .eq('status', 'approved')
-    .gte('price', priceMin)
-    .lte('price', priceMax)
-    .order('created_at', { ascending: false })
-    .range(pageOffset, pageOffset + PAGE_SIZE - 1);
-
-  if (activeCat !== 'all') query = query.eq('category', activeCat);
-  if (bhkFilter) query = query.eq('bedrooms', bhkFilter);
-  if (ownerOnlyFilter) query = query.eq('seller_type', 'Owner');
-  if (verifiedOnlyFilter) query = query.eq('verified', true);
-  if (q) query = query.or(`title.ilike.%${q}%,location.ilike.%${q}%`);
-
-  const { data, error } = await query;
-  if (error) { showToast('⚠️ Error loading listings'); console.error(error); return; }
-
-  const grid = document.getElementById('listingsGrid');
-  if (reset) grid.innerHTML = '';
-  if (!data || data.length === 0) {
-    if (reset) grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:40px">🔍</div><div style="font-weight:700;margin-top:8px">कोणतीही जाहिरात आढळली नाही</div></div>';
-    document.getElementById('loadMoreWrap').style.display = 'none';
-    return;
+// ═══════════════════════════════════════
+//  LOGIN MODAL FUNCTIONS
+// ═══════════════════════════════════════
+function openLoginModal() {
+  if (curUser) {
+    showLmStep(3);
+    document.getElementById('lmTitle').textContent='My Account';
+    document.getElementById('lmSub').textContent='Logged in ✓';
+    document.getElementById('lm-show-email').textContent=curUser.email||'';
+  } else {
+    showLmStep(1);
+    document.getElementById('lmTitle').textContent='Login / Sign Up';
+    document.getElementById('lmSub').textContent='Email OTP ने login करा • No password needed';
+    setTimeout(()=>document.getElementById('lm-email').focus(),200);
   }
-  data.forEach((l, i) => {
-    const card = document.createElement('div');
-    card.innerHTML = renderCard(l, i);
-    grid.appendChild(card.firstElementChild);
+  document.getElementById('loginOverlay').classList.add('open');
+}
+
+function showLmStep(n) {
+  ['lm-s1','lm-s2','lm-s3'].forEach((id,i)=>{
+    document.getElementById(id).style.display = (i+1===n)?'block':'none';
   });
-  pageOffset += data.length;
-  document.getElementById('loadMoreWrap').style.display = data.length < PAGE_SIZE ? 'none' : 'block';
 }
 
-async function loadMoreListings() { await loadListings(false); }
-
-function renderSkeletons() {
-  return Array(3).fill(0).map(() => `
-    <div class="skel-card">
-      <div class="skel" style="height:180px"></div>
-      <div style="padding:14px">
-        <div class="skel" style="height:24px;width:60%;margin-bottom:8px"></div>
-        <div class="skel" style="height:16px;width:80%;margin-bottom:8px"></div>
-        <div class="skel" style="height:38px;margin-top:10px"></div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderCard(l, i) {
-  const priceStr = formatPrice(l.price);
-  const imgSrc = l.img || 'https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo';
-  const badgeClass = l.badge_class || '';
-  const badge = l.badge || l.category;
-  const date = timeAgo(l.created_at);
-  return `
-    <div class="listing-card" style="animation-delay:${i*0.05}s" onclick="openDetail('${l.id}')">
-      <div class="card-img-wrap">
-        <img src="${imgSrc}" alt="${l.title}" loading="lazy" onerror="this.src='https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo'">
-        <span class="card-badge ${badgeClass}">${badge}</span>
-        <button class="card-save" onclick="event.stopPropagation();showToast('💾 Saved!')">🔖</button>
-      </div>
-      <div class="card-body">
-        <div class="card-price">${priceStr}</div>
-        <div class="card-title">${l.title}</div>
-        <div class="card-meta">
-          ${l.area ? `<span class="card-tag">📐 ${l.area}</span>` : ''}
-          ${l.bedrooms ? `<span class="card-tag">🛏 ${l.bedrooms}</span>` : ''}
-          <span class="card-tag">${l.seller_type === 'Owner' ? '🏡 Owner' : '🤝 Broker'}</span>
-          ${l.verified ? '<span class="card-tag" style="color:var(--green)">✓ Verified</span>' : ''}
-        </div>
-        <div class="card-loc">📍 ${l.location} · ${date}</div>
-        <div class="card-actions">
-          <button class="btn-call" onclick="event.stopPropagation();logInquiry('${l.id}','call');makeCall('${l.phone}','${l.seller}')">📞 Call</button>
-          <button class="btn-wa" onclick="event.stopPropagation();logInquiry('${l.id}','whatsapp');openWhatsApp('${l.phone}','${l.title}')">💬 WhatsApp</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-// ════════════════════════════════════════
-//  DETAIL PAGE
-// ════════════════════════════════════════
-async function openDetail(id) {
-  showLoading();
-  const { data: l, error } = await sb.from('properties').select('*').eq('id', id).single();
-  hideLoading();
-  if (error || !l) { showToast('⚠️ Error loading listing'); return; }
-  currentListing = l;
-  document.getElementById('detail-img').src = l.img || 'https://placehold.co/600x260/f5e6e2/c84b31?text=No+Photo';
-  document.getElementById('detail-price').textContent = formatPrice(l.price);
-  document.getElementById('detail-title').textContent = l.title;
-  document.getElementById('detail-cat-badge').textContent = l.category;
-  document.getElementById('detail-verified-badge').textContent = l.verified ? '✓ Owner Verified' : '⏳ Pending Verification';
-  document.getElementById('detail-verified-badge').className = 'd-badge' + (l.verified ? ' verified' : '');
-  document.getElementById('spec-area').textContent = l.area || '–';
-  document.getElementById('spec-type').textContent = l.category;
-  document.getElementById('spec-loc').textContent = l.location;
-  document.getElementById('spec-date').textContent = timeAgo(l.created_at);
-  document.getElementById('detail-desc').textContent = l.desc || 'No description provided.';
-  document.getElementById('detail-seller-name').textContent = l.seller || '–';
-  document.getElementById('detail-seller-type').textContent = l.seller_type || 'Owner';
-  document.getElementById('detail-seller-verified').textContent = l.verified ? '✓ Verified' : 'Not verified yet';
-  document.getElementById('detail-avatar').textContent = l.seller_type === 'Broker' ? '🤝' : '👤';
-  showPage('detail');
-}
-
-function handleCall() { if (currentListing) { logInquiry(currentListing.id,'call'); makeCall(currentListing.phone, currentListing.seller); } }
-function handleWhatsApp() { if (currentListing) { logInquiry(currentListing.id,'whatsapp'); openWhatsApp(currentListing.phone, currentListing.title); } }
-function makeCall(phone, name) { showToast(`📞 Calling ${name}...`); setTimeout(() => { window.location.href = `tel:+91${phone}`; }, 400); }
-function openWhatsApp(phone, title) {
-  const msg = encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${title}". कृपया अधिक माहिती द्या.`);
-  showToast('💬 Opening WhatsApp...');
-  setTimeout(() => window.open(`https://wa.me/91${phone}?text=${msg}`, '_blank'), 300);
-}
-function shareListingLink() {
-  const url = `https://vidarbhproperties.in`;
-  if (navigator.share) { navigator.share({ title: currentListing?.title, url }); }
-  else { navigator.clipboard?.writeText(url); showToast('🔗 Link copied!'); }
-}
-
-async function logInquiry(listingId, type) {
-  await sb.from('inquiries').insert({ listing_id: listingId, contact_type: type, user_phone: currentUser?.phone || 'anonymous' });
-}
-
-// ════════════════════════════════════════
-//  POST LISTING
-// ════════════════════════════════════════
-let currentStep = 1;
-
-function nextStep(from) {
-  if (from === 2) {
-    if (!document.getElementById('form-title').value || !document.getElementById('form-price').value || !document.getElementById('form-location').value) {
-      showToast('⚠️ Title, Price आणि Location भरा'); return;
-    }
-  }
-  setStep(from + 1);
-}
-function prevStep(from) { setStep(from - 1); }
-function setStep(n) {
-  currentStep = n;
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById(`fs-${i}`).classList.toggle('active', i === n);
-    const s = document.getElementById(`step-${i}`);
-    s.classList.remove('active','done');
-    if (i < n) s.classList.add('done');
-    else if (i === n) s.classList.add('active');
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-function selectCategory(el, cat) {
-  document.querySelectorAll('.cat-select-item').forEach(e => e.classList.remove('active'));
-  el.classList.add('active');
-  selectedCategory = cat;
-}
-function handlePhotos(input) {
-  uploadedPhotoFiles = Array.from(input.files).slice(0, 5);
-  const preview = document.getElementById('photoPreview');
-  preview.innerHTML = '';
-  uploadedPhotoFiles.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.createElement('img');
-      img.src = e.target.result; img.className = 'photo-thumb';
-      preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
-  showToast(`${uploadedPhotoFiles.length} फोटो सिलेक्ट झाले`);
-}
-
-async function sendOTP() {
-  const name = document.getElementById('form-name').value.trim();
-  const phone = document.getElementById('form-phone').value.trim();
-  const email = document.getElementById('form-email').value.trim();
-  if (!name) { showToast('⚠️ नाव भरा'); return; }
-  if (!phone || phone.length !== 10) { showToast('⚠️ Valid 10-digit phone number भरा'); return; }
-  if (!email || !email.includes('@')) { showToast('⚠️ Valid email address भरा'); return; }
-  const btn = document.getElementById('sendOtpBtn');
-  btn.disabled = true; btn.textContent = '📧 OTP पाठवत आहे...';
-  // Email OTP — sends 8-digit code, NOT magic link
-  const { error } = await sb.auth.signInWithOtp({
-    email: email,
-    options: { shouldCreateUser: true }
-  });
-  if (error) {
-    showToast('⚠️ Error: ' + error.message);
-    btn.disabled = false; btn.textContent = '📧 Email OTP पाठवा'; return;
-  }
-  document.getElementById('otp-section').style.display = 'block';
-  document.getElementById('submitBtn').style.display = 'flex';
-  btn.textContent = `✓ OTP पाठवला ${email} वर`;
-  showToast('✅ Gmail तपासा! 8-digit OTP आला.');
-}
-
-async function resendOTP() {
-  const email = document.getElementById('form-email').value.trim();
-  if (!email) return;
-  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-  showToast('📧 OTP परत पाठवला!');
-}
-
-function otpInput(el, pos) {
-  if (el.value && pos < 7) { document.querySelectorAll('#fs-4 .otp-input')[pos + 1]?.focus(); }
-  const allFilled = Array.from(document.querySelectorAll('#fs-4 .otp-input')).every(i => i.value);
-  if (allFilled) document.getElementById('submitBtn').style.display = 'flex';
-}
-
-async function submitListing() {
-  const otpVal = Array.from(document.querySelectorAll('#fs-4 .otp-input')).map(i => i.value).join('');
-  if (otpVal.length < 8) { showToast('⚠️ 8-digit OTP enter करा'); return; }
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true; btn.textContent = '⏳ Verifying...';
-  const email = document.getElementById('form-email').value.trim();
-  const phone = document.getElementById('form-phone').value.trim();
-
-  // Verify email OTP
-  const { data: verifyData, error: verifyErr } = await sb.auth.verifyOtp({
-    email: email,
-    token: otpVal,
-    type: 'email'
-  });
-
-  if (verifyErr) {
-    showToast('⚠️ Wrong OTP! Gmail तपासा आणि पुन्हा try करा.');
-    btn.disabled = false; btn.textContent = '🎉 जाहिरात सबमिट करा'; return;
-  }
-  currentUser = verifyData.user;
-  btn.textContent = '⏳ Uploading...';
-
-  // Upload photo if any
-  let imgUrl = null;
-  if (uploadedPhotoFiles.length > 0) {
-    const file = uploadedPhotoFiles[0];
-    const ext = file.name.split('.').pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error: uploadErr } = await sb.storage.from('property-images').upload(fileName, file, { cacheControl: '3600', upsert: false });
-    if (!uploadErr) {
-      const { data: { publicUrl } } = sb.storage.from('property-images').getPublicUrl(fileName);
-      imgUrl = publicUrl;
-    }
-  }
-
-  // Insert listing
-  const posterType = document.querySelector('input[name="poster_type"]:checked')?.value || 'Owner';
-  const { error: insertErr } = await sb.from('properties').insert({
-    title: document.getElementById('form-title').value,
-    category: selectedCategory,
-    price: parseInt(document.getElementById('form-price').value),
-    area: document.getElementById('form-area').value,
-    bedrooms: document.getElementById('form-bhk').value,
-    location: document.getElementById('form-location').value,
-    desc: document.getElementById('form-desc').value,
-    seller: document.getElementById('form-name').value,
-    seller_type: posterType,
-    phone: phone,
-    img: imgUrl,
-    verified: false,
-    status: 'pending',
-    badge: posterType === 'Owner' ? 'Owner' : 'Broker',
-    badge_class: posterType === 'Owner' ? 'owner' : ''
-  });
-
-  if (insertErr) { showToast('⚠️ Error: ' + insertErr.message); btn.disabled = false; btn.textContent = '🎉 जाहिरात सबमिट करा'; return; }
-  showPage('success');
-  resetPostForm();
-}
-
-function resetPostForm() {
-  document.getElementById('form-title').value = '';
-  document.getElementById('form-price').value = '';
-  document.getElementById('form-area').value = '';
-  document.getElementById('form-location').value = '';
-  document.getElementById('form-desc').value = '';
-  document.getElementById('form-name').value = '';
-  document.getElementById('form-phone').value = '';
-  document.getElementById('photoPreview').innerHTML = '';
-  uploadedPhotoFiles = [];
-  setStep(1);
-}
-
-// ════════════════════════════════════════
-//  AUTH / DASHBOARD
-// ════════════════════════════════════════
 async function sendLoginOTP() {
-  const email = document.getElementById('login-email').value.trim();
-  if (!email || !email.includes('@')) { showToast('⚠️ Valid email enter करा'); return; }
-  const btn = document.getElementById('loginOtpBtn');
-  btn.disabled = true; btn.textContent = '📧 Sending...';
-  const { error } = await sb.auth.signInWithOtp({
-    email: email,
-    options: { shouldCreateUser: true }
-  });
-  if (error) { showToast('⚠️ ' + error.message); btn.disabled = false; btn.textContent = '📧 OTP पाठवा'; return; }
-  document.getElementById('login-otp-section').style.display = 'block';
-  btn.style.display = 'none';
-  showToast('✅ Gmail तपासा! OTP पाठवला.');
-}
-
-function loginOtpInput(el, pos) {
-  if (el.value && pos < 7) document.querySelectorAll('#login-otp-section .otp-input')[pos + 1]?.focus();
+  const email = document.getElementById('lm-email').value.trim().toLowerCase();
+  if (!email||!email.includes('@')) { showToast('⚠️ Valid email enter करा'); return; }
+  const btn=document.getElementById('lmBtn');
+  btn.disabled=true; btn.textContent='📧 Sending...';
+  try {
+    await sendOTPvia(email);
+    pendingEmail=email;
+    showLmStep(2);
+    document.querySelectorAll('#lm-otp .otp-input').forEach(i=>i.value='');
+    setTimeout(()=>document.querySelector('#lm-otp .otp-input')?.focus(),100);
+    showToast('✅ OTP Gmail वर पाठवला!');
+  } catch(e) {
+    showToast('⚠️ '+e.message);
+  }
+  btn.disabled=false; btn.textContent='📧 OTP पाठवा';
 }
 
 async function verifyLoginOTP() {
-  const otpVal = Array.from(document.querySelectorAll('#login-otp-section .otp-input')).map(i => i.value).join('');
-  const email = document.getElementById('login-email').value.trim();
-  if (otpVal.length < 8) { showToast('⚠️ 8-digit OTP enter करा'); return; }
-  const { data, error } = await sb.auth.verifyOtp({
-    email: email,
-    token: otpVal,
-    type: 'email'
-  });
-  if (error) { showToast('⚠️ Wrong OTP! पुन्हा try करा.'); return; }
-  currentUser = data.user;
-  updateDashboardUI();
-  showToast('✅ Login successful!');
+  const token=Array.from(document.querySelectorAll('#lm-otp .otp-input')).map(i=>i.value).join('');
+  if (token.length<6) { showToast('⚠️ 6-digit OTP enter करा'); return; }
+  const ok=await verifyOTP(pendingEmail,token);
+  if (!ok) { showToast('⚠️ Wrong or expired OTP! Resend करा.'); return; }
+  curUser={email:pendingEmail, id:pendingEmail};
+  localStorage.setItem('vp_user',JSON.stringify(curUser));
+  updateNavBtn(); updateDashUI();
+  showLmStep(3);
+  document.getElementById('lm-show-email').textContent=curUser.email;
+  document.getElementById('lmTitle').textContent='My Account';
+  showToast('✅ Login successful! Welcome 🎉');
 }
 
-async function updateDashboardUI() {
-  if (!currentUser) {
-    document.getElementById('dash-login-section').style.display = 'block';
-    document.getElementById('dash-content').style.display = 'none';
-    return;
-  }
-  document.getElementById('dash-login-section').style.display = 'none';
-  document.getElementById('dash-content').style.display = 'block';
-  const displayName = currentUser.email || currentUser.phone || 'User';
-  document.getElementById('dash-name').textContent = displayName;
-  document.getElementById('dash-phone').textContent = displayName;
-  document.getElementById('profile-name').textContent = displayName;
-  document.getElementById('profile-phone').textContent = displayName;
-  await loadMyListings();
-  await loadMyInquiries();
-}
-
-async function loadMyListings() {
-  const { data, error } = await sb.from('properties').select('*').eq('phone', currentUser.phone?.replace('+91','')).order('created_at', { ascending: false });
-  const grid = document.getElementById('myListingsGrid');
-  if (!data || data.length === 0) { grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही जाहिरात नाही</div>'; return; }
-  document.getElementById('dash-stat-listings').textContent = data.length;
-  grid.innerHTML = data.map(l => `
-    <div class="my-listing-item">
-      <img class="my-listing-img" src="${l.img || 'https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'}" alt="">
-      <div class="my-listing-body">
-        <div class="my-listing-title">${l.title}</div>
-        <div class="my-listing-price">${formatPrice(l.price)}</div>
-        <div style="margin-top:3px"><span class="status-badge status-${l.status}">${l.status === 'approved' ? '● Active' : l.status === 'pending' ? '⏳ Pending' : '✓ Sold'}</span></div>
-        <div class="my-listing-actions">
-          <button class="btn-sm-delete" onclick="deleteListing('${l.id}')">🗑 Delete</button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-async function loadMyInquiries() {
-  const { data } = await sb.from('inquiries').select('*, properties(title)').eq('properties.phone', currentUser.phone?.replace('+91',''));
-  const grid = document.getElementById('inquiriesGrid');
-  document.getElementById('dash-stat-inq').textContent = data?.length || 0;
-  if (!data || data.length === 0) { grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही Inquiry नाही</div>'; return; }
-  grid.innerHTML = data.map(i => `
-    <div style="background:var(--white);border-radius:12px;padding:12px;margin:0 16px 10px;border:1px solid var(--border)">
-      <div style="font-weight:700;font-size:13px">${i.contact_type === 'call' ? '📞 Call' : '💬 WhatsApp'} Inquiry</div>
-      <div style="font-size:12px;color:var(--muted)">${i.properties?.title || 'Listing'} · ${timeAgo(i.created_at)}</div>
-    </div>`).join('');
-}
-
-async function deleteListing(id) {
-  if (!confirm('Delete this listing?')) return;
-  await sb.from('properties').delete().eq('id', id);
-  showToast('🗑 Listing deleted');
-  loadMyListings();
-}
-
-async function logout() {
-  await sb.auth.signOut();
-  currentUser = null;
-  updateDashboardUI();
+function doLogout() {
+  curUser=null; localStorage.removeItem('vp_user');
+  updateNavBtn(); updateDashUI();
+  closeModal('loginOverlay'); showPage('home');
   showToast('Logged out');
 }
 
-// ════════════════════════════════════════
-//  ADMIN PANEL
-// ════════════════════════════════════════
-function adminLogin() {
-  const pass = document.getElementById('admin-pass').value;
-  if (pass === ADMIN_PASSWORD) {
-    document.getElementById('admin-login').style.display = 'none';
-    document.getElementById('admin-content').style.display = 'block';
-    loadAdminListings('pending', document.getElementById('admin-tab-pending'));
-  } else { showToast('⚠️ Wrong password'); }
+function updateNavBtn() {
+  const btn=document.getElementById('navLoginBtn');
+  const icon=document.getElementById('navLoginIcon');
+  const text=document.getElementById('navLoginText');
+  if(curUser){
+    btn.classList.add('logged-in'); icon.textContent='✓';
+    text.textContent=(curUser.email||'Me').split('@')[0].slice(0,10);
+  } else {
+    btn.classList.remove('logged-in'); icon.textContent='👤'; text.textContent='Login';
+  }
 }
 
-async function loadAdminListings(status, btn) {
-  document.querySelectorAll('#admin-content .filter-chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  let query = sb.from('properties').select('*').order('created_at', { ascending: false });
-  if (status !== 'all') query = query.eq('status', status);
-  const { data } = await query;
-  const grid = document.getElementById('adminListingsGrid');
-  if (!data || data.length === 0) { grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">No listings found</div>'; return; }
-  grid.innerHTML = data.map(l => `
-    <div class="admin-listing-row">
-      <img src="${l.img || 'https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'}" onerror="this.src='https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'" alt="">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:700">${l.title}</div>
-        <div style="font-size:12px;color:var(--muted)">${formatPrice(l.price)} · ${l.location}</div>
-        <div style="font-size:11px;color:var(--muted)">${l.seller} · ${l.phone} · ${timeAgo(l.created_at)}</div>
-        <span class="status-badge status-${l.status}" style="margin-top:4px">${l.status}</span>
-        <div class="admin-actions">
-          ${l.status !== 'approved' ? `<button class="btn-approve" onclick="updateListingStatus('${l.id}','approved',this)">✓ Approve</button>` : ''}
-          ${l.status !== 'rejected' ? `<button class="btn-reject" onclick="updateListingStatus('${l.id}','rejected',this)">✗ Reject</button>` : ''}
-          <button class="btn-approve" onclick="updateListingStatus('${l.id}','approved',this);markVerified('${l.id}')">✓✓ Approve + Verify</button>
-          <button class="btn-reject" onclick="deleteAdminListing('${l.id}',this)">🗑 Delete</button>
+// ═══════════════════════════════════════
+//  STATS
+// ═══════════════════════════════════════
+async function loadStats() {
+  const [{count:t},{count:v}] = await Promise.all([
+    sb.from('properties').select('*',{count:'exact',head:true}).eq('status','approved'),
+    sb.from('properties').select('*',{count:'exact',head:true}).eq('status','approved').eq('verified',true)
+  ]);
+  document.getElementById('stat-total').textContent=(t||0)+'+';
+  document.getElementById('stat-verified').textContent=v||0;
+}
+
+// ═══════════════════════════════════════
+//  LISTINGS
+// ═══════════════════════════════════════
+async function loadListings(reset=false) {
+  if(reset){pageOff=0; document.getElementById('listingsGrid').innerHTML=skels();}
+  const q=document.getElementById('searchInput').value.trim();
+  let qry=sb.from('properties').select('*').eq('status','approved')
+    .gte('price',pMin).lte('price',pMax)
+    .order('created_at',{ascending:false})
+    .range(pageOff,pageOff+PG-1);
+  if(activeCat!=='all') qry=qry.eq('category',activeCat);
+  if(bhkF) qry=qry.eq('bedrooms',bhkF);
+  if(ownerOnly) qry=qry.eq('seller_type','Owner');
+  if(verOnly) qry=qry.eq('verified',true);
+  if(q) qry=qry.or(`title.ilike.%${q}%,location.ilike.%${q}%`);
+  const {data,error}=await qry;
+  if(error){showToast('⚠️ Error loading');return;}
+  const grid=document.getElementById('listingsGrid');
+  if(reset) grid.innerHTML='';
+  if(!data?.length){
+    if(reset) grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:40px">🔍</div><div style="font-weight:700;margin-top:8px">कोणतीही जाहिरात आढळली नाही</div></div>';
+    document.getElementById('loadMoreWrap').style.display='none'; return;
+  }
+  data.forEach((l,i)=>{const d=document.createElement('div');d.innerHTML=cardH(l,i);grid.appendChild(d.firstElementChild);});
+  pageOff+=data.length;
+  document.getElementById('loadMoreWrap').style.display=data.length<PG?'none':'block';
+}
+async function loadMore(){await loadListings(false);}
+
+function skels(){return Array(3).fill(0).map(()=>`<div class="skel-card" style="margin-bottom:0"><div class="skel" style="height:180px"></div><div style="padding:14px"><div class="skel" style="height:22px;width:55%;margin-bottom:8px"></div><div class="skel" style="height:15px;width:80%;margin-bottom:10px"></div><div class="skel" style="height:38px"></div></div></div>`).join('');}
+
+function cardH(l,i){
+  const p=fp(l.price),img=l.img||'https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo',ago=ta(l.created_at),bc=l.badge_class||'';
+  return `<div class="listing-card" style="animation-delay:${i*.05}s" onclick="openDetail('${l.id}')">
+    <div class="card-img-wrap">
+      <img src="${img}" alt="${esc(l.title)}" loading="lazy" onerror="this.src='https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo'">
+      <span class="card-badge ${bc}">${esc(l.badge||l.category)}</span>
+      <button class="card-save" onclick="event.stopPropagation();showToast('💾 Saved!')">🔖</button>
+    </div>
+    <div class="card-body">
+      <div class="card-price">${p}</div>
+      <div class="card-title">${esc(l.title)}</div>
+      <div class="card-meta">
+        ${l.area?`<span class="card-tag">📐 ${esc(l.area)}</span>`:''}
+        ${l.bedrooms?`<span class="card-tag">🛏 ${esc(l.bedrooms)}</span>`:''}
+        <span class="card-tag">${l.seller_type==='Owner'?'🏡 Owner':'🤝 Broker'}</span>
+        ${l.verified?'<span class="card-tag" style="color:var(--green)">✓ Verified</span>':''}
+      </div>
+      <div class="card-loc">📍 ${esc(l.location)} · ${ago}</div>
+      <div class="card-actions">
+        <button class="btn-call" onclick="event.stopPropagation();logInq('${l.id}','call');callNum('${l.phone}','${esc(l.seller)}')">📞 Call</button>
+        <button class="btn-wa" onclick="event.stopPropagation();logInq('${l.id}','whatsapp');waNum('${l.phone}','${esc(l.title)}')">💬 WhatsApp</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+//  DETAIL
+// ═══════════════════════════════════════
+async function openDetail(id){
+  document.getElementById('loadingOverlay').style.display='flex';
+  const {data:l}=await sb.from('properties').select('*').eq('id',id).single();
+  document.getElementById('loadingOverlay').style.display='none';
+  if(!l){showToast('⚠️ Not found');return;}
+  curL=l;
+  document.getElementById('d-img').src=l.img||'https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image';
+  document.getElementById('d-price').textContent=fp(l.price);
+  document.getElementById('d-title').textContent=l.title;
+  document.getElementById('d-cat').textContent=l.category;
+  document.getElementById('d-ver').textContent=l.verified?'✓ Verified':'⏳ Pending';
+  document.getElementById('d-ver').className='d-badge'+(l.verified?' ver':'');
+  document.getElementById('d-area').textContent=l.area||'–';
+  document.getElementById('d-type').textContent=l.category;
+  document.getElementById('d-loc').textContent=l.location;
+  document.getElementById('d-date').textContent=ta(l.created_at);
+  document.getElementById('d-desc').textContent=l.desc||'No description.';
+  document.getElementById('d-seller').textContent=l.seller||'–';
+  document.getElementById('d-stype').textContent=l.seller_type||'Owner';
+  document.getElementById('d-sver').textContent=l.verified?'✓ Phone Verified':'Not verified yet';
+  document.getElementById('d-avatar').textContent=l.seller_type==='Broker'?'🤝':'👤';
+  showPage('detail');
+}
+function handleCall(){if(curL){logInq(curL.id,'call');callNum(curL.phone,curL.seller);}}
+function handleWA(){if(curL){logInq(curL.id,'whatsapp');waNum(curL.phone,curL.title);}}
+function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
+function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
+function shareLink(){const u='https://vidarbhproperties.in';if(navigator.share)navigator.share({title:curL?.title,url:u});else{navigator.clipboard?.writeText(u);showToast('🔗 Link copied!');}}
+async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_id:lid,contact_type:type,user_phone:curUser?.email||'anon'});}catch(e){}}
+
+// ═══════════════════════════════════════
+//  POST LISTING
+// ═══════════════════════════════════════
+function checkLoginPost(){
+  if(!curUser){openLoginModal();showToast('पहिले Login करा');return;}
+  showPage('post');
+}
+
+function goStep(n){
+  if(n===2){
+    if(!document.getElementById('f-title').value||!document.getElementById('f-price').value||!document.getElementById('f-loc').value){showToast('⚠️ Title, Price आणि Location भरा');return;}
+  }
+  if(n===4){
+    if(!curUser){
+      setStep(4);
+      document.getElementById('fs4-nologin').style.display='block';
+      document.getElementById('fs4-form').style.display='none';
+      return;
+    }
+    document.getElementById('fs4-nologin').style.display='none';
+    document.getElementById('fs4-form').style.display='block';
+    document.getElementById('fs4-userinfo').textContent=`✓ Logged in as: ${curUser.email}`;
+  }
+  setStep(n);
+}
+
+function setStep(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById(`fs-${i}`).classList.toggle('active',i===n);
+    const s=document.getElementById(`ws-${i}`);
+    s.classList.remove('active','done');
+    if(i<n)s.classList.add('done');
+    else if(i===n)s.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function selCat(el,cat){document.querySelectorAll('.cat-select-item').forEach(e=>e.classList.remove('active'));el.classList.add('active');selCatV=cat;}
+
+function handlePhotos(input){
+  photoFiles=Array.from(input.files).slice(0,5);
+  const p=document.getElementById('photoPreview');p.innerHTML='';
+  photoFiles.forEach(f=>{const r=new FileReader();r.onload=e=>{const i=document.createElement('img');i.src=e.target.result;i.className='photo-thumb';p.appendChild(i);};r.readAsDataURL(f);});
+  showToast(`${photoFiles.length} फोटो सिलेक्ट झाले`);
+}
+
+async function submitListing(){
+  if(!curUser){openLoginModal();return;}
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  if(!name){showToast('⚠️ नाव भरा');return;}
+  if(!phone||phone.length!==10){showToast('⚠️ Valid 10-digit phone भरा');return;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='⏳ Uploading...';
+  let imgUrl=null;
+  if(photoFiles.length>0){
+    const f=photoFiles[0],ext=f.name.split('.').pop();
+    const fn=`${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const {error:ue}=await sb.storage.from('property-images').upload(fn,f,{cacheControl:'3600',upsert:false});
+    if(!ue){const {data:{publicUrl}}=sb.storage.from('property-images').getPublicUrl(fn);imgUrl=publicUrl;}
+  }
+  btn.textContent='⏳ Saving...';
+  const ptype=document.querySelector('input[name="ptype"]:checked')?.value||'Owner';
+  const {error:ie}=await sb.from('properties').insert({
+    title:document.getElementById('f-title').value,
+    category:selCatV,
+    price:parseInt(document.getElementById('f-price').value),
+    area:document.getElementById('f-area').value,
+    bedrooms:document.getElementById('f-bhk').value,
+    location:document.getElementById('f-loc').value,
+    desc:document.getElementById('f-desc').value,
+    seller:name,seller_type:ptype,phone,
+    img:imgUrl,verified:false,status:'pending',
+    badge:ptype==='Owner'?'Owner':'Broker',
+    badge_class:ptype==='Owner'?'owner':''
+  });
+  btn.disabled=false;btn.textContent='🎉 जाहिरात सबमिट करा';
+  if(ie){showToast('⚠️ Error: '+ie.message);return;}
+  ['f-title','f-price','f-area','f-loc','f-desc','f-name','f-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('photoPreview').innerHTML='';photoFiles=[];
+  setStep(1);showPage('success');
+}
+
+// ═══════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════
+function updateDashUI(){
+  const nl=document.getElementById('dash-nologin'),ct=document.getElementById('dash-content');
+  if(!curUser){nl.style.display='block';ct.style.display='none';document.getElementById('dash-name').textContent='–';document.getElementById('dash-email').textContent='–';return;}
+  nl.style.display='none';ct.style.display='block';
+  const em=curUser.email||'';
+  document.getElementById('dash-name').textContent=em.split('@')[0];
+  document.getElementById('dash-email').textContent=em;
+  document.getElementById('p-name').textContent=em.split('@')[0];
+  document.getElementById('p-email').textContent=em;
+  loadMyListings();
+}
+
+async function loadMyListings(){
+  // Load listings by user email stored in a separate user_email column
+  // Since we store phone number in properties, we load ALL pending+approved for now
+  // In production, add a user_email column to properties table
+  const grid=document.getElementById('myListingsGrid');
+  grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">जाहिराती लोड होत आहेत...</div>';
+  // Query by matching email if you add user_email column, else show recent pending
+  const {data}=await sb.from('properties').select('*').order('created_at',{ascending:false}).limit(20);
+  document.getElementById('ds-l').textContent=data?.length||0;
+  if(!data?.length){grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही जाहिरात नाही</div>';return;}
+  grid.innerHTML=data.map(l=>`
+    <div class="my-listing-item">
+      <img class="my-listing-img" src="${l.img||'https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'}" alt="" onerror="this.src='https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'">
+      <div class="my-listing-body">
+        <div class="my-listing-title">${esc(l.title)}</div>
+        <div class="my-listing-price">${fp(l.price)}</div>
+        <div style="margin-top:3px"><span class="status-badge status-${l.status}">${l.status==='approved'?'● Active':l.status==='pending'?'⏳ Pending':'✓ Sold'}</span></div>
+        <div class="my-listing-actions">
+          <button class="btn-sm btn-sm-del" onclick="delListing('${l.id}')">🗑 Delete</button>
         </div>
       </div>
     </div>`).join('');
 }
 
-async function updateListingStatus(id, status, btn) {
-  await sb.from('properties').update({ status }).eq('id', id);
-  btn.closest('.admin-listing-row').style.opacity = '0.4';
-  showToast(`✓ Status updated: ${status}`);
-}
-async function markVerified(id) { await sb.from('properties').update({ verified: true }).eq('id', id); }
-async function deleteAdminListing(id, btn) {
-  await sb.from('properties').delete().eq('id', id);
-  btn.closest('.admin-listing-row').remove();
-  showToast('🗑 Deleted');
+async function delListing(id){if(!confirm('Delete?'))return;await sb.from('properties').delete().eq('id',id);showToast('🗑 Deleted');loadMyListings();}
+
+function dashTab(btn,tabId){
+  document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  ['dt-l','dt-i','dt-p'].forEach(id=>{document.getElementById(id).style.display=id===tabId?'block':'none';});
 }
 
-// ════════════════════════════════════════
+// ═══════════════════════════════════════
+//  ADMIN
+// ═══════════════════════════════════════
+function adminLogin(){
+  if(document.getElementById('admin-pass').value===ADMIN_P){
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-content').style.display='block';
+    loadAdminTab('pending',document.getElementById('at-p'));
+  }else showToast('⚠️ Wrong password');
+}
+async function loadAdminTab(status,btn){
+  document.querySelectorAll('#admin-content .filter-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');
+  let q=sb.from('properties').select('*').order('created_at',{ascending:false});
+  if(status!=='all')q=q.eq('status',status);
+  const {data}=await q;
+  const grid=document.getElementById('adminGrid');
+  if(!data?.length){grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">No listings</div>';return;}
+  grid.innerHTML=data.map(l=>`
+    <div class="admin-row">
+      <img src="${l.img||'https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'}" onerror="this.src='https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'" alt="">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700">${esc(l.title)}</div>
+        <div style="font-size:12px;color:var(--muted)">${fp(l.price)} · ${esc(l.location)}</div>
+        <div style="font-size:11px;color:var(--muted)">${esc(l.seller)} · ${l.phone} · ${ta(l.created_at)}</div>
+        <span class="status-badge status-${l.status}" style="margin-top:4px">${l.status}</span>
+        <div class="admin-actions">
+          ${l.status!=='approved'?`<button class="btn-approve" onclick="adminUpd('${l.id}','approved',false,this)">✓ Approve</button>`:''}
+          <button class="btn-approve" onclick="adminUpd('${l.id}','approved',true,this)">✓✓ Approve+Verify</button>
+          ${l.status!=='rejected'?`<button class="btn-reject" onclick="adminUpd('${l.id}','rejected',false,this)">✗ Reject</button>`:''}
+          <button class="btn-reject" onclick="adminDel('${l.id}',this)">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+async function adminUpd(id,status,verify,btn){const u={status};if(verify)u.verified=true;await sb.from('properties').update(u).eq('id',id);btn.closest('.admin-row').style.opacity='0.4';showToast('✓ '+status);}
+async function adminDel(id,btn){await sb.from('properties').delete().eq('id',id);btn.closest('.admin-row').remove();showToast('🗑 Deleted');}
+
+// ═══════════════════════════════════════
 //  FILTERS
-// ════════════════════════════════════════
-function filterByCategory(cat, el) {
-  activeCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  loadListings(true);
-}
-function setPriceFilter(min, max, el) {
-  priceMin = min; priceMax = max;
-  document.querySelectorAll('.filter-bar .filter-chip').forEach(c => { if (!c.textContent.includes('Filter')) c.classList.remove('active'); });
-  el.classList.add('active');
-  loadListings(true);
-}
-function toggleBhkFilter(el, val) {
-  document.querySelectorAll('.modal-sheet .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  bhkFilter = val;
-}
-function applyFilters() {
-  ownerOnlyFilter = document.getElementById('filter-owner-only').checked;
-  verifiedOnlyFilter = document.getElementById('filter-verified-only').checked;
-  closeFilterModal({ target: { className: 'modal-overlay' } });
-  loadListings(true);
-  showToast('Filter applied!');
-}
-function debounceSearch() {
-  clearTimeout(searchDebounce);
-  searchDebounce = setTimeout(() => loadListings(true), 500);
-}
+// ═══════════════════════════════════════
+function filterCat(cat,el){activeCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');loadListings(true);}
+function setPrice(min,max,el){pMin=min;pMax=max;document.querySelectorAll('.filter-bar .filter-chip').forEach(c=>{if(!c.textContent.includes('Filter'))c.classList.remove('active');});el.classList.add('active');loadListings(true);}
+function selBhk(el,v){document.querySelectorAll('.sheet .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');bhkF=v;}
+function applyFilter(){ownerOnly=document.getElementById('fo-owner').checked;verOnly=document.getElementById('fo-verified').checked;closeSheet();loadListings(true);showToast('Filter applied!');}
+function dbSearch(){clearTimeout(srchTimer);srchTimer=setTimeout(()=>loadListings(true),500);}
 
-// ════════════════════════════════════════
-//  PAGES
-// ════════════════════════════════════════
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+// ═══════════════════════════════════════
+//  PAGES & UI
+// ═══════════════════════════════════════
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(`page-${page}`).classList.add('active');
-  const bn = document.getElementById('bottomNav');
-  bn.style.display = ['post','success','admin'].includes(page) ? 'none' : 'flex';
-  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
-  if (page === 'home') document.getElementById('bn-home').classList.add('active');
-  if (page === 'dash') document.getElementById('bn-dash').classList.add('active');
-  window.scrollTo(0, 0);
+  document.getElementById('bottomNav').style.display=['post','success','admin'].includes(page)?'none':'flex';
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  if(page==='home')document.getElementById('bn-home').classList.add('active');
+  if(page==='dash'){document.getElementById('bn-dash').classList.add('active');updateDashUI();}
+  window.scrollTo(0,0);
 }
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openSheet(){document.getElementById('filterSheet').classList.add('open');}
+function closeSheet(){document.getElementById('filterSheet').classList.remove('open');}
+function onav(el,pos,wid){if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
+function toggleLang(){lang=lang==='mr'?'en':'mr';document.getElementById('langBtn').textContent=lang==='mr'?'मराठी':'English';document.getElementById('hero-title').innerHTML=lang==='mr'?'परतवाडा / अचलपूर मधील<br>मालमत्ता शोधा 🏡':'Find Property in<br>Paratwada / Achalpur 🏡';document.getElementById('hero-sub').textContent=lang==='mr'?'जमीन, घर, दुकान – थेट मालकाशी संपर्क':'Land, House, Shop – Direct owner contact';showToast(lang==='mr'?'मराठी भाषा सक्रिय':'English active');}
 
-
-// ════════════════════════════════════════
+// ═══════════════════════════════════════
 //  UTILITIES
-// ════════════════════════════════════════
-function formatPrice(p) {
-  if (!p) return '–';
-  if (p >= 10000000) return '₹' + (p/10000000).toFixed(1) + ' Cr';
-  if (p >= 100000) return '₹' + (p/100000).toFixed(1) + ' L';
-  return '₹' + p.toLocaleString('en-IN');
-}
-function timeAgo(dateStr) {
-  if (!dateStr) return '–';
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  if (diff < 3600) return Math.floor(diff/60) + ' min ago';
-  if (diff < 86400) return Math.floor(diff/3600) + ' hrs ago';
-  if (diff < 604800) return Math.floor(diff/86400) + ' days ago';
-  return new Date(dateStr).toLocaleDateString('en-IN');
-}
-function toggleLang() {
-  lang = lang === 'mr' ? 'en' : 'mr';
-  document.getElementById('langBtn').textContent = lang === 'mr' ? 'मराठी' : 'English';
-  document.getElementById('hero-title').innerHTML = lang === 'mr' ? 'परतवाडा / अचलपूर मधील<br>मालमत्ता शोधा 🏡' : 'Find Property in<br>Paratwada / Achalpur 🏡';
-  document.getElementById('hero-sub').textContent = lang === 'mr' ? 'जमीन, घर, दुकान – थेट मालकाशी संपर्क' : 'Land, House, Shop – Direct owner contact';
-  showToast(lang === 'mr' ? 'मराठी भाषा सक्रिय' : 'English language active');
-}
-function dashTab(btn, tabId) {
-  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  ['my-listings-tab','inquiries-tab','profile-tab'].forEach(id => {
-    document.getElementById(id).style.display = id === tabId ? 'block' : 'none';
-  });
-}
-function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
-function openFilterModal() { document.getElementById('filterModal').classList.add('open'); }
-function closeFilterModal(e) { if (e.target.className?.includes?.('modal-overlay')) document.getElementById('filterModal').classList.remove('open'); }
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-function shareOnWhatsApp() {
-  window.open(`https://wa.me/?text=${encodeURIComponent('नवीन मालमत्ता जाहिरात: https://vidarbhproperties.in')}`, '_blank');
-}
+// ═══════════════════════════════════════
+function fp(p){if(!p)return'–';if(p>=10000000)return'₹'+(p/10000000).toFixed(1)+' Cr';if(p>=100000)return'₹'+(p/100000).toFixed(1)+' L';return'₹'+p.toLocaleString('en-IN');}
+function ta(d){if(!d)return'–';const s=(Date.now()-new Date(d))/1000;if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' hrs ago';if(s<604800)return Math.floor(s/86400)+' days ago';return new Date(d).toLocaleDateString('en-IN');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
 
-// Secret admin access: tap logo 5 times
-let logoTaps = 0;
-document.querySelector('.nav-logo').addEventListener('click', () => {
-  logoTaps++;
-  if (logoTaps >= 5) { logoTaps = 0; showPage('admin'); }
-});
+// Secret admin: tap logo 5x
+let taps=0;
+document.querySelector('.nav-logo').addEventListener('click',()=>{if(++taps>=5){taps=0;showPage('admin');}});
 
-// ════════════════════════════════════════
-//  SUPABASE STORAGE BUCKET SETUP NOTE
-//  Create a bucket named: property-images
-//  Set it to Public in Supabase Storage settings
-// ════════════════════════════════════════
-
-// START
 init();
 </script>
 </body>

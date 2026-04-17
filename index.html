@@ -639,32 +639,27 @@ async function init() {
 // ═══════════════════════════════════════
 let pendingEmail='';
 
+// ── SEND OTP: frontend only calls backend — OTP generation, storage & sending is on Edge Function ──
 async function sendOTPvia(email) {
-  // Generate 6-digit OTP
-  const otp = String(Math.floor(100000 + Math.random()*900000));
-  // Store in Supabase
-  await sb.from('email_otps').delete().eq('email', email);
-  const {error:e} = await sb.from('email_otps').insert({email, otp});
-  if (e) throw new Error('DB: '+e.message);
-  // Call Edge Function (sends via Resend)
   const r = await fetch(EDGE, {
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
-    body: JSON.stringify({email, otp})
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
+    body: JSON.stringify({ email })   // backend generates + stores + emails OTP
   });
   const j = await r.json();
-  if (!r.ok) throw new Error(j.error||'Send failed: '+r.status);
+  if (!r.ok) throw new Error(j.error || 'Send failed: ' + r.status);
   return true;
 }
 
+// ── VERIFY OTP: backend checks expiry & deletes — no DB access from frontend ──
 async function verifyOTP(email, token) {
-  const {data,error} = await sb.from('email_otps')
-    .select('*').eq('email',email).eq('otp',token)
-    .gte('created_at', new Date(Date.now()-10*60*1000).toISOString())
-    .single();
-  if (error||!data) return false;
-  await sb.from('email_otps').delete().eq('email',email);
-  return true;
+  const r = await fetch(EDGE + '?action=verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
+    body: JSON.stringify({ email, otp: token })
+  });
+  const j = await r.json();
+  return r.ok && j.valid === true;
 }
 
 // ═══════════════════════════════════════
@@ -853,8 +848,11 @@ function checkLoginPost(){
 }
 
 function goStep(n){
-  if(n===2){
-    if(!document.getElementById('f-title').value||!document.getElementById('f-price').value||!document.getElementById('f-loc').value){showToast('⚠️ Title, Price आणि Location भरा');return;}
+  // Step 2 → 3: validate step 2 fields (Details)
+  if(n===3){
+    if(!document.getElementById('f-title').value){showToast('⚠️ Title भरा');return;}
+    if(!document.getElementById('f-price').value){showToast('⚠️ Price भरा');return;}
+    if(!document.getElementById('f-loc').value){showToast('⚠️ Location भरा');return;}
   }
   if(n===4){
     if(!curUser){

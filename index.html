@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#C84B31">
 <meta name="description" content="विदर्भ प्रॉपर्टीज - परतवाडा/अचलपूर मधील जमीन, घर आणि मालमत्ता खरेदी-विक्री">
 <title>Vidarbh Properties | विदर्भ प्रॉपर्टीज</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23C84B31'/><text y='72' x='50' text-anchor='middle' font-size='52' font-weight='900' font-family='Arial,sans-serif' fill='white'>VP</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23C84B31'/><text y='72' x='50' text-anchor='middle' font-size='52' font-weight='900' font-family='Arial,sans-serif' fill='white'>VP</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -905,7 +907,7 @@ async function submitListing(){
   }
   btn.textContent='⏳ Saving...';
   const ptype=document.querySelector('input[name="ptype"]:checked')?.value||'Owner';
-  const {error:ie}=await sb.from('properties').insert({
+  const insertData = {
     title:document.getElementById('f-title').value,
     category:selCatV,
     price:parseInt(document.getElementById('f-price').value),
@@ -913,11 +915,19 @@ async function submitListing(){
     bedrooms:document.getElementById('f-bhk').value,
     location:document.getElementById('f-loc').value,
     desc:document.getElementById('f-desc').value,
-    seller:name,seller_type:ptype,phone,
-    img:imgUrl,verified:false,status:'pending',
-    badge:ptype==='Owner'?'Owner':'Broker',
-    badge_class:ptype==='Owner'?'owner':''
-  });
+    seller:name,
+    seller_type:ptype,
+    phone,
+    img:imgUrl,
+    verified:false
+  };
+  // Add optional columns only if they exist in your schema
+  // Run the SQL below in Supabase SQL Editor if these columns are missing:
+  // ALTER TABLE properties ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';
+  // ALTER TABLE properties ADD COLUMN IF NOT EXISTS badge text;
+  // ALTER TABLE properties ADD COLUMN IF NOT EXISTS badge_class text;
+  try { Object.assign(insertData, { status:'pending', badge:ptype==='Owner'?'Owner':'Broker', badge_class:ptype==='Owner'?'owner':'' }); } catch(e){}
+  const {error:ie}=await sb.from('properties').insert(insertData);
   btn.disabled=false;btn.textContent='🎉 जाहिरात सबमिट करा';
   if(ie){showToast('⚠️ Error: '+ie.message);return;}
   ['f-title','f-price','f-area','f-loc','f-desc','f-name','f-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});

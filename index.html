@@ -176,6 +176,8 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 .status-active{background:#E8F5E9;color:#2E7D32;}
 .status-pending{background:#FFF3E0;color:#E65100;}
 .status-sold{background:#E3F2FD;color:#1565C0;}
+.status-approved{background:#E8F5E9;color:#2E7D32;}
+.status-rejected{background:#FFEBEE;color:#C62828;}
 .my-listing-actions{display:flex;gap:6px;margin-top:6px;}
 .btn-sm{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
 .btn-sm-del{border:1.5px solid #FFCDD2;background:#FFF5F5;color:#C62828;}
@@ -550,6 +552,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <div style="padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto">
       <button class="filter-chip active" id="at-p" onclick="loadAdminTab('pending',this)">⏳ Pending</button>
       <button class="filter-chip" id="at-a" onclick="loadAdminTab('approved',this)">✓ Approved</button>
+      <button class="filter-chip" id="at-r" onclick="loadAdminTab('rejected',this)">✗ Rejected</button>
       <button class="filter-chip" id="at-all" onclick="loadAdminTab('all',this)">All</button>
     </div>
     <div id="adminGrid"></div>
@@ -984,6 +987,8 @@ function dashTab(btn,tabId){
 // ═══════════════════════════════════════
 //  ADMIN
 // ═══════════════════════════════════════
+let curAdminTab = 'pending'; // track which tab is active
+
 function adminLogin(){
   if(document.getElementById('admin-pass').value===ADMIN_P){
     document.getElementById('admin-login').style.display='none';
@@ -991,32 +996,74 @@ function adminLogin(){
     loadAdminTab('pending',document.getElementById('at-p'));
   }else showToast('⚠️ Wrong password');
 }
-async function loadAdminTab(status,btn){
-  document.querySelectorAll('#admin-content .filter-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');
-  let q=sb.from('properties').select('*').order('created_at',{ascending:false});
-  if(status!=='all')q=q.eq('status',status);
-  const {data}=await q;
-  const grid=document.getElementById('adminGrid');
-  if(!data?.length){grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">No listings</div>';return;}
-  grid.innerHTML=data.map(l=>`
-    <div class="admin-row">
+
+async function loadAdminTab(status, btn){
+  curAdminTab = status;
+  document.querySelectorAll('#admin-content .filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  const grid = document.getElementById('adminGrid');
+  grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Loading...</div>';
+
+  let q = sb.from('properties').select('*').order('created_at',{ascending:false});
+  if(status !== 'all') q = q.eq('status', status);
+  const {data, error} = await q;
+
+  if(error){ grid.innerHTML='<div style="padding:20px;color:red">Error: '+error.message+'</div>'; return; }
+  if(!data?.length){ grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">No listings in this tab</div>'; return; }
+
+  grid.innerHTML = data.map(l=>`
+    <div class="admin-row" id="arow-${l.id}">
       <img src="${l.img||'https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'}" onerror="this.src='https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'" alt="">
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:700">${esc(l.title)}</div>
         <div style="font-size:12px;color:var(--muted)">${fp(l.price)} · ${esc(l.location)}</div>
         <div style="font-size:11px;color:var(--muted)">${esc(l.seller)} · ${l.phone} · ${ta(l.created_at)}</div>
-        <span class="status-badge status-${l.status}" style="margin-top:4px">${l.status}</span>
+        <span class="status-badge status-${l.status||'pending'}" style="margin-top:4px;display:inline-block">${l.status||'pending'}</span>
         <div class="admin-actions">
-          ${l.status!=='approved'?`<button class="btn-approve" onclick="adminUpd('${l.id}','approved',false,this)">✓ Approve</button>`:''}
-          <button class="btn-approve" onclick="adminUpd('${l.id}','approved',true,this)">✓✓ Approve+Verify</button>
-          ${l.status!=='rejected'?`<button class="btn-reject" onclick="adminUpd('${l.id}','rejected',false,this)">✗ Reject</button>`:''}
-          <button class="btn-reject" onclick="adminDel('${l.id}',this)">🗑</button>
+          ${l.status!=='approved'?`<button class="btn-approve" onclick="adminUpd('${l.id}','approved',false)">✓ Approve</button>`:''}
+          <button class="btn-approve" onclick="adminUpd('${l.id}','approved',true)">✓✓ Approve+Verify</button>
+          ${l.status!=='rejected'?`<button class="btn-reject" onclick="adminUpd('${l.id}','rejected',false)">✗ Reject</button>`:''}
+          ${l.status!=='pending'?`<button class="btn-approve" style="background:#FFF3E0;color:#E65100;border-color:#FFB74D" onclick="adminUpd('${l.id}','pending',false)">↩ Pending</button>`:''}
+          <button class="btn-reject" onclick="adminDel('${l.id}')">🗑 Delete</button>
         </div>
       </div>
     </div>`).join('');
 }
-async function adminUpd(id,status,verify,btn){const u={status};if(verify)u.verified=true;await sb.from('properties').update(u).eq('id',id);btn.closest('.admin-row').style.opacity='0.4';showToast('✓ '+status);}
-async function adminDel(id,btn){await sb.from('properties').delete().eq('id',id);btn.closest('.admin-row').remove();showToast('🗑 Deleted');}
+
+async function adminUpd(id, status, verify){
+  // Show immediate feedback on the row
+  const row = document.getElementById('arow-'+id);
+  if(row){ row.style.opacity='0.5'; row.style.pointerEvents='none'; }
+
+  const upd = {status};
+  if(verify) upd.verified = true;
+  const {error} = await sb.from('properties').update(upd).eq('id', id);
+
+  if(error){
+    showToast('⚠️ Update failed: '+error.message);
+    if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
+    return;
+  }
+
+  showToast(status==='approved'?'✓ Listing approved & live!':status==='rejected'?'✗ Listing rejected':'↩ Moved to pending');
+
+  // Reload current tab to reflect the change
+  const tabBtn = document.getElementById(
+    curAdminTab==='pending'?'at-p':curAdminTab==='approved'?'at-a':curAdminTab==='rejected'?'at-r':'at-all'
+  );
+  await loadAdminTab(curAdminTab, tabBtn);
+}
+
+async function adminDel(id){
+  if(!confirm('Permanently delete this listing?')) return;
+  const {error} = await sb.from('properties').delete().eq('id', id);
+  if(error){ showToast('⚠️ '+error.message); return; }
+  showToast('🗑 Deleted');
+  const tabBtn = document.getElementById(
+    curAdminTab==='pending'?'at-p':curAdminTab==='approved'?'at-a':curAdminTab==='rejected'?'at-r':'at-all'
+  );
+  await loadAdminTab(curAdminTab, tabBtn);
+}
 
 // ═══════════════════════════════════════
 //  FILTERS

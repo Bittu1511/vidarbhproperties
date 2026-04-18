@@ -207,6 +207,39 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
 .sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
 #page-home{padding-bottom:80px;}
+/* ── DESKTOP RESPONSIVE ── */
+@media(min-width:768px){
+  body{background:var(--bg);}
+  .hero{padding:40px 40px 32px;}
+  .search-bar{max-width:580px;}
+  .section{padding:24px 40px;}
+  .filter-bar{padding:0 40px 14px;}
+  .ad-banner{margin:0 40px 16px;}
+  .listings-grid{display:grid !important;grid-template-columns:repeat(2,1fr);gap:20px;padding:0 40px;}
+  .section-title{padding-left:40px !important;padding-right:40px !important;}
+  #loadMoreWrap{padding:20px 40px;}
+  .card-img-wrap{height:200px;}
+  .skel-card{margin:0;}
+}
+@media(min-width:1100px){
+  .listings-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(min-width:768px){
+  .detail-gallery{height:420px;}
+  .detail-content{max-width:800px;margin:0 auto;padding:28px 40px 110px;}
+  .detail-specs{grid-template-columns:repeat(4,1fr);}
+  .detail-action-bar{left:0;right:0;max-width:none;}
+  .form-wizard{max-width:100%;padding:24px 40px 80px;}
+  .form-wizard .form-row{grid-template-columns:1fr 1fr;}
+  .form-wizard .cat-select-grid{grid-template-columns:repeat(2,1fr);}
+  .form-wizard .btn-next,.form-wizard .btn-prev,.form-wizard .btn-submit{max-width:100%;}
+  .dash-header{padding:28px 40px;}
+  .my-listing-item{margin:0 40px 12px;}
+  #page-home{padding-bottom:80px;}
+  #page-post .form-wizard{max-width:100%;}
+}
+/* SAVED */
+.saved-empty{text-align:center;padding:48px 24px;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -312,9 +345,9 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <button class="filter-chip" onclick="setPrice(5000000,9e9,this)">₹50L+</button>
     <button class="filter-chip" onclick="openSheet()">⚙️ Filter</button>
   </div>
-  <div class="ad-banner">
+  <div class="ad-banner" style="cursor:pointer" onclick="window.open('https://homeloans.sbi.bank.in/','_blank')">
     <div><div class="ad-text">🏦 SBI Home Loan</div><div class="ad-sub">8.5% व्याजदर • त्वरित मंजुरी</div></div>
-    <button class="ad-cta" onclick="showToast('SBI: 1800-11-2211')">अर्ज करा</button>
+    <button class="ad-cta" onclick="event.stopPropagation();window.open('https://homeloans.sbi.bank.in/','_blank')">अर्ज करा</button>
   </div>
   <div class="section-title" style="padding:0 16px 10px">ताज्या जाहिराती | Latest Listings</div>
   <div id="listingsGrid" class="listings-grid"></div>
@@ -345,7 +378,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <div class="detail-section-title">वर्णन | Description</div>
     <div class="detail-desc" id="d-desc">–</div>
     <div class="detail-section-title">📍 Location</div>
-    <div class="detail-map">📍 Paratwada / Achalpur, Amravati</div>
+    <div id="d-map-wrap" class="detail-map">📍 Paratwada / Achalpur, Amravati</div>
     <div class="detail-section-title">विक्रेता | Seller</div>
     <div class="seller-card">
       <div class="seller-avatar" id="d-avatar">👤</div>
@@ -357,7 +390,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     </div>
   </div>
   <div class="detail-action-bar">
-    <button class="btn-share-sm" onclick="shareLink()">🔗</button>
+    <button class="btn-share-sm" id="d-save-btn" onclick="toggleSaveListing()">🔖</button>
     <button class="btn-call" style="flex:1.2" onclick="handleCall()">📞 Call Owner</button>
     <button class="btn-wa" style="flex:1.2" onclick="handleWA()">💬 WhatsApp</button>
   </div>
@@ -438,6 +471,11 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <div class="form-group">
         <label class="form-label">Location / पत्ता <span class="req">*</span></label>
         <input class="form-input" type="text" id="f-loc" placeholder="गाव/परिसर, उदा: Civil Lines, Paratwada">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Google Maps Link <span class="hint">(optional — exact location साठी)</span></label>
+        <input class="form-input" type="url" id="f-maps" placeholder="https://maps.app.goo.gl/...">
+        <div style="font-size:11px;color:var(--muted);margin-top:5px">📱 Google Maps उघडा → Share → Copy Link → येथे paste करा</div>
       </div>
       <div class="form-group">
         <label class="form-label">Description / वर्णन</label>
@@ -573,12 +611,20 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- SAVED PAGE -->
+<div id="page-saved" class="page">
+  <div style="background:var(--brand);padding:16px;color:#fff;display:flex;align-items:center;gap:10px">
+    <div style="font-size:18px;font-weight:800">🔖 Saved Listings</div>
+    <div style="font-size:12px;opacity:0.8;margin-left:auto" id="saved-count">0 saved</div>
+    <button onclick="showPage('home')" style="background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">+ Browse</button>
+  </div>
+  <div id="savedGrid" style="padding:16px;padding-bottom:90px"></div>
+</div>
 <div class="bottom-nav" id="bottomNav">
   <button class="bn-item active" id="bn-home" onclick="showPage('home')"><span class="bn-icon">🏡</span><span class="bn-label">Home</span></button>
   <button class="bn-item" onclick="showPage('home');setTimeout(()=>document.getElementById('searchInput').focus(),200)"><span class="bn-icon">🔍</span><span class="bn-label">शोधा</span></button>
   <button class="bn-item post" onclick="checkLoginPost()"><span class="bn-icon">➕</span><span class="bn-label">Post</span></button>
-  <button class="bn-item" onclick="showToast('Saved – Coming soon!')"><span class="bn-icon">🔖</span><span class="bn-label">Saved</span></button>
+  <button class="bn-item" id="bn-saved" onclick="showPage('saved')"><span class="bn-icon">🔖</span><span class="bn-label">Saved</span></button>
   <button class="bn-item" id="bn-dash" onclick="showPage('dash')"><span class="bn-icon">👤</span><span class="bn-label">My Ads</span></button>
 </div>
 
@@ -829,20 +875,88 @@ async function openDetail(id){
   document.getElementById('d-area').textContent=l.area||'–';
   document.getElementById('d-type').textContent=l.category;
   document.getElementById('d-loc').textContent=l.location;
-  document.getElementById('d-date').textContent=ta(l.created_at);
+  // Fix Posted date — show properly even if created_at is null
+  document.getElementById('d-date').textContent = l.created_at ? ta(l.created_at) : 'Recently';
   document.getElementById('d-desc').textContent=l.desc||'No description.';
   document.getElementById('d-seller').textContent=l.seller||'–';
   document.getElementById('d-stype').textContent=l.seller_type||'Owner';
   document.getElementById('d-sver').textContent=l.verified?'✓ Phone Verified':'Not verified yet';
   document.getElementById('d-avatar').textContent=l.seller_type==='Broker'?'🤝':'👤';
+
+  // Google Maps — show link if available, else fallback text
+  const mapWrap = document.getElementById('d-map-wrap');
+  if(l.maps_url && l.maps_url.startsWith('http')){
+    mapWrap.innerHTML = `
+      <a href="${esc(l.maps_url)}" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#1976D2;font-weight:700;font-size:14px">
+        <span style="font-size:28px">📍</span>
+        <div>
+          <div>${esc(l.location)}</div>
+          <div style="font-size:12px;font-weight:500;text-decoration:underline">Google Maps वर उघडा →</div>
+        </div>
+      </a>`;
+    mapWrap.style.cursor='pointer';
+  } else {
+    mapWrap.innerHTML='<span style="font-size:14px;font-weight:700;color:#1976D2">📍 '+esc(l.location)+'<br><span style="font-size:11px;font-weight:400;opacity:0.7">Map link available after seller adds it</span></span>';
+  }
+
+  // Update save button state
+  const saves = getSaved();
+  document.getElementById('d-save-btn').textContent = saves.includes(id) ? '❤️' : '🔖';
+
   showPage('detail');
 }
 function handleCall(){if(curL){logInq(curL.id,'call');callNum(curL.phone,curL.seller);}}
 function handleWA(){if(curL){logInq(curL.id,'whatsapp');waNum(curL.phone,curL.title);}}
 function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
 function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
-function shareLink(){const u='https://vidarbhproperties.in';if(navigator.share)navigator.share({title:curL?.title,url:u});else{navigator.clipboard?.writeText(u);showToast('🔗 Link copied!');}}
+function shareLink(){
+  const u='https://vidarbhproperties.in';
+  const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;
+  if(navigator.share) navigator.share({title:curL?.title, text:txt, url:u});
+  else { navigator.clipboard?.writeText(u); showToast('🔗 Link copied!'); }
+}
 async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_id:lid,contact_type:type,user_phone:curUser?.email||'anon'});}catch(e){}}
+
+// ── SAVED LISTINGS (localStorage) ──
+function getSaved(){ try{ return JSON.parse(localStorage.getItem('vp_saved')||'[]'); }catch(e){ return []; } }
+function setSaved(arr){ localStorage.setItem('vp_saved', JSON.stringify(arr)); }
+
+function toggleSaveListing(){
+  if(!curL) return;
+  const saves = getSaved();
+  const idx = saves.indexOf(curL.id);
+  if(idx === -1){
+    saves.push(curL.id);
+    setSaved(saves);
+    document.getElementById('d-save-btn').textContent='❤️';
+    showToast('❤️ Saved!');
+  } else {
+    saves.splice(idx,1);
+    setSaved(saves);
+    document.getElementById('d-save-btn').textContent='🔖';
+    showToast('🔖 Removed from saved');
+  }
+}
+
+async function renderSavedPage(){
+  const saves = getSaved();
+  const grid = document.getElementById('savedGrid');
+  document.getElementById('saved-count').textContent = saves.length + ' saved';
+  if(!saves.length){
+    grid.innerHTML = `<div class="saved-empty"><div style="font-size:48px;margin-bottom:12px">🔖</div><div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:8px">No saved listings yet</div><div style="font-size:13px">Listings वर ❤️ tap करा to save</div></div>`;
+    return;
+  }
+  grid.innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px">Loading...</div>';
+  const {data} = await sb.from('properties').select('*').in('id', saves);
+  if(!data?.length){ grid.innerHTML='<div class="saved-empty"><div style="font-size:48px">😕</div><div style="margin-top:8px;font-weight:700">Listings not found</div></div>'; return; }
+  // Render as cards
+  const tmp = document.createElement('div');
+  tmp.className = 'listings-grid';
+  data.forEach((l,i)=>{ const d=document.createElement('div'); d.innerHTML=cardH(l,i); tmp.appendChild(d.firstElementChild); });
+  grid.innerHTML = '';
+  grid.appendChild(tmp);
+}
 
 // ═══════════════════════════════════════
 //  POST LISTING
@@ -945,6 +1059,7 @@ async function submitListing(){
     seller_type:ptype,
     phone,
     img:imgUrl,
+    maps_url: (document.getElementById('f-maps').value.trim()||null),
     verified:false
   };
   // Add optional columns only if they exist in your schema
@@ -956,7 +1071,7 @@ async function submitListing(){
   const {error:ie}=await sb.from('properties').insert(insertData);
   btn.disabled=false;btn.textContent='🎉 जाहिरात सबमिट करा';
   if(ie){showToast('⚠️ Error: '+ie.message);return;}
-  ['f-title','f-price','f-area','f-loc','f-desc','f-name','f-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-title','f-price','f-area','f-loc','f-maps','f-desc','f-name','f-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('photoPreview').innerHTML='';photoFiles=[];
   setStep(1);showPage('success');
 }
@@ -1128,11 +1243,11 @@ function showPage(page){
   document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
   if(page==='home'){
     document.getElementById('bn-home').classList.add('active');
-    // Always clear search and reload fresh listings when returning home
     document.getElementById('searchInput').value='';
     loadListings(true);
   }
   if(page==='dash'){document.getElementById('bn-dash').classList.add('active');updateDashUI();}
+  if(page==='saved'){document.getElementById('bn-saved').classList.add('active');renderSavedPage();}
   window.scrollTo(0,0);
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}

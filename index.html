@@ -900,14 +900,37 @@ async function submitListing(){
   if(!name){showToast('⚠️ नाव भरा');return;}
   if(!phone||phone.length!==10){showToast('⚠️ Valid 10-digit phone भरा');return;}
   const btn=document.getElementById('submitBtn');
-  btn.disabled=true;btn.textContent='⏳ Uploading...';
+  btn.disabled=true;
+
+  // ── UPLOAD IMAGE ──
   let imgUrl=null;
   if(photoFiles.length>0){
-    const f=photoFiles[0],ext=f.name.split('.').pop();
-    const fn=`${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-    const {error:ue}=await sb.storage.from('property-images').upload(fn,f,{cacheControl:'3600',upsert:false});
-    if(!ue){const {data:{publicUrl}}=sb.storage.from('property-images').getPublicUrl(fn);imgUrl=publicUrl;}
+    btn.textContent='⏳ Photo upload होत आहे...';
+    try {
+      const f=photoFiles[0];
+      const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
+      const fn=`listings/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+
+      const {data:upData, error:ue}=await sb.storage
+        .from('property-images')
+        .upload(fn, f, {cacheControl:'3600', upsert:false, contentType:f.type});
+
+      if(ue){
+        // Show exact upload error so we can diagnose
+        console.error('Upload error:', ue);
+        showToast('⚠️ Photo upload failed: '+ue.message);
+        // Continue without image rather than blocking the whole submission
+      } else {
+        const {data:{publicUrl}} = sb.storage.from('property-images').getPublicUrl(fn);
+        imgUrl = publicUrl;
+        showToast('✅ Photo uploaded!');
+      }
+    } catch(uploadEx){
+      console.error('Upload exception:', uploadEx);
+      showToast('⚠️ Photo error: '+uploadEx.message);
+    }
   }
+
   btn.textContent='⏳ Saving...';
   const ptype=document.querySelector('input[name="ptype"]:checked')?.value||'Owner';
   const insertData = {
@@ -1031,27 +1054,48 @@ async function loadAdminTab(status, btn){
 }
 
 async function adminUpd(id, status, verify){
-  // Show immediate feedback on the row
   const row = document.getElementById('arow-'+id);
   if(row){ row.style.opacity='0.5'; row.style.pointerEvents='none'; }
 
-  const upd = {status};
+  // Build update object
+  const upd = { status: status };
   if(verify) upd.verified = true;
-  const {error} = await sb.from('properties').update(upd).eq('id', id);
+
+  // Try update — show full error if it fails
+  const { data: updData, error } = await sb
+    .from('properties')
+    .update(upd)
+    .eq('id', id)
+    .select(); // .select() forces Supabase to return the updated row so we can confirm it worked
 
   if(error){
-    showToast('⚠️ Update failed: '+error.message);
+    // Show the FULL error message so we know exactly what's wrong
+    alert('Update failed!\n\nError: ' + error.message + '\n\nCode: ' + error.code + '\n\nHint: ' + (error.hint||'none') + '\n\nFix: Run this SQL in Supabase:\nALTER TABLE properties ADD COLUMN IF NOT EXISTS status text DEFAULT \'pending\';\nALTER TABLE properties ADD COLUMN IF NOT EXISTS badge text;\nALTER TABLE properties ADD COLUMN IF NOT EXISTS badge_class text;\nThen go to Supabase Settings > API > Reload schema cache');
     if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
     return;
   }
 
-  showToast(status==='approved'?'✓ Listing approved & live!':status==='rejected'?'✗ Listing rejected':'↩ Moved to pending');
+  // Confirm the update actually happened
+  if(!updData || updData.length === 0){
+    alert('Update returned no rows! The listing ID may be wrong or RLS is blocking the update.\n\nMake sure you have a policy:\nCREATE POLICY "Allow all updates" ON properties FOR UPDATE USING (true) WITH CHECK (true);');
+    if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
+    return;
+  }
 
-  // Reload current tab to reflect the change
-  const tabBtn = document.getElementById(
-    curAdminTab==='pending'?'at-p':curAdminTab==='approved'?'at-a':curAdminTab==='rejected'?'at-r':'at-all'
+  showToast(
+    status==='approved' ? '✅ Approved! Now live on homepage.' :
+    status==='rejected' ? '✗ Rejected' : '↩ Moved to pending'
   );
-  await loadAdminTab(curAdminTab, tabBtn);
+
+  // If approved — reload home listings so it shows immediately
+  if(status === 'approved') {
+    loadListings(true);
+  }
+
+  // Reload current admin tab
+  const tabMap = { pending:'at-p', approved:'at-a', rejected:'at-r', all:'at-all' };
+  const tabBtn = document.getElementById(tabMap[curAdminTab] || 'at-p');
+  if(tabBtn) await loadAdminTab(curAdminTab, tabBtn);
 }
 
 async function adminDel(id){
@@ -1082,7 +1126,12 @@ function showPage(page){
   document.getElementById(`page-${page}`).classList.add('active');
   document.getElementById('bottomNav').style.display=['post','success','admin'].includes(page)?'none':'flex';
   document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
-  if(page==='home')document.getElementById('bn-home').classList.add('active');
+  if(page==='home'){
+    document.getElementById('bn-home').classList.add('active');
+    // Always clear search and reload fresh listings when returning home
+    document.getElementById('searchInput').value='';
+    loadListings(true);
+  }
   if(page==='dash'){document.getElementById('bn-dash').classList.add('active');updateDashUI();}
   window.scrollTo(0,0);
 }

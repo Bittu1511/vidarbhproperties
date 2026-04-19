@@ -210,8 +210,8 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 /* ── DESKTOP RESPONSIVE ── */
 @media(min-width:768px){
   body{background:var(--bg);}
-  .hero{padding:40px 40px 32px;}
-  .search-bar{max-width:580px;}
+  .hero{padding:20px 20px 22px;}
+  .search-bar{max-width:none;}
   .section{padding:24px 40px;}
   .filter-bar{padding:0 40px 14px;}
   .ad-banner{margin:0 40px 16px;}
@@ -837,7 +837,7 @@ function cardH(l,i){
     <div class="card-img-wrap">
       <img src="${img}" alt="${esc(l.title)}" loading="lazy" onerror="this.src='https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo'">
       <span class="card-badge ${bc}">${esc(l.badge||l.category)}</span>
-      <button class="card-save" onclick="event.stopPropagation();showToast('💾 Saved!')">🔖</button>
+      <button class="card-save" onclick="event.stopPropagation();toggleSaveFromCard('${l.id}',this)">${getSaved().includes(l.id)?'❤️':'🔖'}</button>
     </div>
     <div class="card-body">
       <div class="card-price">${p}</div>
@@ -848,10 +848,10 @@ function cardH(l,i){
         <span class="card-tag">${l.seller_type==='Owner'?'🏡 Owner':'🤝 Broker'}</span>
         ${l.verified?'<span class="card-tag" style="color:var(--green)">✓ Verified</span>':''}
       </div>
-      <div class="card-loc">📍 ${esc(l.location)} · ${ago}</div>
+      <div class="card-loc">📍 ${esc(l.location)}${ago !== '–' ? ' · '+ago : ''}</div>
       <div class="card-actions">
-        <button class="btn-call" onclick="event.stopPropagation();logInq('${l.id}','call');callNum('${l.phone}','${esc(l.seller)}')">📞 Call</button>
-        <button class="btn-wa" onclick="event.stopPropagation();logInq('${l.id}','whatsapp');waNum('${l.phone}','${esc(l.title)}')">💬 WhatsApp</button>
+        <button class="btn-call" onclick="event.stopPropagation();requireLoginThenContact('call','${l.id}','${l.phone}','${esc(l.seller)}','${esc(l.title)}')">📞 Call</button>
+        <button class="btn-wa" onclick="event.stopPropagation();requireLoginThenContact('whatsapp','${l.id}','${l.phone}','${esc(l.seller)}','${esc(l.title)}')">💬 WhatsApp</button>
       </div>
     </div>
   </div>`;
@@ -906,10 +906,22 @@ async function openDetail(id){
 
   showPage('detail');
 }
-function handleCall(){if(curL){logInq(curL.id,'call');callNum(curL.phone,curL.seller);}}
-function handleWA(){if(curL){logInq(curL.id,'whatsapp');waNum(curL.phone,curL.title);}}
+function handleCall(){if(!curUser){showToast('📞 Call साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'call');callNum(curL.phone,curL.seller);}}
+function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'whatsapp');waNum(curL.phone,curL.title);}}
 function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
 function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
+
+// Login check before contact from card
+function requireLoginThenContact(type, lid, phone, seller, title){
+  if(!curUser){
+    showToast(type==='call'?'📞 Call साठी Login करा':'💬 WhatsApp साठी Login करा');
+    openLoginModal();
+    return;
+  }
+  logInq(lid, type);
+  if(type==='call') callNum(phone, seller);
+  else waNum(phone, title);
+}
 function shareLink(){
   const u='https://vidarbhproperties.in';
   const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;
@@ -921,6 +933,22 @@ async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_i
 // ── SAVED LISTINGS (localStorage) ──
 function getSaved(){ try{ return JSON.parse(localStorage.getItem('vp_saved')||'[]'); }catch(e){ return []; } }
 function setSaved(arr){ localStorage.setItem('vp_saved', JSON.stringify(arr)); }
+
+function toggleSaveFromCard(id, btn){
+  const saves = getSaved();
+  const idx = saves.indexOf(id);
+  if(idx === -1){
+    saves.push(id);
+    setSaved(saves);
+    btn.textContent='❤️';
+    showToast('❤️ Saved!');
+  } else {
+    saves.splice(idx,1);
+    setSaved(saves);
+    btn.textContent='🔖';
+    showToast('🔖 Removed from saved');
+  }
+}
 
 function toggleSaveListing(){
   if(!curL) return;

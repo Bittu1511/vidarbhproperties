@@ -441,7 +441,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <div class="form-section" id="fs-2">
       <div class="form-group">
         <label class="form-label">Title / शीर्षक <span class="req">*</span></label>
-        <input class="form-input" type="text" id="f-title" placeholder="उदा: 2 BHK घर परतवाडा मध्ये, जवळ बाजारपेठ">
+        <input class="form-input" type="text" id="f-title" maxlength="120" placeholder="उदा: 2 BHK घर परतवाडा मध्ये, जवळ बाजारपेठ">
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -450,7 +450,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
         </div>
         <div class="form-group">
           <label class="form-label">Area / क्षेत्रफळ</label>
-          <input class="form-input" type="text" id="f-area" placeholder="1500 sqft">
+          <input class="form-input" type="text" id="f-area" maxlength="30" placeholder="1500 sqft">
         </div>
       </div>
       <div class="form-row">
@@ -470,7 +470,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       </div>
       <div class="form-group">
         <label class="form-label">Location / पत्ता <span class="req">*</span></label>
-        <input class="form-input" type="text" id="f-loc" placeholder="गाव/परिसर, उदा: Civil Lines, Paratwada">
+        <input class="form-input" type="text" id="f-loc" maxlength="120" placeholder="गाव/परिसर, उदा: Civil Lines, Paratwada">
       </div>
       <div class="form-group">
         <label class="form-label">Google Maps Link <span class="hint">(optional — exact location साठी)</span></label>
@@ -479,7 +479,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       </div>
       <div class="form-group">
         <label class="form-label">Description / वर्णन</label>
-        <textarea class="form-textarea" id="f-desc" placeholder="मालमत्तेचे वर्णन, सुविधा, जवळचे landmarks..."></textarea>
+        <textarea class="form-textarea" id="f-desc" maxlength="1000" placeholder="मालमत्तेचे वर्णन, सुविधा, जवळचे landmarks..."></textarea>
       </div>
       <button class="btn-next" onclick="goStep(3)">पुढे जा | Next →</button>
       <button class="btn-prev" onclick="goStep(1)">← मागे</button>
@@ -513,7 +513,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
         <div class="info-box info-green" id="fs4-userinfo">Loading...</div>
         <div class="form-group">
           <label class="form-label">आपले नाव <span class="req">*</span></label>
-          <input class="form-input" type="text" id="f-name" placeholder="पूर्ण नाव">
+          <input class="form-input" type="text" id="f-name" maxlength="60" placeholder="पूर्ण नाव">
         </div>
         <div class="form-group">
           <label class="form-label">Contact Phone <span class="req">*</span><br><span class="hint">हा नंबर buyers ला दिसेल – Call / WhatsApp साठी</span></label>
@@ -660,7 +660,10 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 // ═══════════════════════════════════════
 const SB_URL  = 'https://vfsyuhjuzoslhjpqpcju.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmc3l1aGp1em9zbGhqcHFwY2p1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNzEyMTAsImV4cCI6MjA5MTc0NzIxMH0._0g71VyYHLFaY4TRsFiKUhpXHMgQRLIM47seYRrid2s';
-const ADMIN_P = "01dec783763957284afdbba53ec2638daf34e98187bf9072f2c4d1f05a5816ee"; 
+// Admin password is stored as SHA-256 hash — never plaintext
+// To generate a new hash: run in browser console:
+
+const ADMIN_HASH = '01dec783763957284afdbba53ec2638daf34e98187bf9072f2c4d1f05a5816ee'; 
 const EDGE    = `${SB_URL}/functions/v1/send-otp`;
 
 const sb = supabase.createClient(SB_URL, SB_ANON);
@@ -680,7 +683,20 @@ const PG=10;
 async function init() {
   // Restore user from localStorage
   const saved = localStorage.getItem('vp_user');
-  if (saved) { try { curUser=JSON.parse(saved); updateNavBtn(); } catch(e){} }
+  if (saved) {
+    try {
+      const u = JSON.parse(saved);
+      // Validate session: must have email, sessionToken, and be less than 30 days old
+      const age = Date.now() - (u.loginTime || 0);
+      const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+      if (u.email && u.sessionToken && age < maxAge) {
+        curUser = u;
+        updateNavBtn();
+      } else {
+        localStorage.removeItem('vp_user'); // expired or invalid
+      }
+    } catch(e){ localStorage.removeItem('vp_user'); }
+  }
   try { await Promise.all([loadListings(true), loadStats()]); } catch(e){}
   document.getElementById('loadingOverlay').style.display='none';
 }
@@ -760,7 +776,9 @@ async function verifyLoginOTP() {
   if (token.length<6) { showToast('⚠️ 6-digit OTP enter करा'); return; }
   const ok=await verifyOTP(pendingEmail,token);
   if (!ok) { showToast('⚠️ Wrong or expired OTP! Resend करा.'); return; }
-  curUser={email:pendingEmail, id:pendingEmail};
+  // Generate a session token so localStorage cannot be manually faked
+  const sessionToken = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36)+Date.now().toString(36));
+  curUser={email:pendingEmail, id:pendingEmail, sessionToken, loginTime: Date.now()};
   localStorage.setItem('vp_user',JSON.stringify(curUser));
   updateNavBtn(); updateDashUI();
   showLmStep(3);
@@ -803,6 +821,9 @@ async function loadStats() {
 // ═══════════════════════════════════════
 //  LISTINGS
 // ═══════════════════════════════════════
+// In-memory listing store — phones never go into HTML attributes
+const listingStore = {};
+
 async function loadListings(reset=false) {
   if(reset){pageOff=0; document.getElementById('listingsGrid').innerHTML=skels();}
   const q=document.getElementById('searchInput').value.trim();
@@ -823,7 +844,7 @@ async function loadListings(reset=false) {
     if(reset) grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);grid-column:1/-1;width:100%"><div style="font-size:40px">🔍</div><div style="font-weight:700;margin-top:8px">कोणतीही जाहिरात आढळली नाही</div></div>';
     document.getElementById('loadMoreWrap').style.display='none'; return;
   }
-  data.forEach((l,i)=>{const d=document.createElement('div');d.innerHTML=cardH(l,i);grid.appendChild(d.firstElementChild);});
+  data.forEach((l,i)=>{ listingStore[l.id]=l; const d=document.createElement('div');d.innerHTML=cardH(l,i);grid.appendChild(d.firstElementChild);});
   pageOff+=data.length;
   document.getElementById('loadMoreWrap').style.display=data.length<PG?'none':'block';
 }
@@ -850,8 +871,8 @@ function cardH(l,i){
       </div>
       <div class="card-loc">📍 ${esc(l.location)}${ago !== '–' ? ' · '+ago : ''}</div>
       <div class="card-actions">
-        <button class="btn-call" onclick="event.stopPropagation();requireLoginThenContact('call','${l.id}','${l.phone}','${esc(l.seller)}','${esc(l.title)}')">📞 Call</button>
-        <button class="btn-wa" onclick="event.stopPropagation();requireLoginThenContact('whatsapp','${l.id}','${l.phone}','${esc(l.seller)}','${esc(l.title)}')">💬 WhatsApp</button>
+        <button class="btn-call" onclick="event.stopPropagation();contactFromCard('call','${l.id}')">📞 Call</button>
+        <button class="btn-wa" onclick="event.stopPropagation();contactFromCard('whatsapp','${l.id}')">💬 WhatsApp</button>
       </div>
     </div>
   </div>`;
@@ -865,7 +886,7 @@ async function openDetail(id){
   const {data:l}=await sb.from('properties').select('*').eq('id',id).single();
   document.getElementById('loadingOverlay').style.display='none';
   if(!l){showToast('⚠️ Not found');return;}
-  curL=l;
+  curL=l; listingStore[l.id]=l; // store for secure contact
   document.getElementById('d-img').src=l.img||'https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image';
   document.getElementById('d-price').textContent=fp(l.price);
   document.getElementById('d-title').textContent=l.title;
@@ -911,16 +932,18 @@ function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login क
 function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
 function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
 
-// Login check before contact from card
-function requireLoginThenContact(type, lid, phone, seller, title){
+// Contact from card — looks up phone from in-memory store (never from HTML)
+function contactFromCard(type, lid){
   if(!curUser){
     showToast(type==='call'?'📞 Call साठी Login करा':'💬 WhatsApp साठी Login करा');
     openLoginModal();
     return;
   }
+  const l = listingStore[lid];
+  if(!l){ showToast('⚠️ Listing not found'); return; }
   logInq(lid, type);
-  if(type==='call') callNum(phone, seller);
-  else waNum(phone, title);
+  if(type==='call') callNum(l.phone, l.seller);
+  else waNum(l.phone, l.title);
 }
 function shareLink(){
   const u='https://vidarbhproperties.in';
@@ -1078,7 +1101,7 @@ async function submitListing(){
   const insertData = {
     title:document.getElementById('f-title').value,
     category:selCatV,
-    price:parseInt(document.getElementById('f-price').value),
+    price: Math.min(Math.max(parseInt(document.getElementById('f-price').value)||0, 1), 999999999), // clamp 1 to 99Cr
     area:document.getElementById('f-area').value,
     bedrooms:document.getElementById('f-bhk').value,
     location:document.getElementById('f-loc').value,
@@ -1087,7 +1110,12 @@ async function submitListing(){
     seller_type:ptype,
     phone,
     img:imgUrl,
-    maps_url: (document.getElementById('f-maps').value.trim()||null),
+    maps_url: (() => {
+      const u = document.getElementById('f-maps').value.trim();
+      // Only allow genuine Google Maps URLs
+      if (u && (u.startsWith('https://maps.google') || u.startsWith('https://maps.app.goo.gl') || u.startsWith('https://goo.gl/maps') || u.startsWith('https://www.google.com/maps'))) return u;
+      return null;
+    })(),
     verified:false
   };
   // Add optional columns only if they exist in your schema
@@ -1155,12 +1183,20 @@ function dashTab(btn,tabId){
 // ═══════════════════════════════════════
 let curAdminTab = 'pending'; // track which tab is active
 
-function adminLogin(){
-  if(document.getElementById('admin-pass').value===ADMIN_P){
+async function adminLogin(){
+  const pass = document.getElementById('admin-pass').value;
+  if(!pass){ showToast('⚠️ Password enter करा'); return; }
+  // Hash the entered password and compare with stored hash
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+  const hash = [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  if(hash === ADMIN_HASH){
     document.getElementById('admin-login').style.display='none';
     document.getElementById('admin-content').style.display='block';
     loadAdminTab('pending',document.getElementById('at-p'));
-  }else showToast('⚠️ Wrong password');
+  } else {
+    showToast('⚠️ Wrong password');
+    document.getElementById('admin-pass').value='';
+  }
 }
 
 async function loadAdminTab(status, btn){

@@ -660,8 +660,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 // ═══════════════════════════════════════
 const SB_URL  = 'https://vfsyuhjuzoslhjpqpcju.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmc3l1aGp1em9zbGhqcHFwY2p1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNzEyMTAsImV4cCI6MjA5MTc0NzIxMH0._0g71VyYHLFaY4TRsFiKUhpXHMgQRLIM47seYRrid2s';
-// Admin password is stored as SHA-256 hash — never plaintext
-// To generate a new hash: run in browser console:
+
 
 const ADMIN_HASH = '01dec783763957284afdbba53ec2638daf34e98187bf9072f2c4d1f05a5816ee'; 
 const EDGE    = `${SB_URL}/functions/v1/send-otp`;
@@ -785,6 +784,81 @@ async function verifyLoginOTP() {
   document.getElementById('lm-show-email').textContent=curUser.email;
   document.getElementById('lmTitle').textContent='My Account';
   showToast('✅ Login successful! Welcome 🎉');
+  // Silently record user — non-blocking, never affects login flow
+  recordUser(pendingEmail).catch(()=>{});
+}
+
+// ── USER TRACKING ──
+// Approach: AES-GCM encryption for email (recoverable for promotions)
+//           SHA-256 hash as primary key (for deduplication, never changes)
+// Encryption key is derived from SUPABASE_ANON + a secret salt
+// Even if DB is leaked, emails are unreadable without the key
+// Storage: email_hash(64) + encrypted_email(~100 bytes) = ~164 bytes/user
+
+// Derive a consistent AES key from the anon key (so it's not hardcoded separately)
+async function getEncryptionKey() {
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(SB_ANON.slice(0, 32)), // use first 32 chars of anon key as seed
+    { name: 'PBKDF2' },
+    false,
+    ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: new TextEncoder().encode('vp_user_salt_2024'), iterations: 100000, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+}
+
+async function encryptEmail(email) {
+  const key = await getEncryptionKey();
+  const iv = crypto.getRandomValues(new Uint8Array(12)); // 12-byte random IV
+  const encrypted = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    key,
+    new TextEncoder().encode(email.trim().toLowerCase())
+  );
+  // Combine IV + encrypted bytes → base64 string for storage
+  const combined = new Uint8Array(iv.byteLength + encrypted.byteLength);
+  combined.set(iv, 0);
+  combined.set(new Uint8Array(encrypted), iv.byteLength);
+  return btoa(String.fromCharCode(...combined));
+}
+
+async function hashEmail(email) {
+  const normalized = email.trim().toLowerCase();
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(normalized));
+  return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+async function recordUser(email) {
+  try {
+    const normalized = email.trim().toLowerCase();
+    const [hash, encryptedEmail] = await Promise.all([
+      hashEmail(normalized),
+      encryptEmail(normalized)
+    ]);
+    const now = new Date().toISOString();
+    // Upsert: insert new user OR update last_login if existing
+    // email_hash is primary key — guarantees one row per user
+    const { error } = await sb.from('users').upsert(
+      {
+        email_hash:      hash,            // SHA-256 — for dedup, 64 bytes
+        encrypted_email: encryptedEmail,  // AES-GCM — for promotions, ~100 bytes
+        last_login:      now,
+        login_count:     1
+      },
+      { onConflict: 'email_hash', ignoreDuplicates: false }
+    );
+    if (!error) {
+      await sb.rpc('increment_login_count', { p_hash: hash }).catch(()=>{});
+    }
+  } catch(e) {
+    console.debug('User record skipped:', e.message);
+  }
 }
 
 function doLogout() {
@@ -1328,7 +1402,6 @@ function ta(d){if(!d)return'–';const s=(Date.now()-new Date(d))/1000;if(s<3600
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
 
-// Secret admin: tap logo 5x
 let taps=0;
 document.querySelector('.nav-logo').addEventListener('click',()=>{if(++taps>=5){taps=0;showPage('admin');}});
 

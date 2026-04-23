@@ -525,7 +525,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <div style="font-size:11px;opacity:0.7;margin-top:2px" id="dash-email">–</div>
     <div class="dash-stats-row">
       <div class="dash-stat-card"><div class="dash-stat-n" id="ds-l">0</div><div class="dash-stat-l">Listings</div></div>
-      <div class="dash-stat-card"><div class="dash-stat-n">–</div><div class="dash-stat-l">Views</div></div>
+      <div class="dash-stat-card"><div class="dash-stat-n" id="ds-v">0</div><div class="dash-stat-l">Views</div></div>
       <div class="dash-stat-card"><div class="dash-stat-n" id="ds-i">0</div><div class="dash-stat-l">Inquiries</div></div>
     </div>
   </div>
@@ -891,7 +891,12 @@ async function openDetail(id){
   const {data:l}=await sb.from('properties').select('*').eq('id',id).single();
   document.getElementById('loadingOverlay').style.display='none';
   if(!l){showToast('⚠️ Not found');return;}
-  sb.rpc('increment_view', { property_id: id }).catch(console.error);
+  
+  // Trigger view counter and log success/failure to console
+  sb.rpc('increment_view', { property_id: id })
+    .then(() => console.log("✅ View successfully incremented in DB"))
+    .catch(err => console.error("❌ View increment failed:", err));
+
   curL=l; listingStore[l.id]=l; 
   
   const imgList = l.img ? l.img.split(',') : [];
@@ -961,6 +966,67 @@ async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_i
 // ── SAVED LISTINGS (localStorage) ──
 function getSaved(){ try{ return JSON.parse(localStorage.getItem('vp_saved')||'[]'); }catch(e){ return []; } }
 function setSaved(arr){ localStorage.setItem('vp_saved', JSON.stringify(arr)); }
+
+// ADD THIS NEW FUNCTION TO FETCH INQUIRIES
+async function loadMyInquiries() {
+  const grid = document.getElementById('myInqGrid');
+  grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">लोड होत आहे...</div>';
+  
+  try {
+    // Get the properties owned by this user
+    const { data: myProps, error: propErr } = await sb.from('properties').select('id, title').eq('user_email', curUser.email).order('created_at', {ascending: false}).eq('user_email', curUser.email).limit(50);
+    if (propErr) throw new Error("Properties fetch failed: " + propErr.message);
+    
+    if (!myProps || myProps.length === 0) {
+      document.getElementById('ds-i').textContent = '0';
+      grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही Inquiry नाही</div>';
+      return;
+    }
+
+    const propIds = myProps.map(p => p.id);
+    
+    // Fetch inquiries for those properties
+    const { data: inqs, error: inqErr } = await sb.from('inquiries').select('*').in('listing_id', propIds).order('created_at', {ascending: false});
+    if (inqErr) throw new Error("Inquiries fetch failed: " + inqErr.message);
+    
+    console.log("✅ Successfully fetched inquiries:", inqs);
+    
+    // Update the counter on the dashboard
+    document.getElementById('ds-i').textContent = inqs?.length || 0;
+
+    if (!inqs || inqs.length === 0) {
+      grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही Inquiry नाही</div>';
+      return;
+    }
+
+    // Draw the inquiries on the screen with the User's Contact Info
+    grid.innerHTML = inqs.map(iq => {
+      const prop = myProps.find(p => p.id === iq.listing_id);
+      
+      // Grab the logged-in user's email/phone saved during the inquiry
+      const inquirer = iq.user_phone; 
+
+      return `
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">${esc(prop?.title || 'Unknown Property')}</div>
+          
+          <div style="background:var(--bg);border-radius:6px;padding:8px;margin-bottom:8px;border:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--muted);text-transform:font-weight:700;margin-bottom:2px;">Inquiry By:</div>
+            <div style="font-size:13px;font-weight:700;color:var(--brand);">${esc(inquirer)}</div>
+          </div>
+
+          <div style="font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;color:var(--dark);">${iq.contact_type === 'call' ? '📞 Phone Call' : '💬 WhatsApp'}</span>
+            <span>${ta(iq.created_at)}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error("❌ Dashboard Inquiry Error:", err);
+    grid.innerHTML = `<div style="padding:20px;text-align:center;color:red;font-size:12px">${err.message}</div>`;
+  }
+}
 
 function toggleSaveFromCard(id, btn){
   const saves = getSaved();
@@ -1112,7 +1178,8 @@ async function submitListing(){
       if (u && (u.includes('maps.google') || u.includes('goo.gl/maps') || u.includes('maps.app.goo.gl'))) return u;
       return null;
     })(),
-    verified:false
+    verified:false,
+    user_email: curUser.email
   };
   
   try { Object.assign(insertData, { status:'pending', badge:ptype==='Owner'?'Owner':'Broker', badge_class:ptype==='Owner'?'owner':'' }); } catch(e){}
@@ -1137,27 +1204,46 @@ function updateDashUI(){
   document.getElementById('p-name').textContent=em.split('@')[0];
   document.getElementById('p-email').textContent=em;
   loadMyListings();
+  loadMyInquiries();
 }
 
+// Updated loadMyListings (Now shows individual views on each card)
 async function loadMyListings(){
   const grid=document.getElementById('myListingsGrid');
   grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">जाहिराती लोड होत आहेत...</div>';
-  const {data}=await sb.from('properties').select('*').order('created_at',{ascending:false}).limit(20);
-  document.getElementById('ds-l').textContent=data?.length||0;
   
-  // ADD THESE TWO NEW LINES TO CALCULATE AND SHOW VIEWS:
-  const totalViews = data?.reduce((sum, item) => sum + (item.views || 0), 0) || 0;
-  document.querySelectorAll('.dash-stat-n')[1].textContent = totalViews;
+  // Fetch only this user's properties
+  const {data, error} = await sb.from('properties')
+    .select('*')
+    .eq('user_email', curUser.email)
+    .order('created_at',{ascending:false})
+    .limit(20);
+    
+  if (error) console.error("❌ Error fetching properties for dashboard:", error);
+
+  // Update Total Listings Counter
+  document.getElementById('ds-l').textContent=data?.length||0;
+
+  // Update Total Views Counter safely
+  const totalViews = data?.reduce((sum, item) => sum + (Number(item.views) || 0), 0) || 0;
+  document.getElementById('ds-v').textContent = totalViews;
 
   if(!data?.length){grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही जाहिरात नाही</div>';return;}
+  
+  // Draw the cards WITH the individual view counter
   grid.innerHTML=data.map(l=>`
     <div class="my-listing-item">
       <img class="my-listing-img" src="${(l.img?l.img.split(',')[0]:'')||'https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'}" alt="" onerror="this.src='https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'">
       <div class="my-listing-body">
         <div class="my-listing-title">${esc(l.title)}</div>
         <div class="my-listing-price">${fp(l.price)}</div>
-        <div style="margin-top:3px"><span class="status-badge status-${l.status}">${l.status==='approved'?'● Active':l.status==='pending'?'⏳ Pending':'✓ Sold'}</span></div>
-        <div class="my-listing-actions">
+        
+        <div style="margin-top:4px; display:flex; gap:10px; align-items:center;">
+          <span class="status-badge status-${l.status}">${l.status==='approved'?'● Active':l.status==='pending'?'⏳ Pending':'✓ Sold'}</span>
+          <span style="font-size:11px; font-weight:700; color:var(--muted);">👁️ ${l.views || 0} Views</span>
+        </div>
+        
+        <div class="my-listing-actions" style="margin-top:8px;">
           <button class="btn-sm btn-sm-del" onclick="delListing('${l.id}')">🗑 Delete</button>
         </div>
       </div>

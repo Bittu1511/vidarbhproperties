@@ -249,7 +249,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   <div style="font-size:14px;font-weight:700;color:var(--brand)">लोड होत आहे...</div>
 </div>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo" onclick="showPage('home')">
     <div class="nav-logo-icon">VP</div>
@@ -265,7 +264,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </nav>
 
-<!-- LOGIN MODAL -->
 <div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeModal('loginOverlay')">
   <div class="modal-box">
     <div class="modal-hdr">
@@ -273,7 +271,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <button class="modal-close" onclick="closeModal('loginOverlay')">✕</button>
     </div>
     <div class="modal-sub" id="lmSub">Email OTP ने login करा • No password needed</div>
-    <!-- s1: email input -->
     <div id="lm-s1">
       <div class="form-group">
         <label class="form-label">Email Address</label>
@@ -282,16 +279,15 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       </div>
       <button class="btn-next" id="lmBtn" onclick="sendLoginOTP()">📧 OTP पाठवा</button>
     </div>
-    <!-- s2: OTP verify -->
     <div id="lm-s2" style="display:none">
       <div class="info-box info-green">📧 Gmail तपासा! <strong>6-digit OTP</strong> पाठवला.<br>Spam folder पण तपासा.</div>
       <div class="otp-inputs" id="lm-otp">
-        <input class="otp-input" maxlength="1" oninput="onav(this,0,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,1,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,2,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,3,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,4,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,5,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,0,'lm-otp')" onkeydown="otpKey(event,this,0,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,1,'lm-otp')" onkeydown="otpKey(event,this,1,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,2,'lm-otp')" onkeydown="otpKey(event,this,2,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,3,'lm-otp')" onkeydown="otpKey(event,this,3,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,4,'lm-otp')" onkeydown="otpKey(event,this,4,'lm-otp')">
+        <input class="otp-input" maxlength="1" oninput="onav(this,5,'lm-otp')" onkeydown="otpKey(event,this,5,'lm-otp')">
       </div>
       <button class="btn-next" onclick="verifyLoginOTP()">✓ Verify & Login</button>
       <div style="text-align:center;margin-top:10px;display:flex;gap:16px;justify-content:center">
@@ -299,7 +295,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
         <button style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:inherit" onclick="document.getElementById('lm-s1').style.display='block';document.getElementById('lm-s2').style.display='none'">← बदलवा</button>
       </div>
     </div>
-    <!-- s3: logged in -->
     <div id="lm-s3" style="display:none;text-align:center;padding:8px 0">
       <div style="font-size:44px;margin-bottom:10px">✅</div>
       <div style="font-size:16px;font-weight:800;color:var(--dark)">Login झाले!</div>
@@ -312,7 +307,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <div class="hero">
     <div class="hero-title" id="hero-title">परतवाडा / अचलपूर मधील<br>मालमत्ता शोधा 🏡</div>
@@ -338,7 +332,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
   <div class="filter-bar">
     <button class="filter-chip active" onclick="setPrice(0,9e9,this)">सर्व</button>
-    <button class="filter-chip" onclick="setPrice(0,500000,this)">&lt;₹5L</button>
+    <button class="filter-chip" onclick="setPrice(0,500000,this)"><₹5L</button>
     <button class="filter-chip" onclick="setPrice(500000,1000000,this)">₹5–10L</button>
     <button class="filter-chip" onclick="setPrice(1000000,2500000,this)">₹10–25L</button>
     <button class="filter-chip" onclick="setPrice(2500000,5000000,this)">₹25–50L</button>
@@ -356,7 +350,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- DETAIL PAGE -->
 <div id="page-detail" class="page">
   <div class="detail-gallery" style="position:relative">
     <button class="detail-back" onclick="showPage('home')">←</button>
@@ -396,7 +389,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- POST LISTING PAGE -->
 <div id="page-post" class="page">
   <div style="background:var(--brand);padding:16px;color:#fff">
     <div style="display:flex;align-items:center;gap:10px">
@@ -411,7 +403,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <div class="wizard-step" id="ws-3">3. फोटो</div>
       <div class="wizard-step" id="ws-4">4. Submit</div>
     </div>
-    <!-- Step 1 -->
     <div class="form-section active" id="fs-1">
       <div class="form-group">
         <div class="form-label">मालमत्तेचा प्रकार <span class="req">*</span></div>
@@ -437,7 +428,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       </div>
       <button class="btn-next" onclick="goStep(2)">पुढे जा | Next →</button>
     </div>
-    <!-- Step 2 -->
     <div class="form-section" id="fs-2">
       <div class="form-group">
         <label class="form-label">Title / शीर्षक <span class="req">*</span></label>
@@ -464,7 +454,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
         <div class="form-group">
           <label class="form-label">Property Age</label>
           <select class="form-select" id="f-age">
-            <option>New</option><option>&lt;5 Years</option><option>5–10 Years</option><option>10+ Years</option>
+            <option>New</option><option><5 Years</option><option>5–10 Years</option><option>10+ Years</option>
           </select>
         </div>
       </div>
@@ -484,7 +474,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <button class="btn-next" onclick="goStep(3)">पुढे जा | Next →</button>
       <button class="btn-prev" onclick="goStep(1)">← मागे</button>
     </div>
-    <!-- Step 3 -->
     <div class="form-section" id="fs-3">
       <div class="form-group">
         <label class="form-label">फोटो <span class="hint">(max 5, optional)</span></label>
@@ -500,7 +489,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
       <button class="btn-next" onclick="goStep(4)">पुढे जा | Next →</button>
       <button class="btn-prev" onclick="goStep(2)">← मागे</button>
     </div>
-    <!-- Step 4 -->
     <div class="form-section" id="fs-4">
       <div id="fs4-nologin" style="display:none;text-align:center;padding:24px 0">
         <div style="font-size:44px;margin-bottom:12px">🔐</div>
@@ -530,7 +518,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- DASHBOARD PAGE -->
 <div id="page-dash" class="page">
   <div class="dash-header">
     <div style="font-size:13px;opacity:0.8">नमस्कार 👋</div>
@@ -575,7 +562,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- ADMIN PAGE -->
 <div id="page-admin" class="page">
   <div style="background:var(--dark);padding:16px;color:#fff;display:flex;align-items:center;gap:10px">
     <button onclick="showPage('home')" style="background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">←</button>
@@ -597,7 +583,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- SUCCESS PAGE -->
 <div id="page-success" class="page">
   <div class="success-screen">
     <div class="success-icon">🎉</div>
@@ -611,7 +596,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
-<!-- SAVED PAGE -->
 <div id="page-saved" class="page">
   <div style="background:var(--brand);padding:16px;color:#fff;display:flex;align-items:center;gap:10px">
     <div style="font-size:18px;font-weight:800">🔖 Saved Listings</div>
@@ -628,7 +612,6 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   <button class="bn-item" id="bn-dash" onclick="showPage('dash')"><span class="bn-icon">👤</span><span class="bn-label">My Ads</span></button>
 </div>
 
-<!-- FILTER SHEET -->
 <div class="sheet-overlay" id="filterSheet" onclick="if(event.target===this)closeSheet()">
   <div class="sheet">
     <div class="sheet-handle"></div>
@@ -655,6 +638,17 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 <div class="toast" id="toast"></div>
 
 <script>
+/*
+ * 🚨 CRITICAL SECURITY NOTICE:
+ * Client-side admin verification (using ADMIN_HASH below) is NOT secure.
+ * Because the Supabase Anon key is public, ANYONE can bypass this HTML page
+ * and query your database directly. You MUST enforce Row Level Security (RLS)
+ * in your Supabase SQL editor to protect the 'properties' table:
+ * * CREATE POLICY "Admin Full Access" ON properties FOR ALL USING (
+ * auth.jwt() ->> 'email' = 'YOUR_ADMIN_EMAIL@GMAIL.COM'
+ * );
+ */
+
 // ═══════════════════════════════════════
 //  CONFIG — Your Supabase credentials
 // ═══════════════════════════════════════
@@ -680,19 +674,17 @@ const PG=10;
 //  INIT
 // ═══════════════════════════════════════
 async function init() {
-  // Restore user from localStorage
   const saved = localStorage.getItem('vp_user');
   if (saved) {
     try {
       const u = JSON.parse(saved);
-      // Validate session: must have email, sessionToken, and be less than 30 days old
       const age = Date.now() - (u.loginTime || 0);
-      const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+      const maxAge = 30 * 24 * 60 * 60 * 1000; 
       if (u.email && u.sessionToken && age < maxAge) {
         curUser = u;
         updateNavBtn();
       } else {
-        localStorage.removeItem('vp_user'); // expired or invalid
+        localStorage.removeItem('vp_user'); 
       }
     } catch(e){ localStorage.removeItem('vp_user'); }
   }
@@ -701,23 +693,21 @@ async function init() {
 }
 
 // ═══════════════════════════════════════
-//  OTP SYSTEM — Resend via Edge Function
+//  OTP SYSTEM
 // ═══════════════════════════════════════
 let pendingEmail='';
 
-// ── SEND OTP: frontend only calls backend — OTP generation, storage & sending is on Edge Function ──
 async function sendOTPvia(email) {
   const r = await fetch(EDGE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
-    body: JSON.stringify({ email })   // backend generates + stores + emails OTP
+    body: JSON.stringify({ email }) 
   });
   const j = await r.json();
   if (!r.ok) throw new Error(j.error || 'Send failed: ' + r.status);
   return true;
 }
 
-// ── VERIFY OTP: backend checks expiry & deletes — no DB access from frontend ──
 async function verifyOTP(email, token) {
   const r = await fetch(EDGE + '?action=verify', {
     method: 'POST',
@@ -775,7 +765,6 @@ async function verifyLoginOTP() {
   if (token.length<6) { showToast('⚠️ 6-digit OTP enter करा'); return; }
   const ok=await verifyOTP(pendingEmail,token);
   if (!ok) { showToast('⚠️ Wrong or expired OTP! Resend करा.'); return; }
-  // Generate a session token so localStorage cannot be manually faked
   const sessionToken = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36)+Date.now().toString(36));
   curUser={email:pendingEmail, id:pendingEmail, sessionToken, loginTime: Date.now()};
   localStorage.setItem('vp_user',JSON.stringify(curUser));
@@ -784,78 +773,17 @@ async function verifyLoginOTP() {
   document.getElementById('lm-show-email').textContent=curUser.email;
   document.getElementById('lmTitle').textContent='My Account';
   showToast('✅ Login successful! Welcome 🎉');
-  // Silently record user — non-blocking, never affects login flow
   recordUser(pendingEmail).catch(()=>{});
-}
-
-// ── USER TRACKING ──
-// Approach: AES-GCM encryption for email (recoverable for promotions)
-//           SHA-256 hash as primary key (for deduplication, never changes)
-// Encryption key is derived from SUPABASE_ANON + a secret salt
-// Even if DB is leaked, emails are unreadable without the key
-// Storage: email_hash(64) + encrypted_email(~100 bytes) = ~164 bytes/user
-
-// Derive a consistent AES key from the anon key (so it's not hardcoded separately)
-async function getEncryptionKey() {
-  const keyMaterial = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(SB_ANON.slice(0, 32)), // use first 32 chars of anon key as seed
-    { name: 'PBKDF2' },
-    false,
-    ['deriveKey']
-  );
-  return crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt: new TextEncoder().encode('vp_user_salt_2024'), iterations: 100000, hash: 'SHA-256' },
-    keyMaterial,
-    { name: 'AES-GCM', length: 256 },
-    false,
-    ['encrypt', 'decrypt']
-  );
-}
-
-async function encryptEmail(email) {
-  const key = await getEncryptionKey();
-  const iv = crypto.getRandomValues(new Uint8Array(12)); // 12-byte random IV
-  const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    new TextEncoder().encode(email.trim().toLowerCase())
-  );
-  // Combine IV + encrypted bytes → base64 string for storage
-  const combined = new Uint8Array(iv.byteLength + encrypted.byteLength);
-  combined.set(iv, 0);
-  combined.set(new Uint8Array(encrypted), iv.byteLength);
-  return btoa(String.fromCharCode(...combined));
-}
-
-async function hashEmail(email) {
-  const normalized = email.trim().toLowerCase();
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(normalized));
-  return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 
 async function recordUser(email) {
   try {
     const normalized = email.trim().toLowerCase();
-    const [hash, encryptedEmail] = await Promise.all([
-      hashEmail(normalized),
-      encryptEmail(normalized)
-    ]);
-    const now = new Date().toISOString();
-    // Upsert: insert new user OR update last_login if existing
-    // email_hash is primary key — guarantees one row per user
-    const { error } = await sb.from('users').upsert(
-      {
-        email_hash:      hash,            // SHA-256 — for dedup, 64 bytes
-        encrypted_email: encryptedEmail,  // AES-GCM — for promotions, ~100 bytes
-        last_login:      now,
-        login_count:     1
-      },
-      { onConflict: 'email_hash', ignoreDuplicates: false }
-    );
-    if (!error) {
-      await sb.rpc('increment_login_count', { p_hash: hash }).catch(()=>{});
-    }
+    await fetch(`${SB_URL}/functions/v1/record-user`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
+      body: JSON.stringify({ email: normalized })
+    });
   } catch(e) {
     console.debug('User record skipped:', e.message);
   }
@@ -895,7 +823,6 @@ async function loadStats() {
 // ═══════════════════════════════════════
 //  LISTINGS
 // ═══════════════════════════════════════
-// In-memory listing store — phones never go into HTML attributes
 const listingStore = {};
 
 async function loadListings(reset=false) {
@@ -927,7 +854,11 @@ async function loadMore(){await loadListings(false);}
 function skels(){return Array(3).fill(0).map(()=>`<div class="skel-card" style="margin-bottom:0"><div class="skel" style="height:180px"></div><div style="padding:14px"><div class="skel" style="height:22px;width:55%;margin-bottom:8px"></div><div class="skel" style="height:15px;width:80%;margin-bottom:10px"></div><div class="skel" style="height:38px"></div></div></div>`).join('');}
 
 function cardH(l,i){
-  const p=fp(l.price),img=l.img||'https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo',ago=ta(l.created_at),bc=l.badge_class||'';
+  const p=fp(l.price);
+  const imgList = l.img ? l.img.split(',') : [];
+  const img = imgList[0] || 'https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo';
+  const ago=ta(l.created_at), bc=l.badge_class||'';
+  
   return `<div class="listing-card" style="animation-delay:${i*.05}s" onclick="openDetail('${l.id}')">
     <div class="card-img-wrap">
       <img src="${img}" alt="${esc(l.title)}" loading="lazy" onerror="this.src='https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo'">
@@ -960,8 +891,12 @@ async function openDetail(id){
   const {data:l}=await sb.from('properties').select('*').eq('id',id).single();
   document.getElementById('loadingOverlay').style.display='none';
   if(!l){showToast('⚠️ Not found');return;}
-  curL=l; listingStore[l.id]=l; // store for secure contact
-  document.getElementById('d-img').src=l.img||'https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image';
+  sb.rpc('increment_view', { property_id: id }).catch(console.error);
+  curL=l; listingStore[l.id]=l; 
+  
+  const imgList = l.img ? l.img.split(',') : [];
+  document.getElementById('d-img').src=imgList[0] || 'https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image';
+  
   document.getElementById('d-price').textContent=fp(l.price);
   document.getElementById('d-title').textContent=l.title;
   document.getElementById('d-cat').textContent=l.category;
@@ -970,7 +905,6 @@ async function openDetail(id){
   document.getElementById('d-area').textContent=l.area||'–';
   document.getElementById('d-type').textContent=l.category;
   document.getElementById('d-loc').textContent=l.location;
-  // Fix Posted date — show properly even if created_at is null
   document.getElementById('d-date').textContent = l.created_at ? ta(l.created_at) : 'Recently';
   document.getElementById('d-desc').textContent=l.desc||'No description.';
   document.getElementById('d-seller').textContent=l.seller||'–';
@@ -978,7 +912,6 @@ async function openDetail(id){
   document.getElementById('d-sver').textContent=l.verified?'✓ Phone Verified':'Not verified yet';
   document.getElementById('d-avatar').textContent=l.seller_type==='Broker'?'🤝':'👤';
 
-  // Google Maps — show link if available, else fallback text
   const mapWrap = document.getElementById('d-map-wrap');
   if(l.maps_url && l.maps_url.startsWith('http')){
     mapWrap.innerHTML = `
@@ -995,7 +928,6 @@ async function openDetail(id){
     mapWrap.innerHTML='<span style="font-size:14px;font-weight:700;color:#1976D2">📍 '+esc(l.location)+'<br><span style="font-size:11px;font-weight:400;opacity:0.7">Map link available after seller adds it</span></span>';
   }
 
-  // Update save button state
   const saves = getSaved();
   document.getElementById('d-save-btn').textContent = saves.includes(id) ? '❤️' : '🔖';
 
@@ -1006,7 +938,6 @@ function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login क
 function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
 function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
 
-// Contact from card — looks up phone from in-memory store (never from HTML)
 function contactFromCard(type, lid){
   if(!curUser){
     showToast(type==='call'?'📞 Call साठी Login करा':'💬 WhatsApp साठी Login करा');
@@ -1075,7 +1006,6 @@ async function renderSavedPage(){
   grid.innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px">Loading...</div>';
   const {data} = await sb.from('properties').select('*').in('id', saves);
   if(!data?.length){ grid.innerHTML='<div class="saved-empty"><div style="font-size:48px">😕</div><div style="margin-top:8px;font-weight:700">Listings not found</div></div>'; return; }
-  // Render as cards
   const tmp = document.createElement('div');
   tmp.className = 'listings-grid';
   data.forEach((l,i)=>{ const d=document.createElement('div'); d.innerHTML=cardH(l,i); tmp.appendChild(d.firstElementChild); });
@@ -1092,7 +1022,6 @@ function checkLoginPost(){
 }
 
 function goStep(n){
-  // Step 2 → 3: validate step 2 fields (Details)
   if(n===3){
     if(!document.getElementById('f-title').value){showToast('⚠️ Title भरा');return;}
     if(!document.getElementById('f-price').value){showToast('⚠️ Price भरा');return;}
@@ -1141,29 +1070,23 @@ async function submitListing(){
   const btn=document.getElementById('submitBtn');
   btn.disabled=true;
 
-  // ── UPLOAD IMAGE ──
-  let imgUrl=null;
-  if(photoFiles.length>0){
-    btn.textContent='⏳ Photo upload होत आहे...';
+  // ── UPLOAD IMAGES ──
+  let imgUrls = [];
+  if(photoFiles.length > 0){
+    btn.textContent='⏳ Photos upload होत आहेत...';
     try {
-      const f=photoFiles[0];
-      const ext=(f.name.split('.').pop()||'jpg').toLowerCase();
-      const fn=`listings/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-
-      const {data:upData, error:ue}=await sb.storage
-        .from('property-images')
-        .upload(fn, f, {cacheControl:'3600', upsert:false, contentType:f.type});
-
-      if(ue){
-        // Show exact upload error so we can diagnose
-        console.error('Upload error:', ue);
-        showToast('⚠️ Photo upload failed: '+ue.message);
-        // Continue without image rather than blocking the whole submission
-      } else {
+      const uploadPromises = photoFiles.map(async (f) => {
+        const ext = (f.name.split('.').pop()||'jpg').toLowerCase();
+        const fn = `listings/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const {data, error:ue} = await sb.storage.from('property-images').upload(fn, f, {cacheControl:'3600', upsert:false, contentType:f.type});
+        
+        if (ue) throw ue;
         const {data:{publicUrl}} = sb.storage.from('property-images').getPublicUrl(fn);
-        imgUrl = publicUrl;
-        showToast('✅ Photo uploaded!');
-      }
+        return publicUrl;
+      });
+      
+      imgUrls = await Promise.all(uploadPromises);
+      showToast('✅ Photos uploaded!');
     } catch(uploadEx){
       console.error('Upload exception:', uploadEx);
       showToast('⚠️ Photo error: '+uploadEx.message);
@@ -1175,7 +1098,7 @@ async function submitListing(){
   const insertData = {
     title:document.getElementById('f-title').value,
     category:selCatV,
-    price: Math.min(Math.max(parseInt(document.getElementById('f-price').value)||0, 1), 999999999), // clamp 1 to 99Cr
+    price: Math.min(Math.max(parseInt(document.getElementById('f-price').value)||0, 1), 999999999), 
     area:document.getElementById('f-area').value,
     bedrooms:document.getElementById('f-bhk').value,
     location:document.getElementById('f-loc').value,
@@ -1183,20 +1106,15 @@ async function submitListing(){
     seller:name,
     seller_type:ptype,
     phone,
-    img:imgUrl,
+    img: imgUrls.length ? imgUrls.join(',') : null,
     maps_url: (() => {
       const u = document.getElementById('f-maps').value.trim();
-      // Only allow genuine Google Maps URLs
-      if (u && (u.startsWith('https://maps.google') || u.startsWith('https://maps.app.goo.gl') || u.startsWith('https://goo.gl/maps') || u.startsWith('https://www.google.com/maps'))) return u;
+      if (u && (u.includes('maps.google') || u.includes('goo.gl/maps') || u.includes('maps.app.goo.gl'))) return u;
       return null;
     })(),
     verified:false
   };
-  // Add optional columns only if they exist in your schema
-  // Run the SQL below in Supabase SQL Editor if these columns are missing:
-  // ALTER TABLE properties ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';
-  // ALTER TABLE properties ADD COLUMN IF NOT EXISTS badge text;
-  // ALTER TABLE properties ADD COLUMN IF NOT EXISTS badge_class text;
+  
   try { Object.assign(insertData, { status:'pending', badge:ptype==='Owner'?'Owner':'Broker', badge_class:ptype==='Owner'?'owner':'' }); } catch(e){}
   const {error:ie}=await sb.from('properties').insert(insertData);
   btn.disabled=false;btn.textContent='🎉 जाहिरात सबमिट करा';
@@ -1222,18 +1140,19 @@ function updateDashUI(){
 }
 
 async function loadMyListings(){
-  // Load listings by user email stored in a separate user_email column
-  // Since we store phone number in properties, we load ALL pending+approved for now
-  // In production, add a user_email column to properties table
   const grid=document.getElementById('myListingsGrid');
   grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">जाहिराती लोड होत आहेत...</div>';
-  // Query by matching email if you add user_email column, else show recent pending
   const {data}=await sb.from('properties').select('*').order('created_at',{ascending:false}).limit(20);
   document.getElementById('ds-l').textContent=data?.length||0;
+  
+  // ADD THESE TWO NEW LINES TO CALCULATE AND SHOW VIEWS:
+  const totalViews = data?.reduce((sum, item) => sum + (item.views || 0), 0) || 0;
+  document.querySelectorAll('.dash-stat-n')[1].textContent = totalViews;
+
   if(!data?.length){grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही जाहिरात नाही</div>';return;}
   grid.innerHTML=data.map(l=>`
     <div class="my-listing-item">
-      <img class="my-listing-img" src="${l.img||'https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'}" alt="" onerror="this.src='https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'">
+      <img class="my-listing-img" src="${(l.img?l.img.split(',')[0]:'')||'https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'}" alt="" onerror="this.src='https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'">
       <div class="my-listing-body">
         <div class="my-listing-title">${esc(l.title)}</div>
         <div class="my-listing-price">${fp(l.price)}</div>
@@ -1255,12 +1174,11 @@ function dashTab(btn,tabId){
 // ═══════════════════════════════════════
 //  ADMIN
 // ═══════════════════════════════════════
-let curAdminTab = 'pending'; // track which tab is active
+let curAdminTab = 'pending'; 
 
 async function adminLogin(){
   const pass = document.getElementById('admin-pass').value;
   if(!pass){ showToast('⚠️ Password enter करा'); return; }
-  // Hash the entered password and compare with stored hash
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
   const hash = [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
   if(hash === ADMIN_HASH){
@@ -1289,7 +1207,7 @@ async function loadAdminTab(status, btn){
 
   grid.innerHTML = data.map(l=>`
     <div class="admin-row" id="arow-${l.id}">
-      <img src="${l.img||'https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'}" onerror="this.src='https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'" alt="">
+      <img src="${(l.img?l.img.split(',')[0]:'')||'https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'}" onerror="this.src='https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'" alt="">
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:700">${esc(l.title)}</div>
         <div style="font-size:12px;color:var(--muted)">${fp(l.price)} · ${esc(l.location)}</div>
@@ -1310,27 +1228,23 @@ async function adminUpd(id, status, verify){
   const row = document.getElementById('arow-'+id);
   if(row){ row.style.opacity='0.5'; row.style.pointerEvents='none'; }
 
-  // Build update object
   const upd = { status: status };
   if(verify) upd.verified = true;
 
-  // Try update — show full error if it fails
   const { data: updData, error } = await sb
     .from('properties')
     .update(upd)
     .eq('id', id)
-    .select(); // .select() forces Supabase to return the updated row so we can confirm it worked
+    .select();
 
   if(error){
-    // Show the FULL error message so we know exactly what's wrong
-    alert('Update failed!\n\nError: ' + error.message + '\n\nCode: ' + error.code + '\n\nHint: ' + (error.hint||'none') + '\n\nFix: Run this SQL in Supabase:\nALTER TABLE properties ADD COLUMN IF NOT EXISTS status text DEFAULT \'pending\';\nALTER TABLE properties ADD COLUMN IF NOT EXISTS badge text;\nALTER TABLE properties ADD COLUMN IF NOT EXISTS badge_class text;\nThen go to Supabase Settings > API > Reload schema cache');
+    alert('Update failed!\n\nError: ' + error.message + '\n\nCode: ' + error.code + '\n\nHint: ' + (error.hint||'none'));
     if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
     return;
   }
 
-  // Confirm the update actually happened
   if(!updData || updData.length === 0){
-    alert('Update returned no rows! The listing ID may be wrong or RLS is blocking the update.\n\nMake sure you have a policy:\nCREATE POLICY "Allow all updates" ON properties FOR UPDATE USING (true) WITH CHECK (true);');
+    alert('Update returned no rows! The listing ID may be wrong or RLS is blocking the update.');
     if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
     return;
   }
@@ -1340,12 +1254,8 @@ async function adminUpd(id, status, verify){
     status==='rejected' ? '✗ Rejected' : '↩ Moved to pending'
   );
 
-  // If approved — reload home listings so it shows immediately
-  if(status === 'approved') {
-    loadListings(true);
-  }
+  if(status === 'approved') loadListings(true);
 
-  // Reload current admin tab
   const tabMap = { pending:'at-p', approved:'at-a', rejected:'at-r', all:'at-all' };
   const tabBtn = document.getElementById(tabMap[curAdminTab] || 'at-p');
   if(tabBtn) await loadAdminTab(curAdminTab, tabBtn);
@@ -1392,6 +1302,17 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 function openSheet(){document.getElementById('filterSheet').classList.add('open');}
 function closeSheet(){document.getElementById('filterSheet').classList.remove('open');}
 function onav(el,pos,wid){if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
+
+function otpKey(e, el, pos, wid) {
+  if (e.key === 'Backspace' && !el.value && pos > 0) {
+    const ins = document.querySelectorAll(`#${wid} .otp-input`);
+    if (ins[pos - 1]) {
+      ins[pos - 1].focus();
+      ins[pos - 1].value = '';
+    }
+  }
+}
+
 function toggleLang(){lang=lang==='mr'?'en':'mr';document.getElementById('langBtn').textContent=lang==='mr'?'मराठी':'English';document.getElementById('hero-title').innerHTML=lang==='mr'?'परतवाडा / अचलपूर मधील<br>मालमत्ता शोधा 🏡':'Find Property in<br>Paratwada / Achalpur 🏡';document.getElementById('hero-sub').textContent=lang==='mr'?'जमीन, घर, दुकान – थेट मालकाशी संपर्क':'Land, House, Shop – Direct owner contact';showToast(lang==='mr'?'मराठी भाषा सक्रिय':'English active');}
 
 // ═══════════════════════════════════════

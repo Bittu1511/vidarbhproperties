@@ -207,6 +207,25 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
 @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
 .sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
 #page-home{padding-bottom:80px;}
+/* ── NARROW MOBILE FIX ── */
+.btn-lang, .btn-post-nav, .btn-login-nav {
+  white-space: nowrap; /* Forces text to stay on one line */
+  flex-shrink: 0;
+}
+.btn-login-nav {
+  flex-shrink: 1; /* Allows the email address to shrink if needed */
+}
+
+@media (max-width: 395px) {
+  nav { padding: 0 6px; }
+  .nav-logo-icon { width: 28px; height: 28px; font-size: 11px; }
+  .nav-logo-text { font-size: 13px; }
+  .nav-logo-sub { font-size: 8px; }
+  .nav-actions { gap: 4px; }
+  .btn-lang { padding: 4px 6px; font-size: 10px; }
+  .btn-login-nav { padding: 5px 6px; font-size: 11px; max-width: 85px; }
+  .btn-post-nav { padding: 5px 8px; font-size: 11px; }
+}
 /* ── DESKTOP RESPONSIVE ── */
 @media(min-width:768px){
   body{background:var(--bg);}

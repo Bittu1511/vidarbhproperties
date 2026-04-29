@@ -257,8 +257,16 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   #page-home{padding-bottom:80px;}
   #page-post .form-wizard{max-width:100%;}
 }
-/* SAVED */
-.saved-empty{text-align:center;padding:48px 24px;color:var(--muted);}
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;display:none;align-items:center;justify-content:center;cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;animation:lbIn 0.2s ease;}
+@keyframes lbIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+.lightbox-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:501;backdrop-filter:blur(4px);}
+.lightbox-close:hover{background:rgba(255,255,255,0.25);}
+.lightbox-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.4);font-size:12px;font-family:inherit;pointer-events:none;white-space:nowrap;}
+.detail-gallery img{cursor:zoom-in;}
+
 </style>
 </head>
 <body>
@@ -369,10 +377,17 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Property Image" onclick="event.stopPropagation()">
+  <div class="lightbox-hint">Tap anywhere to close · Pinch to zoom</div>
+</div>
+
 <div id="page-detail" class="page">
   <div class="detail-gallery" style="position:relative">
     <button class="detail-back" onclick="showPage('home')">←</button>
-    <img id="d-img" src="" alt="" onerror="this.src='https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image'">
+    <img id="d-img" src="" alt="" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image'">
   </div>
   <div class="detail-content">
     <div class="detail-badges">
@@ -1481,6 +1496,20 @@ function toggleLang(){lang=lang==='mr'?'en':'mr';document.getElementById('langBt
 // ═══════════════════════════════════════
 //  UTILITIES
 // ═══════════════════════════════════════
+// ── LIGHTBOX ──
+function openLightbox(src) {
+  if (!src || src.includes('placehold.co')) return; // don't open for placeholder
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden'; // prevent background scroll
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close lightbox with Escape key
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
 function fp(p){if(!p)return'–';if(p>=10000000)return'₹'+(p/10000000).toFixed(1)+' Cr';if(p>=100000)return'₹'+(p/100000).toFixed(1)+' L';return'₹'+p.toLocaleString('en-IN');}
 function ta(d){if(!d)return'–';const s=(Date.now()-new Date(d))/1000;if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' hrs ago';if(s<604800)return Math.floor(s/86400)+' days ago';return new Date(d).toLocaleDateString('en-IN');}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}

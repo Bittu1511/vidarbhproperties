@@ -309,12 +309,12 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <div id="lm-s2" style="display:none">
       <div class="info-box info-green">📧 Gmail तपासा! <strong>6-digit OTP</strong> पाठवला.<br>Spam folder पण तपासा.</div>
       <div class="otp-inputs" id="lm-otp">
-        <input class="otp-input" maxlength="1" oninput="onav(this,0,'lm-otp')" onkeydown="otpKey(event,this,0,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,1,'lm-otp')" onkeydown="otpKey(event,this,1,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,2,'lm-otp')" onkeydown="otpKey(event,this,2,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,3,'lm-otp')" onkeydown="otpKey(event,this,3,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,4,'lm-otp')" onkeydown="otpKey(event,this,4,'lm-otp')">
-        <input class="otp-input" maxlength="1" oninput="onav(this,5,'lm-otp')" onkeydown="otpKey(event,this,5,'lm-otp')">
+        <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" oninput="onav(this,0,'lm-otp')" onkeydown="otpKey(event,this,0,'lm-otp')">
+        <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" oninput="onav(this,1,'lm-otp')" onkeydown="otpKey(event,this,1,'lm-otp')">
+        <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" oninput="onav(this,2,'lm-otp')" onkeydown="otpKey(event,this,2,'lm-otp')">
+        <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" oninput="onav(this,3,'lm-otp')" onkeydown="otpKey(event,this,3,'lm-otp')">
+        <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" oninput="onav(this,4,'lm-otp')" onkeydown="otpKey(event,this,4,'lm-otp')">
+        <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" oninput="onav(this,5,'lm-otp')" onkeydown="otpKey(event,this,5,'lm-otp')">
       </div>
       <button class="btn-next" onclick="verifyLoginOTP()">✓ Verify & Login</button>
       <div style="text-align:center;margin-top:10px;display:flex;gap:16px;justify-content:center">
@@ -1479,7 +1479,8 @@ function showPage(page){
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function openSheet(){document.getElementById('filterSheet').classList.add('open');}
 function closeSheet(){document.getElementById('filterSheet').classList.remove('open');}
-function onav(el,pos,wid){if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
+// function onav(el,pos,wid){if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
+function onav(el,pos,wid){el.value=el.value.replace(/[^0-9]/g,'');if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
 
 function otpKey(e, el, pos, wid) {
   if (e.key === 'Backspace' && !el.value && pos > 0) {

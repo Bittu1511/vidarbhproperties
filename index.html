@@ -983,8 +983,9 @@ async function openDetail(id){
 
   showPage('detail');
 }
-function handleCall(){if(!curUser){showToast('📞 Call साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'call');callNum(curL.phone,curL.seller);}}
-function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'whatsapp');waNum(curL.phone,curL.title);}}
+
+function handleCall(){if(!curUser){showToast('📞 Call साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'call');const targetPhone = curL.seller_type === 'Broker' ? '7028500604' : curL.phone; callNum(targetPhone,curL.seller);}}
+function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'whatsapp');const targetPhone = curL.seller_type === 'Broker' ? '7028500604' : curL.phone; waNum(targetPhone,curL.title);}}
 function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
 function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
 
@@ -997,9 +998,14 @@ function contactFromCard(type, lid){
   const l = listingStore[lid];
   if(!l){ showToast('⚠️ Listing not found'); return; }
   logInq(lid, type);
-  if(type==='call') callNum(l.phone, l.seller);
-  else waNum(l.phone, l.title);
+  
+  const targetPhone = l.seller_type === 'Broker' ? '7028500604' : l.phone;
+  
+  if(type==='call') callNum(targetPhone, l.seller);
+  else waNum(targetPhone, l.title);
 }
+
+
 function shareLink(){
   const u='https://vidarbhproperties.in';
   const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;

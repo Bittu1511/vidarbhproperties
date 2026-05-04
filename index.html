@@ -11,8 +11,263 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Styles -->
-<link rel="stylesheet" href="/css/styles.css">
+<style>
+:root{--brand:#C84B31;--brand-dark:#9E2F17;--brand-light:#F5E6E2;--gold:#E9C46A;--green:#2A9D8F;--dark:#1A1A2E;--text:#2D2D2D;--muted:#777;--border:#E8E0DC;--bg:#FBF7F5;--white:#FFFFFF;--shadow:0 2px 12px rgba(200,75,49,0.10);--r:14px;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Mukta',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky;top:0;z-index:100;padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:56px;box-shadow:0 2px 8px rgba(200,75,49,0.12);}
+.nav-logo{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.nav-logo-icon{width:34px;height:34px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:800;flex-shrink:0;}
+.nav-logo-text{font-size:15px;font-weight:800;color:var(--brand);line-height:1;}
+.nav-logo-sub{font-size:9px;color:var(--muted);display:block;}
+.nav-actions{display:flex;gap:6px;align-items:center;}
+.btn-lang{background:var(--brand-light);color:var(--brand);border:none;border-radius:6px;padding:5px 8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-post-nav{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(200,75,49,0.3);}
+.btn-login-nav{background:var(--white);color:var(--dark);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all 0.2s;max-width:110px;overflow:hidden;}
+.btn-login-nav.logged-in{background:var(--brand-light);border-color:var(--brand);color:var(--brand);}
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.open{display:flex;}
+.modal-box{background:var(--white);border-radius:20px;padding:24px 20px 28px;width:100%;max-width:380px;animation:popIn 0.25s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.modal-title{font-size:18px;font-weight:800;color:var(--dark);}
+.modal-close{background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 60%,#5C1A0A 100%);padding:28px 16px 24px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,0.06);border-radius:50%;}
+.hero::after{content:'';position:absolute;bottom:-30px;left:-20px;width:150px;height:150px;background:rgba(244,162,97,0.12);border-radius:50%;}
+.hero-title{color:#fff;font-size:22px;font-weight:800;line-height:1.25;margin-bottom:4px;position:relative;}
+.hero-sub{color:rgba(255,255,255,0.8);font-size:13px;margin-bottom:18px;}
+.search-bar{background:#fff;border-radius:12px;display:flex;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:1;position:relative;}
+.search-bar input{flex:1;border:none;outline:none;padding:14px 16px;font-size:15px;font-family:inherit;color:var(--text);background:transparent;}
+.search-bar input::placeholder{color:#AAA;}
+.search-btn{background:var(--brand);color:#fff;border:none;padding:0 20px;font-size:20px;cursor:pointer;display:flex;align-items:center;}
+.hero-stats{display:flex;gap:20px;margin-top:16px;position:relative;z-index:1;}
+.hero-stat-num{color:#fff;font-size:20px;font-weight:800;line-height:1;}
+.hero-stat-lbl{color:rgba(255,255,255,0.7);font-size:10px;margin-top:2px;}
+/* CATEGORIES */
+.section{padding:20px 16px;}
+.section-title{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--brand-light),transparent);}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.cat-btn{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.cat-btn.active{border-color:var(--brand);background:var(--brand-light);}
+.cat-icon{font-size:24px;}
+.cat-label{font-size:11px;font-weight:700;color:var(--text);text-align:center;line-height:1.2;}
+.cat-label-mr{font-size:10px;color:var(--muted);}
+/* FILTER BAR */
+.filter-bar{padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-chip{background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;cursor:pointer;font-family:inherit;transition:all 0.2s;flex-shrink:0;}
+.filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+/* AD BANNER */
+.ad-banner{margin:0 16px 16px;background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--gold);position:relative;}
+.ad-banner::before{content:'AD';position:absolute;top:4px;right:6px;font-size:9px;color:var(--muted);font-weight:700;}
+.ad-text{font-size:13px;font-weight:700;color:#5D4037;}
+.ad-sub{font-size:11px;color:#795548;margin-top:2px;}
+.ad-cta{background:#F57C00;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;}
+/* CARDS */
+.listings-grid{display:flex;flex-direction:column;gap:14px;padding:0 16px;}
+.listing-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform 0.2s;border:1px solid var(--border);animation:fadeUp 0.35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card-img-wrap{position:relative;height:180px;overflow:hidden;background:#f0e8e4;}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
+.listing-card:hover .card-img-wrap img{transform:scale(1.03);}
+.card-badge{position:absolute;top:10px;left:10px;background:var(--brand);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;}
+.card-badge.owner{background:var(--green);}
+.card-badge.featured{background:var(--gold);color:#333;}
+.card-save{position:absolute;top:8px;right:10px;background:rgba(255,255,255,0.9);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.card-body{padding:14px;}
+.card-price{font-size:20px;font-weight:800;color:var(--brand);line-height:1;margin-bottom:4px;}
+.card-title{font-size:14px;font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:6px;}
+.card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.card-tag{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--muted);font-weight:600;}
+.card-loc{font-size:12px;color:var(--muted);}
+.card-actions{display:flex;gap:8px;margin-top:10px;}
+.btn-call{flex:1;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-wa{flex:1;background:#25D366;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
+/* SKELETON */
+.skel{background:linear-gradient(90deg,#F0E8E4 25%,#F8F2EF 50%,#F0E8E4 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{background:var(--white);border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:14px;}
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px;cursor:pointer;border:none;background:none;font-family:inherit;}
+.bn-item.active .bn-icon,.bn-item.active .bn-label{color:var(--brand);}
+.bn-item.active .bn-label{font-weight:700;}
+.bn-item.post{background:var(--brand);margin:6px 8px;border-radius:12px;box-shadow:0 4px 12px rgba(200,75,49,0.4);}
+.bn-item.post .bn-icon,.bn-item.post .bn-label{color:#fff !important;}
+.bn-icon{font-size:20px;color:var(--muted);line-height:1;}
+.bn-label{font-size:10px;font-weight:600;color:var(--muted);margin-top:2px;}
+/* DETAIL */
+.detail-gallery{height:260px;overflow:hidden;position:relative;background:#000;}
+.detail-gallery img{width:100%;height:100%;object-fit:cover;opacity:0.92;}
+.detail-back{position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.9);border:none;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;}
+.detail-content{padding:16px;padding-bottom:90px;}
+.detail-badges{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.d-badge{background:var(--brand-light);color:var(--brand);font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;}
+.d-badge.ver{background:#E8F5E9;color:var(--green);}
+.detail-price{font-size:28px;font-weight:800;color:var(--brand);line-height:1;margin-bottom:4px;}
+.detail-title{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:12px;line-height:1.3;}
+.detail-specs{background:var(--bg);border-radius:12px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;border:1px solid var(--border);}
+.spec-item label{font-size:10px;color:var(--muted);font-weight:600;display:block;text-transform:uppercase;}
+.spec-item span{font-size:14px;font-weight:700;color:var(--dark);}
+.detail-section-title{font-size:14px;font-weight:800;color:var(--dark);margin-bottom:8px;}
+.detail-desc{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:16px;white-space:pre-wrap;}
+.detail-map{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid #90CAF9;font-size:13px;color:#1976D2;font-weight:700;}
+.seller-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.seller-avatar{width:48px;height:48px;border-radius:50%;background:var(--brand-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.detail-action-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--border);padding:12px 16px;display:flex;gap:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom));z-index:100;}
+.btn-share-sm{background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:18px;cursor:pointer;}
+/* FORM */
+.form-wizard{padding:16px;padding-bottom:80px;}
+.wizard-steps{display:flex;margin-bottom:24px;background:var(--bg);border-radius:10px;padding:4px;border:1px solid var(--border);}
+.wizard-step{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:11px;font-weight:600;color:var(--muted);transition:all 0.2s;}
+.wizard-step.active{background:var(--brand);color:#fff;}
+.wizard-step.done{background:var(--green);color:#fff;}
+.form-section{display:none;}.form-section.active{display:block;}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.req{color:var(--brand);}
+.hint{font-weight:400;color:var(--muted);font-size:11px;}
+.form-input,.form-select,.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--brand);}
+.form-textarea{min-height:100px;resize:vertical;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cat-select-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.cat-select-item{border:2px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);}
+.cat-select-item.active{border-color:var(--brand);background:var(--brand-light);}
+.cat-select-icon{font-size:28px;display:block;margin-bottom:6px;}
+.cat-select-label{font-size:13px;font-weight:700;color:var(--dark);}
+.photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;cursor:pointer;background:var(--bg);}
+.photo-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.photo-thumb{width:70px;height:70px;border-radius:8px;object-fit:cover;border:2px solid var(--border);}
+.btn-next,.btn-submit{width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(200,75,49,0.3);transition:opacity 0.2s;}
+.btn-next:disabled,.btn-submit:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-prev{width:100%;background:var(--bg);color:var(--dark);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;}
+/* OTP */
+.otp-inputs{display:flex;gap:7px;justify-content:center;margin:14px 0;}
+.otp-input{width:42px;height:52px;border:2px solid var(--border);border-radius:10px;font-size:22px;font-weight:700;text-align:center;font-family:inherit;color:var(--dark);outline:none;transition:border-color 0.2s;}
+.otp-input:focus{border-color:var(--brand);}
+/* INFO BOX */
+.info-box{border-radius:10px;padding:12px 14px;font-size:12px;font-weight:600;margin-bottom:12px;}
+.info-green{background:#E8F5E9;color:#2E7D32;}
+.info-orange{background:#FFF3E0;color:#E65100;}
+.info-blue{background:#E3F2FD;color:#1565C0;}
+/* DASHBOARD */
+.dash-header{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:20px 16px;color:#fff;}
+.dash-stats-row{display:flex;gap:10px;margin-top:14px;}
+.dash-stat-card{flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;}
+.dash-stat-n{font-size:22px;font-weight:800;}
+.dash-stat-l{font-size:10px;opacity:0.8;}
+.dash-tabs{display:flex;background:var(--bg);border-bottom:2px solid var(--border);}
+.dash-tab{flex:1;text-align:center;padding:12px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border:none;background:none;font-family:inherit;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;}
+.dash-tab.active{color:var(--brand);border-bottom-color:var(--brand);}
+.my-listing-item{background:var(--white);margin:0 16px 12px;border-radius:12px;display:flex;gap:12px;padding:12px;border:1px solid var(--border);box-shadow:var(--shadow);}
+.my-listing-img{width:75px;height:75px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4;}
+.my-listing-body{flex:1;min-width:0;}
+.my-listing-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.my-listing-price{font-size:15px;font-weight:800;color:var(--brand);}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;}
+.status-active{background:#E8F5E9;color:#2E7D32;}
+.status-pending{background:#FFF3E0;color:#E65100;}
+.status-sold{background:#E3F2FD;color:#1565C0;}
+.status-approved{background:#E8F5E9;color:#2E7D32;}
+.status-rejected{background:#FFEBEE;color:#C62828;}
+.my-listing-actions{display:flex;gap:6px;margin-top:6px;}
+.btn-sm{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-sm-del{border:1.5px solid #FFCDD2;background:#FFF5F5;color:#C62828;}
+/* ADMIN */
+.admin-row{background:var(--white);border-radius:12px;margin:0 16px 10px;padding:12px;border:1px solid var(--border);display:flex;gap:10px;}
+.admin-row img{width:65px;height:65px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4;}
+.admin-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.btn-approve{background:#E8F5E9;color:#2E7D32;border:1.5px solid #A5D6A7;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-reject{background:#FFEBEE;color:#C62828;border:1.5px solid #FFCDD2;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+/* SUCCESS */
+.success-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;padding:32px;}
+.success-icon{font-size:72px;margin-bottom:16px;}
+.success-title{font-size:22px;font-weight:800;color:var(--dark);margin-bottom:8px;}
+.success-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:280px;}
+.btn-home{background:var(--brand);color:#fff;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:24px;}
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:rgba(251,247,245,0.92);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.spin{width:44px;height:44px;border:4px solid var(--brand-light);border-top-color:var(--brand);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;z-index:400;white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* SHEET */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;display:none;align-items:flex-end;justify-content:center;}
+.sheet-overlay.open{display:flex;}
+.sheet{background:var(--white);border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:480px;animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
+#page-home{padding-bottom:80px;}
+/* ── NARROW MOBILE FIX ── */
+.btn-lang, .btn-post-nav, .btn-login-nav {
+  white-space: nowrap; /* Forces text to stay on one line */
+  flex-shrink: 0;
+}
+.btn-login-nav {
+  flex-shrink: 1; /* Allows the email address to shrink if needed */
+}
+
+@media (max-width: 395px) {
+  nav { padding: 0 6px; }
+  .nav-logo-icon { width: 28px; height: 28px; font-size: 11px; }
+  .nav-logo-text { font-size: 13px; }
+  .nav-logo-sub { font-size: 8px; }
+  .nav-actions { gap: 4px; }
+  .btn-lang { padding: 4px 6px; font-size: 10px; }
+  .btn-login-nav { padding: 5px 6px; font-size: 11px; max-width: 85px; }
+  .btn-post-nav { padding: 5px 8px; font-size: 11px; }
+}
+/* ── DESKTOP RESPONSIVE ── */
+@media(min-width:768px){
+  body{background:var(--bg);}
+  .hero{padding:20px 20px 22px;}
+  .search-bar{max-width:none;}
+  .section{padding:24px 40px;}
+  .filter-bar{padding:0 40px 14px;}
+  .ad-banner{margin:0 40px 16px;}
+  .listings-grid{display:grid !important;grid-template-columns:repeat(2,1fr);gap:20px;padding:0 40px;}
+  .section-title{padding-left:40px !important;padding-right:40px !important;}
+  #loadMoreWrap{padding:20px 40px;}
+  .card-img-wrap{height:200px;}
+  .skel-card{margin:0;}
+}
+@media(min-width:1100px){
+  .listings-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(min-width:768px){
+  .detail-gallery{height:420px;}
+  .detail-content{max-width:800px;margin:0 auto;padding:28px 40px 110px;}
+  .detail-specs{grid-template-columns:repeat(4,1fr);}
+  .detail-action-bar{left:0;right:0;max-width:none;}
+  .form-wizard{max-width:100%;padding:24px 40px 80px;}
+  .form-wizard .form-row{grid-template-columns:1fr 1fr;}
+  .form-wizard .cat-select-grid{grid-template-columns:repeat(2,1fr);}
+  .form-wizard .btn-next,.form-wizard .btn-prev,.form-wizard .btn-submit{max-width:100%;}
+  .dash-header{padding:28px 40px;}
+  .my-listing-item{margin:0 40px 12px;}
+  #page-home{padding-bottom:80px;}
+  #page-post .form-wizard{max-width:100%;}
+}
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;display:none;align-items:center;justify-content:center;cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;animation:lbIn 0.2s ease;}
+@keyframes lbIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+.lightbox-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:501;backdrop-filter:blur(4px);}
+.lightbox-close:hover{background:rgba(255,255,255,0.25);}
+.lightbox-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.4);font-size:12px;font-family:inherit;pointer-events:none;white-space:nowrap;}
+.detail-gallery img{cursor:zoom-in;}
+
+</style>
 </head>
 <body>
 
@@ -416,21 +671,860 @@
 
 <div class="toast" id="toast"></div>
 
-
-<!-- JavaScript Modules -->
-<script src="/js/config.js"></script>
-<script src="/js/otp.js"></script>
-<script src="/js/auth.js"></script>
-<script src="/js/listings.js"></script>
-<script src="/js/detail.js"></script>
-<script src="/js/post.js"></script>
-<script src="/js/dashboard.js"></script>
-<script src="/js/admin.js"></script>
-<script src="/js/filters.js"></script>
-<script src="/js/ui.js"></script>
-
 <script>
-// Startup
+/*
+ * 🚨 CRITICAL SECURITY NOTICE:
+ * Client-side admin verification (using ADMIN_HASH below) is NOT secure.
+ * Because the Supabase Anon key is public, ANYONE can bypass this HTML page
+ * and query your database directly. You MUST enforce Row Level Security (RLS)
+ * in your Supabase SQL editor to protect the 'properties' table:
+ * * CREATE POLICY "Admin Full Access" ON properties FOR ALL USING (
+ * auth.jwt() ->> 'email' = 'YOUR_ADMIN_EMAIL@GMAIL.COM'
+ * );
+ */
+
+// ═══════════════════════════════════════
+//  CONFIG — Your Supabase credentials
+// ═══════════════════════════════════════
+const SB_URL  = 'https://vfsyuhjuzoslhjpqpcju.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmc3l1aGp1em9zbGhqcHFwY2p1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNzEyMTAsImV4cCI6MjA5MTc0NzIxMH0._0g71VyYHLFaY4TRsFiKUhpXHMgQRLIM47seYRrid2s';
+
+
+const ADMIN_HASH = '01dec783763957284afdbba53ec2638daf34e98187bf9072f2c4d1f05a5816ee'; 
+const EDGE    = `${SB_URL}/functions/v1/send-otp`;
+
+const sb = supabase.createClient(SB_URL, SB_ANON);
+
+// ═══════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════
+let lang='mr', activeCat='all', pMin=0, pMax=9e9;
+let bhkF='', ownerOnly=false, verOnly=false;
+let curL=null, curUser=null, selCatV='House';
+let photoFiles=[], pageOff=0, srchTimer=null;
+const PG=10;
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+async function init() {
+  const saved = localStorage.getItem('vp_user');
+  if (saved) {
+    try {
+      const u = JSON.parse(saved);
+      const age = Date.now() - (u.loginTime || 0);
+      const maxAge = 30 * 24 * 60 * 60 * 1000; 
+      if (u.email && u.sessionToken && age < maxAge) {
+        curUser = u;
+        updateNavBtn();
+      } else {
+        localStorage.removeItem('vp_user'); 
+      }
+    } catch(e){ localStorage.removeItem('vp_user'); }
+  }
+  try { await Promise.all([loadListings(true), loadStats()]); } catch(e){}
+  document.getElementById('loadingOverlay').style.display='none';
+}
+
+// ═══════════════════════════════════════
+//  OTP SYSTEM
+// ═══════════════════════════════════════
+let pendingEmail='';
+
+async function sendOTPvia(email) {
+  const r = await fetch(EDGE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
+    body: JSON.stringify({ email }) 
+  });
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || 'Send failed: ' + r.status);
+  return true;
+}
+
+async function verifyOTP(email, token) {
+  const r = await fetch(EDGE + '?action=verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
+    body: JSON.stringify({ email, otp: token })
+  });
+  const j = await r.json();
+  return r.ok && j.valid === true;
+}
+
+// ═══════════════════════════════════════
+//  LOGIN MODAL FUNCTIONS
+// ═══════════════════════════════════════
+function openLoginModal() {
+  if (curUser) {
+    showLmStep(3);
+    document.getElementById('lmTitle').textContent='My Account';
+    document.getElementById('lmSub').textContent='Logged in ✓';
+    document.getElementById('lm-show-email').textContent=curUser.email||'';
+  } else {
+    showLmStep(1);
+    document.getElementById('lmTitle').textContent='Login / Sign Up';
+    document.getElementById('lmSub').textContent='Email OTP ने login करा • No password needed';
+    setTimeout(()=>document.getElementById('lm-email').focus(),200);
+  }
+  document.getElementById('loginOverlay').classList.add('open');
+}
+
+function showLmStep(n) {
+  ['lm-s1','lm-s2','lm-s3'].forEach((id,i)=>{
+    document.getElementById(id).style.display = (i+1===n)?'block':'none';
+  });
+}
+
+async function sendLoginOTP() {
+  const email = document.getElementById('lm-email').value.trim().toLowerCase();
+  if (!email||!email.includes('@')) { showToast('⚠️ Valid email enter करा'); return; }
+  const btn=document.getElementById('lmBtn');
+  btn.disabled=true; btn.textContent='📧 Sending...';
+  try {
+    await sendOTPvia(email);
+    pendingEmail=email;
+    showLmStep(2);
+    document.querySelectorAll('#lm-otp .otp-input').forEach(i=>i.value='');
+    setTimeout(()=>document.querySelector('#lm-otp .otp-input')?.focus(),100);
+    showToast('✅ OTP Gmail वर पाठवला!');
+  } catch(e) {
+    showToast('⚠️ '+e.message);
+  }
+  btn.disabled=false; btn.textContent='📧 OTP पाठवा';
+}
+
+async function verifyLoginOTP() {
+  const token=Array.from(document.querySelectorAll('#lm-otp .otp-input')).map(i=>i.value).join('');
+  if (token.length<6) { showToast('⚠️ 6-digit OTP enter करा'); return; }
+  const ok=await verifyOTP(pendingEmail,token);
+  if (!ok) { showToast('⚠️ Wrong or expired OTP! Resend करा.'); return; }
+  const sessionToken = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36)+Date.now().toString(36));
+  curUser={email:pendingEmail, id:pendingEmail, sessionToken, loginTime: Date.now()};
+  localStorage.setItem('vp_user',JSON.stringify(curUser));
+  updateNavBtn(); updateDashUI();
+  showLmStep(3);
+  document.getElementById('lm-show-email').textContent=curUser.email;
+  document.getElementById('lmTitle').textContent='My Account';
+  showToast('✅ Login successful! Welcome 🎉');
+  recordUser(pendingEmail).catch(()=>{});
+}
+
+async function recordUser(email) {
+  try {
+    const normalized = email.trim().toLowerCase();
+    await fetch(`${SB_URL}/functions/v1/record-user`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SB_ANON },
+      body: JSON.stringify({ email: normalized })
+    });
+  } catch(e) {
+    console.debug('User record skipped:', e.message);
+  }
+}
+
+function doLogout() {
+  curUser=null; localStorage.removeItem('vp_user');
+  updateNavBtn(); updateDashUI();
+  closeModal('loginOverlay'); showPage('home');
+  showToast('Logged out');
+}
+
+function updateNavBtn() {
+  const btn=document.getElementById('navLoginBtn');
+  const icon=document.getElementById('navLoginIcon');
+  const text=document.getElementById('navLoginText');
+  if(curUser){
+    btn.classList.add('logged-in'); icon.textContent='✓';
+    text.textContent=(curUser.email||'Me').split('@')[0].slice(0,10);
+  } else {
+    btn.classList.remove('logged-in'); icon.textContent='👤'; text.textContent='Login';
+  }
+}
+
+// ═══════════════════════════════════════
+//  STATS
+// ═══════════════════════════════════════
+async function loadStats() {
+  const [{count:t},{count:v}] = await Promise.all([
+    sb.from('properties').select('*',{count:'exact',head:true}).eq('status','approved'),
+    sb.from('properties').select('*',{count:'exact',head:true}).eq('status','approved').eq('verified',true)
+  ]);
+  document.getElementById('stat-total').textContent=(t||0)+'+';
+  document.getElementById('stat-verified').textContent=v||0;
+}
+
+// ═══════════════════════════════════════
+//  LISTINGS
+// ═══════════════════════════════════════
+const listingStore = {};
+
+async function loadListings(reset=false) {
+  if(reset){pageOff=0; document.getElementById('listingsGrid').innerHTML=skels();}
+  const raw=document.getElementById('searchInput').value.trim();
+  let qry=sb.from('properties').select('*').eq('status','approved')
+    .gte('price',pMin).lte('price',pMax)
+    .order('created_at',{ascending:false})
+    .range(pageOff,pageOff+PG-1);
+  if(activeCat!=='all') qry=qry.eq('category',activeCat);
+  if(bhkF) qry=qry.eq('bedrooms',bhkF);
+  if(ownerOnly) qry=qry.eq('seller_type','Owner');
+  if(verOnly) qry=qry.eq('verified',true);
+  if(raw) {
+    // Build multi-term search: English input + Marathi equivalents
+    const terms = buildSearchTerms(raw);
+    // Each term searches title, location, desc, category
+    const clauses = terms.flatMap(t => [
+      `title.ilike.%${t}%`,
+      `location.ilike.%${t}%`,
+      `desc.ilike.%${t}%`,
+      `category.ilike.%${t}%`
+    ]);
+    qry = qry.or(clauses.join(','));
+  }
+  const {data,error}=await qry;
+  if(error){showToast('⚠️ Error loading');return;}
+  const grid=document.getElementById('listingsGrid');
+  if(reset) grid.innerHTML='';
+  if(!data?.length){
+    if(reset) grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);grid-column:1/-1;width:100%"><div style="font-size:40px">🔍</div><div style="font-weight:700;margin-top:8px">कोणतीही जाहिरात आढळली नाही</div></div>';
+    document.getElementById('loadMoreWrap').style.display='none'; return;
+  }
+  data.forEach((l,i)=>{ listingStore[l.id]=l; const d=document.createElement('div');d.innerHTML=cardH(l,i);grid.appendChild(d.firstElementChild);});
+  pageOff+=data.length;
+  document.getElementById('loadMoreWrap').style.display=data.length<PG?'none':'block';
+}
+async function loadMore(){await loadListings(false);}
+
+function skels(){return Array(3).fill(0).map(()=>`<div class="skel-card" style="margin-bottom:0"><div class="skel" style="height:180px"></div><div style="padding:14px"><div class="skel" style="height:22px;width:55%;margin-bottom:8px"></div><div class="skel" style="height:15px;width:80%;margin-bottom:10px"></div><div class="skel" style="height:38px"></div></div></div>`).join('');}
+
+function cardH(l,i){
+  const p=fp(l.price);
+  const imgList = l.img ? l.img.split(',') : [];
+  const img = imgList[0] || 'https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo';
+  const ago=ta(l.created_at), bc=l.badge_class||'';
+  
+  return `<div class="listing-card" style="animation-delay:${i*.05}s" onclick="openDetail('${l.id}')">
+    <div class="card-img-wrap">
+      <img src="${img}" alt="${esc(l.title)}" loading="lazy" onerror="this.src='https://placehold.co/600x180/f5e6e2/c84b31?text=No+Photo'">
+      <span class="card-badge ${bc}">${esc(l.badge||l.category)}</span>
+      <button class="card-save" onclick="event.stopPropagation();toggleSaveFromCard('${l.id}',this)">${getSaved().includes(l.id)?'❤️':'🔖'}</button>
+    </div>
+    <div class="card-body">
+      <div class="card-price">${p}</div>
+      <div class="card-title">${esc(l.title)}</div>
+      <div class="card-meta">
+        ${l.area?`<span class="card-tag">📐 ${esc(l.area)}</span>`:''}
+        ${l.bedrooms?`<span class="card-tag">🛏 ${esc(l.bedrooms)}</span>`:''}
+        <span class="card-tag">${l.seller_type==='Owner'?'🏡 Owner':'🤝 Broker'}</span>
+        ${l.verified?'<span class="card-tag" style="color:var(--green)">✓ Verified</span>':''}
+      </div>
+      <div class="card-loc">📍 ${esc(l.location)}${ago !== '–' ? ' · '+ago : ''}</div>
+      <div class="card-actions">
+        <button class="btn-call" onclick="event.stopPropagation();contactFromCard('call','${l.id}')">📞 Call</button>
+        <button class="btn-wa" onclick="event.stopPropagation();contactFromCard('whatsapp','${l.id}')">💬 WhatsApp</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+//  DETAIL
+// ═══════════════════════════════════════
+async function openDetail(id){
+  document.getElementById('loadingOverlay').style.display='flex';
+  const {data:l}=await sb.from('properties').select('*').eq('id',id).single();
+  document.getElementById('loadingOverlay').style.display='none';
+  if(!l){showToast('⚠️ Not found');return;}
+  
+  // Trigger view counter and log success/failure to console
+  sb.rpc('increment_view', { property_id: id })
+    .then(() => console.log("✅ View successfully incremented in DB"))
+    .catch(err => console.error("❌ View increment failed:", err));
+
+  curL=l; listingStore[l.id]=l; 
+  
+  const imgList = l.img ? l.img.split(',') : [];
+  document.getElementById('d-img').src=imgList[0] || 'https://placehold.co/600x260/f5e6e2/c84b31?text=No+Image';
+  
+  document.getElementById('d-price').textContent=fp(l.price);
+  document.getElementById('d-title').textContent=l.title;
+  document.getElementById('d-cat').textContent=l.category;
+  document.getElementById('d-ver').textContent=l.verified?'✓ Verified':'⏳ Pending';
+  document.getElementById('d-ver').className='d-badge'+(l.verified?' ver':'');
+  document.getElementById('d-area').textContent=l.area||'–';
+  document.getElementById('d-type').textContent=l.category;
+  document.getElementById('d-loc').textContent=l.location;
+  document.getElementById('d-date').textContent = l.created_at ? ta(l.created_at) : 'Recently';
+  document.getElementById('d-desc').textContent=l.desc||'No description.';
+  document.getElementById('d-seller').textContent=l.seller||'–';
+  document.getElementById('d-stype').textContent=l.seller_type||'Owner';
+  document.getElementById('d-sver').textContent=l.verified?'✓ Phone Verified':'Not verified yet';
+  document.getElementById('d-avatar').textContent=l.seller_type==='Broker'?'🤝':'👤';
+
+  const mapWrap = document.getElementById('d-map-wrap');
+  if(l.maps_url && l.maps_url.startsWith('http')){
+    mapWrap.innerHTML = `
+      <a href="${esc(l.maps_url)}" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#1976D2;font-weight:700;font-size:14px">
+        <span style="font-size:28px">📍</span>
+        <div>
+          <div>${esc(l.location)}</div>
+          <div style="font-size:12px;font-weight:500;text-decoration:underline">Google Maps वर उघडा →</div>
+        </div>
+      </a>`;
+    mapWrap.style.cursor='pointer';
+  } else {
+    mapWrap.innerHTML='<span style="font-size:14px;font-weight:700;color:#1976D2">📍 '+esc(l.location)+'<br><span style="font-size:11px;font-weight:400;opacity:0.7">Map link available after seller adds it</span></span>';
+  }
+
+  const saves = getSaved();
+  document.getElementById('d-save-btn').textContent = saves.includes(id) ? '❤️' : '🔖';
+
+  showPage('detail');
+}
+
+function handleCall(){if(!curUser){showToast('📞 Call साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'call');const targetPhone = curL.seller_type === 'Broker' ? '7028500604' : curL.phone; callNum(targetPhone,curL.seller);}}
+function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'whatsapp');const targetPhone = curL.seller_type === 'Broker' ? '7028500604' : curL.phone; waNum(targetPhone,curL.title);}}
+function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
+function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
+
+function contactFromCard(type, lid){
+  if(!curUser){
+    showToast(type==='call'?'📞 Call साठी Login करा':'💬 WhatsApp साठी Login करा');
+    openLoginModal();
+    return;
+  }
+  const l = listingStore[lid];
+  if(!l){ showToast('⚠️ Listing not found'); return; }
+  logInq(lid, type);
+  
+  const targetPhone = l.seller_type === 'Broker' ? '7028500604' : l.phone;
+  
+  if(type==='call') callNum(targetPhone, l.seller);
+  else waNum(targetPhone, l.title);
+}
+
+
+function shareLink(){
+  const u='https://vidarbhproperties.in';
+  const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;
+  if(navigator.share) navigator.share({title:curL?.title, text:txt, url:u});
+  else { navigator.clipboard?.writeText(u); showToast('🔗 Link copied!'); }
+}
+async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_id:lid,contact_type:type,user_phone:curUser?.email||'anon'});}catch(e){}}
+
+// ── SAVED LISTINGS (localStorage) ──
+function getSaved(){ try{ return JSON.parse(localStorage.getItem('vp_saved')||'[]'); }catch(e){ return []; } }
+function setSaved(arr){ localStorage.setItem('vp_saved', JSON.stringify(arr)); }
+
+// ADD THIS NEW FUNCTION TO FETCH INQUIRIES
+async function loadMyInquiries() {
+  const grid = document.getElementById('myInqGrid');
+  grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">लोड होत आहे...</div>';
+  
+  try {
+    // Get the properties owned by this user
+    const { data: myProps, error: propErr } = await sb.from('properties').select('id, title').eq('user_email', curUser.email).order('created_at', {ascending: false}).eq('user_email', curUser.email).limit(50);
+    if (propErr) throw new Error("Properties fetch failed: " + propErr.message);
+    
+    if (!myProps || myProps.length === 0) {
+      document.getElementById('ds-i').textContent = '0';
+      grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही Inquiry नाही</div>';
+      return;
+    }
+
+    const propIds = myProps.map(p => p.id);
+    
+    // Fetch inquiries for those properties
+    const { data: inqs, error: inqErr } = await sb.from('inquiries').select('*').in('listing_id', propIds).order('created_at', {ascending: false});
+    if (inqErr) throw new Error("Inquiries fetch failed: " + inqErr.message);
+    
+    console.log("✅ Successfully fetched inquiries:", inqs);
+    
+    // Update the counter on the dashboard
+    document.getElementById('ds-i').textContent = inqs?.length || 0;
+
+    if (!inqs || inqs.length === 0) {
+      grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही Inquiry नाही</div>';
+      return;
+    }
+
+    // Draw the inquiries on the screen with the User's Contact Info
+    grid.innerHTML = inqs.map(iq => {
+      const prop = myProps.find(p => p.id === iq.listing_id);
+      
+      // Grab the logged-in user's email/phone saved during the inquiry
+      const inquirer = iq.user_phone; 
+
+      return `
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">${esc(prop?.title || 'Unknown Property')}</div>
+          
+          <div style="background:var(--bg);border-radius:6px;padding:8px;margin-bottom:8px;border:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--muted);text-transform:font-weight:700;margin-bottom:2px;">Inquiry By:</div>
+            <div style="font-size:13px;font-weight:700;color:var(--brand);">${esc(inquirer)}</div>
+          </div>
+
+          <div style="font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;color:var(--dark);">${iq.contact_type === 'call' ? '📞 Phone Call' : '💬 WhatsApp'}</span>
+            <span>${ta(iq.created_at)}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error("❌ Dashboard Inquiry Error:", err);
+    grid.innerHTML = `<div style="padding:20px;text-align:center;color:red;font-size:12px">${err.message}</div>`;
+  }
+}
+
+function toggleSaveFromCard(id, btn){
+  const saves = getSaved();
+  const idx = saves.indexOf(id);
+  if(idx === -1){
+    saves.push(id);
+    setSaved(saves);
+    btn.textContent='❤️';
+    showToast('❤️ Saved!');
+  } else {
+    saves.splice(idx,1);
+    setSaved(saves);
+    btn.textContent='🔖';
+    showToast('🔖 Removed from saved');
+  }
+}
+
+function toggleSaveListing(){
+  if(!curL) return;
+  const saves = getSaved();
+  const idx = saves.indexOf(curL.id);
+  if(idx === -1){
+    saves.push(curL.id);
+    setSaved(saves);
+    document.getElementById('d-save-btn').textContent='❤️';
+    showToast('❤️ Saved!');
+  } else {
+    saves.splice(idx,1);
+    setSaved(saves);
+    document.getElementById('d-save-btn').textContent='🔖';
+    showToast('🔖 Removed from saved');
+  }
+}
+
+async function renderSavedPage(){
+  const saves = getSaved();
+  const grid = document.getElementById('savedGrid');
+  document.getElementById('saved-count').textContent = saves.length + ' saved';
+  if(!saves.length){
+    grid.innerHTML = `<div class="saved-empty"><div style="font-size:48px;margin-bottom:12px">🔖</div><div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:8px">No saved listings yet</div><div style="font-size:13px">Listings वर ❤️ tap करा to save</div></div>`;
+    return;
+  }
+  grid.innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px">Loading...</div>';
+  const {data} = await sb.from('properties').select('*').in('id', saves);
+  if(!data?.length){ grid.innerHTML='<div class="saved-empty"><div style="font-size:48px">😕</div><div style="margin-top:8px;font-weight:700">Listings not found</div></div>'; return; }
+  const tmp = document.createElement('div');
+  tmp.className = 'listings-grid';
+  data.forEach((l,i)=>{ const d=document.createElement('div'); d.innerHTML=cardH(l,i); tmp.appendChild(d.firstElementChild); });
+  grid.innerHTML = '';
+  grid.appendChild(tmp);
+}
+
+// ═══════════════════════════════════════
+//  POST LISTING
+// ═══════════════════════════════════════
+function checkLoginPost(){
+  if(!curUser){openLoginModal();showToast('पहिले Login करा');return;}
+  showPage('post');
+}
+
+function goStep(n){
+  if(n===3){
+    if(!document.getElementById('f-title').value){showToast('⚠️ Title भरा');return;}
+    if(!document.getElementById('f-price').value){showToast('⚠️ Price भरा');return;}
+    if(!document.getElementById('f-loc').value){showToast('⚠️ Location भरा');return;}
+  }
+  if(n===4){
+    if(!curUser){
+      setStep(4);
+      document.getElementById('fs4-nologin').style.display='block';
+      document.getElementById('fs4-form').style.display='none';
+      return;
+    }
+    document.getElementById('fs4-nologin').style.display='none';
+    document.getElementById('fs4-form').style.display='block';
+    document.getElementById('fs4-userinfo').textContent=`✓ Logged in as: ${curUser.email}`;
+  }
+  setStep(n);
+}
+
+function setStep(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById(`fs-${i}`).classList.toggle('active',i===n);
+    const s=document.getElementById(`ws-${i}`);
+    s.classList.remove('active','done');
+    if(i<n)s.classList.add('done');
+    else if(i===n)s.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function selCat(el,cat){document.querySelectorAll('.cat-select-item').forEach(e=>e.classList.remove('active'));el.classList.add('active');selCatV=cat;}
+
+function handlePhotos(input){
+  photoFiles=Array.from(input.files).slice(0,5);
+  const p=document.getElementById('photoPreview');p.innerHTML='';
+  photoFiles.forEach(f=>{const r=new FileReader();r.onload=e=>{const i=document.createElement('img');i.src=e.target.result;i.className='photo-thumb';p.appendChild(i);};r.readAsDataURL(f);});
+  showToast(`${photoFiles.length} फोटो सिलेक्ट झाले`);
+}
+
+async function submitListing(){
+  if(!curUser){openLoginModal();return;}
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  if(!name){showToast('⚠️ नाव भरा');return;}
+  if(!phone||phone.length!==10){showToast('⚠️ Valid 10-digit phone भरा');return;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+
+  // ── UPLOAD IMAGES ──
+  let imgUrls = [];
+  if(photoFiles.length > 0){
+    btn.textContent='⏳ Photos upload होत आहेत...';
+    try {
+      const uploadPromises = photoFiles.map(async (f) => {
+        const ext = (f.name.split('.').pop()||'jpg').toLowerCase();
+        const fn = `listings/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const {data, error:ue} = await sb.storage.from('property-images').upload(fn, f, {cacheControl:'3600', upsert:false, contentType:f.type});
+        
+        if (ue) throw ue;
+        const {data:{publicUrl}} = sb.storage.from('property-images').getPublicUrl(fn);
+        return publicUrl;
+      });
+      
+      imgUrls = await Promise.all(uploadPromises);
+      showToast('✅ Photos uploaded!');
+    } catch(uploadEx){
+      console.error('Upload exception:', uploadEx);
+      showToast('⚠️ Photo error: '+uploadEx.message);
+    }
+  }
+
+  btn.textContent='⏳ Saving...';
+  const ptype=document.querySelector('input[name="ptype"]:checked')?.value||'Owner';
+  const insertData = {
+    title:document.getElementById('f-title').value,
+    category:selCatV,
+    price: Math.min(Math.max(parseInt(document.getElementById('f-price').value)||0, 1), 999999999), 
+    area:document.getElementById('f-area').value,
+    bedrooms:document.getElementById('f-bhk').value,
+    location:document.getElementById('f-loc').value,
+    desc:document.getElementById('f-desc').value,
+    seller:name,
+    seller_type:ptype,
+    phone,
+    img: imgUrls.length ? imgUrls.join(',') : null,
+    maps_url: (() => {
+      const u = document.getElementById('f-maps').value.trim();
+      if (u && (u.includes('maps.google') || u.includes('goo.gl/maps') || u.includes('maps.app.goo.gl'))) return u;
+      return null;
+    })(),
+    verified:false,
+    user_email: curUser.email
+  };
+  
+  try { Object.assign(insertData, { status:'pending', badge:ptype==='Owner'?'Owner':'Broker', badge_class:ptype==='Owner'?'owner':'' }); } catch(e){}
+  const {error:ie}=await sb.from('properties').insert(insertData);
+  btn.disabled=false;btn.textContent='🎉 जाहिरात सबमिट करा';
+  if(ie){showToast('⚠️ Error: '+ie.message);return;}
+  ['f-title','f-price','f-area','f-loc','f-maps','f-desc','f-name','f-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('photoPreview').innerHTML='';photoFiles=[];
+  setStep(1);showPage('success');
+}
+
+// ═══════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════
+function updateDashUI(){
+  const nl=document.getElementById('dash-nologin'),ct=document.getElementById('dash-content');
+  if(!curUser){nl.style.display='block';ct.style.display='none';document.getElementById('dash-name').textContent='–';document.getElementById('dash-email').textContent='–';return;}
+  nl.style.display='none';ct.style.display='block';
+  const em=curUser.email||'';
+  document.getElementById('dash-name').textContent=em.split('@')[0];
+  document.getElementById('dash-email').textContent=em;
+  document.getElementById('p-name').textContent=em.split('@')[0];
+  document.getElementById('p-email').textContent=em;
+  loadMyListings();
+  loadMyInquiries();
+}
+
+async function loadMyListings(){
+  const grid=document.getElementById('myListingsGrid');
+  grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">जाहिराती लोड होत आहेत...</div>';
+  const {data, error}=await sb.from('properties').select('*').eq('user_email', curUser.email).order('created_at',{ascending:false}).limit(20);
+  if (error) console.error("❌ Error fetching properties for dashboard:", error);
+
+  document.getElementById('ds-l').textContent=data?.length||0;
+
+  // Calculate views safely and update the UI
+  const totalViews = data?.reduce((sum, item) => sum + (Number(item.views) || 0), 0) || 0;
+  document.getElementById('ds-v').textContent = totalViews;
+
+  if(!data?.length){grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">अजून कोणतीही जाहिरात नाही</div>';return;}
+  
+  grid.innerHTML=data.map(l=>`
+    <div class="my-listing-item">
+      <img class="my-listing-img" src="${(l.img?l.img.split(',')[0]:'')||'https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'}" alt="" onerror="this.src='https://placehold.co/75x75/f5e6e2/c84b31?text=🏠'">
+      <div class="my-listing-body">
+        <div class="my-listing-title">${esc(l.title)}</div>
+        <div class="my-listing-price">${fp(l.price)}</div>
+        <div style="margin-top:3px"><span class="status-badge status-${l.status}">${l.status==='approved'?'● Active':l.status==='pending'?'⏳ Pending':'✓ Sold'}</span></div>
+        <div class="my-listing-actions">
+          <button class="btn-sm btn-sm-del" onclick="delListing('${l.id}')">🗑 Delete</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function delListing(id){if(!confirm('Delete?'))return;await sb.from('properties').delete().eq('id',id);showToast('🗑 Deleted');loadMyListings();}
+
+function dashTab(btn,tabId){
+  document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  ['dt-l','dt-i','dt-p'].forEach(id=>{document.getElementById(id).style.display=id===tabId?'block':'none';});
+}
+
+// ═══════════════════════════════════════
+//  ADMIN
+// ═══════════════════════════════════════
+let curAdminTab = 'pending'; 
+
+async function adminLogin(){
+  const pass = document.getElementById('admin-pass').value;
+  if(!pass){ showToast('⚠️ Password enter करा'); return; }
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+  const hash = [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  if(hash === ADMIN_HASH){
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-content').style.display='block';
+    loadAdminTab('pending',document.getElementById('at-p'));
+  } else {
+    showToast('⚠️ Wrong password');
+    document.getElementById('admin-pass').value='';
+  }
+}
+
+async function loadAdminTab(status, btn){
+  curAdminTab = status;
+  document.querySelectorAll('#admin-content .filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  const grid = document.getElementById('adminGrid');
+  grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Loading...</div>';
+
+  let q = sb.from('properties').select('*').order('created_at',{ascending:false});
+  if(status !== 'all') q = q.eq('status', status);
+  const {data, error} = await q;
+
+  if(error){ grid.innerHTML='<div style="padding:20px;color:red">Error: '+error.message+'</div>'; return; }
+  if(!data?.length){ grid.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">No listings in this tab</div>'; return; }
+
+  grid.innerHTML = data.map(l=>`
+    <div class="admin-row" id="arow-${l.id}">
+      <img src="${(l.img?l.img.split(',')[0]:'')||'https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'}" onerror="this.src='https://placehold.co/65x65/f5e6e2/c84b31?text=🏠'" alt="">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700">${esc(l.title)}</div>
+        <div style="font-size:12px;color:var(--muted)">${fp(l.price)} · ${esc(l.location)}</div>
+        <div style="font-size:11px;color:var(--muted)">${esc(l.seller)} · ${l.phone} · ${ta(l.created_at)}</div>
+        <span class="status-badge status-${l.status||'pending'}" style="margin-top:4px;display:inline-block">${l.status||'pending'}</span>
+        <div class="admin-actions">
+          ${l.status!=='approved'?`<button class="btn-approve" onclick="adminUpd('${l.id}','approved',false)">✓ Approve</button>`:''}
+          <button class="btn-approve" onclick="adminUpd('${l.id}','approved',true)">✓✓ Approve+Verify</button>
+          ${l.status!=='rejected'?`<button class="btn-reject" onclick="adminUpd('${l.id}','rejected',false)">✗ Reject</button>`:''}
+          ${l.status!=='pending'?`<button class="btn-approve" style="background:#FFF3E0;color:#E65100;border-color:#FFB74D" onclick="adminUpd('${l.id}','pending',false)">↩ Pending</button>`:''}
+          <button class="btn-reject" onclick="adminDel('${l.id}')">🗑 Delete</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function adminUpd(id, status, verify){
+  const row = document.getElementById('arow-'+id);
+  if(row){ row.style.opacity='0.5'; row.style.pointerEvents='none'; }
+
+  const upd = { status: status };
+  if(verify) upd.verified = true;
+
+  const { data: updData, error } = await sb
+    .from('properties')
+    .update(upd)
+    .eq('id', id)
+    .select();
+
+  if(error){
+    alert('Update failed!\n\nError: ' + error.message + '\n\nCode: ' + error.code + '\n\nHint: ' + (error.hint||'none'));
+    if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
+    return;
+  }
+
+  if(!updData || updData.length === 0){
+    alert('Update returned no rows! The listing ID may be wrong or RLS is blocking the update.');
+    if(row){ row.style.opacity='1'; row.style.pointerEvents='auto'; }
+    return;
+  }
+
+  showToast(
+    status==='approved' ? '✅ Approved! Now live on homepage.' :
+    status==='rejected' ? '✗ Rejected' : '↩ Moved to pending'
+  );
+
+  if(status === 'approved') loadListings(true);
+
+  const tabMap = { pending:'at-p', approved:'at-a', rejected:'at-r', all:'at-all' };
+  const tabBtn = document.getElementById(tabMap[curAdminTab] || 'at-p');
+  if(tabBtn) await loadAdminTab(curAdminTab, tabBtn);
+}
+
+async function adminDel(id){
+  if(!confirm('Permanently delete this listing?')) return;
+  const {error} = await sb.from('properties').delete().eq('id', id);
+  if(error){ showToast('⚠️ '+error.message); return; }
+  showToast('🗑 Deleted');
+  const tabBtn = document.getElementById(
+    curAdminTab==='pending'?'at-p':curAdminTab==='approved'?'at-a':curAdminTab==='rejected'?'at-r':'at-all'
+  );
+  await loadAdminTab(curAdminTab, tabBtn);
+}
+
+// ═══════════════════════════════════════
+//  FILTERS
+// ═══════════════════════════════════════
+function filterCat(cat,el){activeCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');loadListings(true);}
+function setPrice(min,max,el){pMin=min;pMax=max;document.querySelectorAll('.filter-bar .filter-chip').forEach(c=>{if(!c.textContent.includes('Filter'))c.classList.remove('active');});el.classList.add('active');loadListings(true);}
+function selBhk(el,v){document.querySelectorAll('.sheet .filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');bhkF=v;}
+function applyFilter(){ownerOnly=document.getElementById('fo-owner').checked;verOnly=document.getElementById('fo-verified').checked;closeSheet();loadListings(true);showToast('Filter applied!');}
+// ── SEARCH TRANSLITERATION ──
+// Maps common English spellings → Marathi equivalents so
+const TRANSLITERATION = {
+  // Cities & towns
+  'paratwada':   'परतवाडा',
+  'achalpur':    'अचलपूर',
+  'amravati':    'अमरावती',
+  'vidarbha':    'विदर्भ',
+  'nagpur':      'नागपूर',
+  'wardha':      'वर्धा',
+  'yavatmal':    'यवतमाळ',
+  'akola':       'अकोला',
+  'buldhana':    'बुलढाणा',
+  'washim':      'वाशिम',
+  // Property types
+  'house':       'घर',
+  'plot':        'जमीन',
+  'land':        'जमीन',
+  'farm':        'शेत',
+  'shop':        'दुकान',
+  'flat':        'फ्लॅट',
+  // Common search terms
+  'road':        'रोड',
+  'colony':      'कॉलनी',
+  'layout':      'लेआउट',
+  'market':      'बाजार',
+  'school':      'शाळा',
+  'hospital':    'दवाखाना',
+  'new':         'नवीन',
+  'sale':        'विक्री',
+  'buy':         'खरेदी',
+  'cheap':       'स्वस्त',
+  'bhk':         'BHK',
+  'acre':        'एकर',
+  'sqft':        'चौ.फूट',
+  // Reverse: Marathi → English
+  'परतवाडा':    'paratwada',
+  'अचलपूर':     'achalpur',
+  'अमरावती':    'amravati',
+  'जमीन':       'plot',
+  'घर':         'house',
+  'शेत':        'farm',
+  'दुकान':      'shop',
+  'विक्री':     'sale',
+  'नवीन':       'new',
+};
+
+function buildSearchTerms(input) {
+  const q = input.trim().toLowerCase();
+  const terms = new Set([q]); // always include original query
+  // Direct map lookup
+  if (TRANSLITERATION[q]) terms.add(TRANSLITERATION[q]);
+  // Also check if any key contains the query (partial match)
+  Object.entries(TRANSLITERATION).forEach(([eng, mar]) => {
+    if (eng.includes(q) || q.includes(eng)) {
+      terms.add(eng);
+      terms.add(mar);
+    }
+  });
+  return [...terms].filter(Boolean).slice(0, 6); // max 6 terms to avoid query bloat
+}
+
+function dbSearch(){clearTimeout(srchTimer);srchTimer=setTimeout(()=>loadListings(true),500);}
+
+// ═══════════════════════════════════════
+//  PAGES & UI
+// ═══════════════════════════════════════
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  document.getElementById('bottomNav').style.display=['post','success','admin'].includes(page)?'none':'flex';
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  if(page==='home'){
+    document.getElementById('bn-home').classList.add('active');
+    document.getElementById('searchInput').value='';
+    loadListings(true);
+  }
+  if(page==='dash'){document.getElementById('bn-dash').classList.add('active');updateDashUI();}
+  if(page==='saved'){document.getElementById('bn-saved').classList.add('active');renderSavedPage();}
+  window.scrollTo(0,0);
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openSheet(){document.getElementById('filterSheet').classList.add('open');}
+function closeSheet(){document.getElementById('filterSheet').classList.remove('open');}
+// function onav(el,pos,wid){if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
+function onav(el,pos,wid){el.value=el.value.replace(/[^0-9]/g,'');if(el.value.length>1)el.value=el.value.slice(-1);if(el.value&&pos<5){const ins=document.querySelectorAll(`#${wid} .otp-input`);if(ins[pos+1])ins[pos+1].focus();}}
+
+function otpKey(e, el, pos, wid) {
+  if (e.key === 'Backspace' && !el.value && pos > 0) {
+    const ins = document.querySelectorAll(`#${wid} .otp-input`);
+    if (ins[pos - 1]) {
+      ins[pos - 1].focus();
+      ins[pos - 1].value = '';
+    }
+  }
+}
+
+function toggleLang(){lang=lang==='mr'?'en':'mr';document.getElementById('langBtn').textContent=lang==='mr'?'मराठी':'English';document.getElementById('hero-title').innerHTML=lang==='mr'?'महाराष्ट्र / विदर्भ मधील<br>मालमत्ता शोधा 🏡':'Find Property in<br>Paratwada / Achalpur 🏡';document.getElementById('hero-sub').textContent=lang==='mr'?'जमीन, घर, दुकान – थेट मालकाशी संपर्क':'Land, House, Shop – Direct owner contact';showToast(lang==='mr'?'मराठी भाषा सक्रिय':'English active');}
+
+// ═══════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════
+// ── LIGHTBOX ──
+function openLightbox(src) {
+  if (!src || src.includes('placehold.co')) return; // don't open for placeholder
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden'; // prevent background scroll
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close lightbox with Escape key
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+function fp(p){if(!p)return'–';if(p>=10000000)return'₹'+(p/10000000).toFixed(1)+' Cr';if(p>=100000)return'₹'+(p/100000).toFixed(1)+' L';return'₹'+p.toLocaleString('en-IN');}
+function ta(d){if(!d)return'–';const s=(Date.now()-new Date(d))/1000;if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' hrs ago';if(s<604800)return Math.floor(s/86400)+' days ago';return new Date(d).toLocaleDateString('en-IN');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
+
+let taps=0;
+document.querySelector('.nav-logo').addEventListener('click',()=>{if(++taps>=5){taps=0;showPage('admin');}});
+
 init();
 </script>
 </body>

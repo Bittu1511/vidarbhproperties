@@ -359,7 +359,7 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     <div class="hero-title" id="hero-title">महाराष्ट्र / विदर्भ मधील<br>प्रॉपर्टी शोधा 🏡</div>
     <div class="hero-sub" id="hero-sub">जमीन, घर, शेती, दुकान – थेट संपर्क</div>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="परिसर, गाव शोधा... (e.g. Amravati plot)" oninput="dbSearch()">
+      <input type="text" id="searchInput" placeholder="परिसर, गाव शोधा... (e.g. Amravati plot)" oninput="dbSearch()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <button class="search-btn" onclick="loadListings(true)">🔍</button>
     </div>
     <div class="hero-stats">
@@ -855,7 +855,14 @@ async function verifyLoginOTP() {
   const token=Array.from(document.querySelectorAll('#lm-otp .otp-input')).map(i=>i.value).join('');
   if (token.length<6) { showToast('⚠️ 6-digit OTP enter करा'); return; }
   const ok=await verifyOTP(pendingEmail,token);
-  if (!ok) { showToast('⚠️ Wrong or expired OTP! Resend करा.'); return; }
+  if (!ok) {
+    showToast('⚠️ Wrong or expired OTP! Resend करा.');
+    // Clear all OTP boxes and focus first one
+    const inputs = document.querySelectorAll('#lm-otp .otp-input');
+    inputs.forEach(i => i.value = '');
+    inputs[0]?.focus();
+    return;
+  }
   const sessionToken = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36)+Date.now().toString(36));
   curUser={email:pendingEmail, id:pendingEmail, sessionToken, loginTime: Date.now()};
   localStorage.setItem('vp_user',JSON.stringify(curUser));

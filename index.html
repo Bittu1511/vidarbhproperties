@@ -6,6 +6,19 @@
 <meta name="theme-color" content="#C84B31">
 <meta name="description" content="विदर्भ प्रॉपर्टीज - महाराष्ट्र / विदर्भ मधील जमीन, घर आणि मालमत्ता खरेदी-विक्री">
 <title>Vidarbh Properties | विदर्भ प्रॉपर्टीज</title>
+<!-- Open Graph — updated dynamically per listing for WhatsApp/Facebook/Instagram previews -->
+<meta property="og:site_name"   content="VidarbhProperties" id="og-site">
+<meta property="og:type"        content="website" id="og-type">
+<meta property="og:title"       content="Vidarbh Properties | विदर्भ प्रॉपर्टीज" id="og-title">
+<meta property="og:description" content="महाराष्ट्र / विदर्भ मधील जमीन, घर, शेत, दुकान — थेट मालकाशी संपर्क" id="og-desc">
+<meta property="og:image"       content="https://vidarbhproperties.in/og-cover.png" id="og-image">
+<meta property="og:url"         content="https://vidarbhproperties.in" id="og-url">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="Vidarbh Properties" id="tw-title">
+<meta name="twitter:description" content="महाराष्ट्र / विदर्भ मधील मालमत्ता" id="tw-desc">
+<meta name="twitter:image"       content="https://vidarbhproperties.in/og-cover.png" id="tw-image">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23C84B31'/><text y='72' x='50' text-anchor='middle' font-size='52' font-weight='900' font-family='Arial,sans-serif' fill='white'>VP</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23C84B31'/><text y='72' x='50' text-anchor='middle' font-size='52' font-weight='900' font-family='Arial,sans-serif' fill='white'>VP</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -257,6 +270,13 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   #page-home{padding-bottom:80px;}
   #page-post .form-wizard{max-width:100%;}
 }
+/* SHARE SHEET */
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.share-btn{border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.2s;}
+.share-btn:active{opacity:0.8;}
+.share-preview{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.share-preview-img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4;}
+
 /* LIGHTBOX */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;display:none;align-items:center;justify-content:center;cursor:zoom-out;}
 .lightbox.open{display:flex;}
@@ -417,7 +437,8 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
     </div>
   </div>
   <div class="detail-action-bar">
-    <button class="btn-share-sm" id="d-save-btn" onclick="toggleSaveListing()">🔖</button>
+    <button class="btn-share-sm" id="d-save-btn" onclick="toggleSaveListing()" title="Save">🔖</button>
+    <button class="btn-share-sm" onclick="openShareSheet()" title="Share" style="background:var(--brand-light);border-color:var(--brand);color:var(--brand)">📤</button>
     <button class="btn-call" style="flex:1.2" onclick="handleCall()">📞 Call Owner</button>
     <button class="btn-wa" style="flex:1.2" onclick="handleWA()">💬 WhatsApp</button>
   </div>
@@ -644,6 +665,42 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   <button class="bn-item post" onclick="checkLoginPost()"><span class="bn-icon">➕</span><span class="bn-label">Post</span></button>
   <button class="bn-item" id="bn-saved" onclick="showPage('saved')"><span class="bn-icon">🔖</span><span class="bn-label">Saved</span></button>
   <button class="bn-item" id="bn-dash" onclick="showPage('dash')"><span class="bn-icon">👤</span><span class="bn-label">My Ads</span></button>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="sheet-overlay" id="shareSheet" onclick="if(event.target===this)closeShareSheet()">
+  <div class="sheet" style="max-width:480px">
+    <div class="sheet-handle"></div>
+    <div style="font-size:16px;font-weight:800;margin-bottom:4px;color:var(--dark)">📤 Property Share करा</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Friends आणि Family ला पाठवा</div>
+    <!-- Preview card -->
+    <div class="share-preview" id="share-preview">
+      <img class="share-preview-img" id="share-prev-img" src="" alt="">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="share-prev-title">–</div>
+        <div style="font-size:13px;font-weight:800;color:var(--brand)" id="share-prev-price">–</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px" id="share-prev-link">vidarbhproperties.in/#listing-...</div>
+      </div>
+    </div>
+    <!-- Share buttons -->
+    <div class="share-grid">
+      <button class="share-btn" style="background:#25D366;color:#fff" onclick="shareVia('whatsapp')">
+        💬 WhatsApp
+      </button>
+      <button class="share-btn" style="background:#1877F2;color:#fff" onclick="shareVia('facebook')">
+        📘 Facebook
+      </button>
+      <button class="share-btn" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff" onclick="shareVia('instagram')">
+        📸 Instagram
+      </button>
+      <button class="share-btn" style="background:var(--bg);color:var(--dark);border:1.5px solid var(--border)" onclick="shareVia('copy')">
+        🔗 Link Copy करा
+      </button>
+    </div>
+    <button class="share-btn" style="width:100%;background:var(--brand);color:#fff" onclick="shareVia('native')">
+      ↗ More Options
+    </button>
+  </div>
 </div>
 
 <div class="sheet-overlay" id="filterSheet" onclick="if(event.target===this)closeSheet()">
@@ -981,11 +1038,14 @@ async function openDetail(id){
   const saves = getSaved();
   document.getElementById('d-save-btn').textContent = saves.includes(id) ? '❤️' : '🔖';
 
+  // Update OG tags + URL hash so this listing is directly shareable
+  updateOGTags(l);
+
   showPage('detail');
 }
 
-function handleCall(){if(!curUser){showToast('📞 Call साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'call');const targetPhone = curL.seller_type === 'Broker' ? '7517028029' : curL.phone; callNum(targetPhone,curL.seller);}}
-function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'whatsapp');const targetPhone = curL.seller_type === 'Broker' ? '7517028029' : curL.phone; waNum(targetPhone,curL.title);}}
+function handleCall(){if(!curUser){showToast('📞 Call साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'call');const targetPhone = curL.seller_type === 'Broker' ? '7028500604' : curL.phone; callNum(targetPhone,curL.seller);}}
+function handleWA(){if(!curUser){showToast('💬 WhatsApp साठी Login करा');openLoginModal();return;}if(curL){logInq(curL.id,'whatsapp');const targetPhone = curL.seller_type === 'Broker' ? '7028500604' : curL.phone; waNum(targetPhone,curL.title);}}
 function callNum(p,n){showToast(`📞 Calling ${n}...`);setTimeout(()=>{window.location.href=`tel:+91${p}`;},400);}
 function waNum(p,t){const m=encodeURIComponent(`नमस्कार! मला vidarbhproperties.in वर आपली जाहिरात आवडली: "${t}". कृपया अधिक माहिती द्या.`);showToast('💬 Opening...');setTimeout(()=>window.open(`https://wa.me/91${p}?text=${m}`,'_blank'),300);}
 
@@ -999,19 +1059,120 @@ function contactFromCard(type, lid){
   if(!l){ showToast('⚠️ Listing not found'); return; }
   logInq(lid, type);
   
-  const targetPhone = l.seller_type === 'Broker' ? '7517028029' : l.phone;
+  const targetPhone = l.seller_type === 'Broker' ? '7028500604' : l.phone;
   
   if(type==='call') callNum(targetPhone, l.seller);
   else waNum(targetPhone, l.title);
 }
 
 
-function shareLink(){
-  const u='https://vidarbhproperties.in';
-  const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;
-  if(navigator.share) navigator.share({title:curL?.title, text:txt, url:u});
-  else { navigator.clipboard?.writeText(u); showToast('🔗 Link copied!'); }
+// ── PROPERTY-SPECIFIC URL & OG TAG SYSTEM ──
+
+function getPropertyURL(id) {
+  return `https://vidarbhproperties.in/#listing-${id}`;
 }
+
+function updateOGTags(l) {
+  // Update OG meta tags dynamically so WhatsApp/Facebook read them on share
+  const url   = getPropertyURL(l.id);
+  const title = `${l.title} — ${fp(l.price)} | VidarbhProperties`;
+  const desc  = `${l.category} · ${l.area||''} · ${l.location} | विदर्भ प्रॉपर्टीज वर मालमत्ता पहा`;
+  const imgList = l.img ? l.img.split(',') : [];
+  const image = imgList[0] || 'https://vidarbhproperties.in/og-cover.png';
+
+  const set = (id, val) => { const el=document.getElementById(id); if(el) el.setAttribute('content', val); };
+  set('og-title',  title);
+  set('og-desc',   desc);
+  set('og-image',  image);
+  set('og-url',    url);
+  set('tw-title',  title);
+  set('tw-desc',   desc);
+  set('tw-image',  image);
+  document.title = title;
+
+  // Update browser URL bar with hash — enables direct sharing
+  try { history.replaceState(null, '', `/#listing-${l.id}`); } catch(e) {}
+}
+
+function resetOGTags() {
+  const def = 'https://vidarbhproperties.in';
+  const set = (id, val) => { const el=document.getElementById(id); if(el) el.setAttribute('content', val); };
+  set('og-title',  'Vidarbh Properties | विदर्भ प्रॉपर्टीज');
+  set('og-desc',   'महाराष्ट्र / विदर्भ मधील जमीन, घर, शेत, दुकान — थेट मालकाशी संपर्क');
+  set('og-image',  def+'/og-cover.png');
+  set('og-url',    def);
+  set('tw-title',  'Vidarbh Properties');
+  set('tw-desc',   'महाराष्ट्र / विदर्भ मधील मालमत्ता');
+  set('tw-image',  def+'/og-cover.png');
+  document.title = 'Vidarbh Properties | विदर्भ प्रॉपर्टीज';
+  try { history.replaceState(null, '', '/'); } catch(e) {}
+}
+
+// ── SHARE SHEET ──
+function openShareSheet() {
+  if (!curL) return;
+  const url = getPropertyURL(curL.id);
+  const imgList = curL.img ? curL.img.split(',') : [];
+
+  // Populate preview
+  document.getElementById('share-prev-img').src   = imgList[0] || 'https://placehold.co/52x52/f5e6e2/c84b31?text=VP';
+  document.getElementById('share-prev-title').textContent = curL.title;
+  document.getElementById('share-prev-price').textContent = fp(curL.price);
+  document.getElementById('share-prev-link').textContent  = url;
+
+  document.getElementById('shareSheet').classList.add('open');
+}
+
+function closeShareSheet() {
+  document.getElementById('shareSheet').classList.remove('open');
+}
+
+function shareVia(platform) {
+  if (!curL) return;
+  const url   = getPropertyURL(curL.id);
+  const title = `${curL.title} — ${fp(curL.price)}`;
+  const text  = `🏡 ${title}\n📍 ${curL.location}\n\nVidarbhProperties वर पहा:\n${url}`;
+
+  closeShareSheet();
+
+  switch(platform) {
+    case 'whatsapp':
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+      break;
+
+    case 'facebook':
+      // Facebook sharer uses u= param for URL
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`, '_blank');
+      break;
+
+    case 'instagram':
+      // Instagram has no direct web share API — copy link and instruct user
+      navigator.clipboard?.writeText(url).then(()=>{
+        showToast('📋 Link copied! Instagram Story मध्ये paste करा');
+      }).catch(()=>{ showToast('Link: '+url); });
+      break;
+
+    case 'copy':
+      navigator.clipboard?.writeText(url).then(()=>{
+        showToast('✅ Link copied! Paste करा anywhere');
+      }).catch(()=>{ showToast('Link: '+url); });
+      break;
+
+    case 'native':
+    default:
+      if (navigator.share) {
+        navigator.share({ title, text: `${curL.location} | ${fp(curL.price)}`, url })
+          .catch(()=>{});
+      } else {
+        navigator.clipboard?.writeText(url);
+        showToast('🔗 Link copied!');
+      }
+      break;
+  }
+}
+
+// Keep old shareLink for backward compatibility
+function shareLink(){ openShareSheet(); }
 async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_id:lid,contact_type:type,user_phone:curUser?.email||'anon'});}catch(e){}}
 
 // ── SAVED LISTINGS (localStorage) ──
@@ -1477,6 +1638,7 @@ function showPage(page){
     document.getElementById('bn-home').classList.add('active');
     document.getElementById('searchInput').value='';
     loadListings(true);
+    resetOGTags(); // restore default OG tags when leaving listing detail
   }
   if(page==='dash'){document.getElementById('bn-dash').classList.add('active');updateDashUI();}
   if(page==='saved'){document.getElementById('bn-saved').classList.add('active');renderSavedPage();}
@@ -1525,7 +1687,37 @@ function showToast(m){const t=document.getElementById('toast');t.textContent=m;t
 let taps=0;
 document.querySelector('.nav-logo').addEventListener('click',()=>{if(++taps>=5){taps=0;showPage('admin');}});
 
-init();
+// ── DEEP LINK HANDLER ──
+// If someone opens vidarbhproperties.in/#listing-UUID, auto-open that listing
+async function handleDeepLink() {
+  const hash = window.location.hash; // e.g. #listing-2fa386d1-...
+  if (hash && hash.startsWith('#listing-')) {
+    const id = hash.replace('#listing-', '').trim();
+    if (id && id.length > 10) { // basic sanity check for UUID
+      await openDetail(id);
+    }
+  }
+}
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', () => {
+  const hash = window.location.hash;
+  if (!hash || !hash.startsWith('#listing-')) {
+    // User navigated back — show home
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-home').classList.add('active');
+    document.getElementById('bottomNav').style.display='flex';
+    document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+    document.getElementById('bn-home').classList.add('active');
+  }
+});
+
+async function initApp() {
+  await init();
+  await handleDeepLink(); // check for direct listing URL after init
+}
+
+initApp();
 </script>
 </body>
 </html>

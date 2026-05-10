@@ -6,6 +6,16 @@
 <meta name="theme-color" content="#C84B31">
 <meta name="description" content="विदर्भ प्रॉपर्टीज - महाराष्ट्र / विदर्भ मधील जमीन, घर आणि मालमत्ता खरेदी-विक्री">
 <title>Vidarbh Properties | विदर्भ प्रॉपर्टीज</title>
+<meta property="og:site_name"   content="VidarbhProperties" id="og-site">
+<meta property="og:type"        content="website" id="og-type">
+<meta property="og:title"       content="Vidarbh Properties | विदर्भ प्रॉपर्टीज" id="og-title">
+<meta property="og:description" content="महाराष्ट्र / विदर्भ मधील जमीन, घर, शेत, दुकान — थेट मालकाशी संपर्क" id="og-desc">
+<meta property="og:image"       content="https://vidarbhproperties.in/og-cover.png" id="og-image">
+<meta property="og:url"         content="https://vidarbhproperties.in" id="og-url">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="Vidarbh Properties" id="tw-title">
+<meta name="twitter:description" content="महाराष्ट्र / विदर्भ मधील मालमत्ता" id="tw-desc">
+<meta name="twitter:image"       content="https://vidarbhproperties.in/og-cover.png" id="tw-image">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23C84B31'/><text y='72' x='50' text-anchor='middle' font-size='52' font-weight='900' font-family='Arial,sans-serif' fill='white'>VP</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23C84B31'/><text y='72' x='50' text-anchor='middle' font-size='52' font-weight='900' font-family='Arial,sans-serif' fill='white'>VP</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -415,14 +425,19 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
         <div style="font-size:11px;color:var(--green);font-weight:600" id="d-sver">–</div>
       </div>
     </div>
-    <!-- Contact buttons inside content — visible to all visitors including from shared links -->
-    <div style="display:flex;gap:10px;margin-bottom:16px;">
-      <button class="btn-call" style="flex:1" onclick="handleCall()">📞 Call</button>
+    <div style="display:flex;gap:10px;margin-bottom:12px;">
+      <button class="btn-call" style="flex:1" onclick="handleCall()">📞 Call Owner</button>
       <button class="btn-wa" style="flex:1" onclick="handleWA()">💬 WhatsApp</button>
+    </div>
+    <div style="background:linear-gradient(135deg,#FBF7F5,#F5E6E2);border:1.5px solid var(--brand-light);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:26px">📣</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px">ही जाहिरात Share करा!</div><div style="font-size:11px;color:var(--muted)">WhatsApp Status, Instagram वर share करा — जास्त buyers मिळतात</div></div>
+      <button onclick="openShareSheet()" style="background:var(--brand);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0">📤 Share</button>
     </div>
   </div>
   <div class="detail-action-bar">
-    <button class="btn-share-sm" id="d-save-btn" onclick="toggleSaveListing()">🔖</button>
+    <button class="btn-share-sm" id="d-save-btn" onclick="toggleSaveListing()" title="Save">🔖</button>
+    <button class="btn-share-sm" onclick="openShareSheet()" title="Share" style="background:var(--brand-light);border-color:var(--brand);color:var(--brand)">📤</button>
     <button class="btn-call" style="flex:1.2" onclick="handleCall()">📞 Call Owner</button>
     <button class="btn-wa" style="flex:1.2" onclick="handleWA()">💬 WhatsApp</button>
   </div>
@@ -649,6 +664,30 @@ nav{background:var(--white);border-bottom:2px solid var(--brand);position:sticky
   <button class="bn-item post" onclick="checkLoginPost()"><span class="bn-icon">➕</span><span class="bn-label">Post</span></button>
   <button class="bn-item" id="bn-saved" onclick="showPage('saved')"><span class="bn-icon">🔖</span><span class="bn-label">Saved</span></button>
   <button class="bn-item" id="bn-dash" onclick="showPage('dash')"><span class="bn-icon">👤</span><span class="bn-label">My Ads</span></button>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="sheet-overlay" id="shareSheet" onclick="if(event.target===this)closeShareSheet()">
+  <div class="sheet" style="max-width:480px">
+    <div class="sheet-handle"></div>
+    <div style="font-size:16px;font-weight:800;margin-bottom:4px;color:var(--dark)">📤 Property Share करा</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Friends आणि Family ला पाठवा</div>
+    <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+      <img id="share-prev-img" src="" alt="" style="width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#f0e8e4">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:700;color:var(--dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="share-prev-title">–</div>
+        <div style="font-size:13px;font-weight:800;color:var(--brand)" id="share-prev-price">–</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px" id="share-prev-link">vidarbhproperties.in/#listing-...</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <button style="background:#25D366;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareVia('whatsapp')">💬 WhatsApp</button>
+      <button style="background:#1877F2;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareVia('facebook')">📘 Facebook</button>
+      <button style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareVia('instagram')">📸 Instagram</button>
+      <button style="background:var(--bg);color:var(--dark);border:1.5px solid var(--border);border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareVia('copy')">🔗 Link Copy</button>
+    </div>
+    <button style="width:100%;background:var(--brand);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit" onclick="shareVia('native')">↗ More Options</button>
+  </div>
 </div>
 
 <div class="sheet-overlay" id="filterSheet" onclick="if(event.target===this)closeSheet()">
@@ -985,7 +1024,7 @@ async function openDetail(id){
 
   const saves = getSaved();
   document.getElementById('d-save-btn').textContent = saves.includes(id) ? '❤️' : '🔖';
-
+  updateOGTags(l);
   showPage('detail');
 }
 
@@ -1011,7 +1050,64 @@ function contactFromCard(type, lid){
 }
 
 
-function shareLink(){
+// ── PROPERTY URL & OG TAGS ──
+function getPropertyURL(id){ return `https://vidarbhproperties.in/#listing-${id}`; }
+
+function updateOGTags(l){
+  const url=getPropertyURL(l.id);
+  const title=`${l.title} — ${fp(l.price)} | VidarbhProperties`;
+  const desc=`${l.category} · ${l.area||''} · ${l.location} | विदर्भ प्रॉपर्टीज वर मालमत्ता पहा`;
+  const imgList=l.img?l.img.split(','):[];
+  const image=imgList[0]||'https://vidarbhproperties.in/og-cover.png';
+  const set=(id,val)=>{ const el=document.getElementById(id); if(el) el.setAttribute('content',val); };
+  set('og-title',title); set('og-desc',desc); set('og-image',image); set('og-url',url);
+  set('tw-title',title); set('tw-desc',desc); set('tw-image',image);
+  document.title=title;
+  try{ history.replaceState(null,'',`/#listing-${l.id}`); }catch(e){}
+}
+
+function resetOGTags(){
+  const def='https://vidarbhproperties.in';
+  const set=(id,val)=>{ const el=document.getElementById(id); if(el) el.setAttribute('content',val); };
+  set('og-title','Vidarbh Properties | विदर्भ प्रॉपर्टीज');
+  set('og-desc','महाराष्ट्र / विदर्भ मधील जमीन, घर, शेत, दुकान — थेट मालकाशी संपर्क');
+  set('og-image',def+'/og-cover.png'); set('og-url',def);
+  set('tw-title','Vidarbh Properties'); set('tw-desc','महाराष्ट्र / विदर्भ मधील मालमत्ता');
+  set('tw-image',def+'/og-cover.png');
+  document.title='Vidarbh Properties | विदर्भ प्रॉपर्टीज';
+  try{ history.replaceState(null,'','/'); }catch(e){}
+}
+
+function openShareSheet(){
+  if(!curL) return;
+  const url=getPropertyURL(curL.id);
+  const imgList=curL.img?curL.img.split(','):[];
+  document.getElementById('share-prev-img').src=imgList[0]||'https://placehold.co/52x52/f5e6e2/c84b31?text=VP';
+  document.getElementById('share-prev-title').textContent=curL.title;
+  document.getElementById('share-prev-price').textContent=fp(curL.price);
+  document.getElementById('share-prev-link').textContent=url;
+  document.getElementById('shareSheet').classList.add('open');
+}
+function closeShareSheet(){ document.getElementById('shareSheet').classList.remove('open'); }
+
+function shareVia(platform){
+  if(!curL) return;
+  const url=getPropertyURL(curL.id);
+  const title=`${curL.title} — ${fp(curL.price)}`;
+  const text=`🏡 *${curL.title}*\n💰 किंमत: *${fp(curL.price)}*\n📍 ${curL.location}\n\n👇 *थेट मालकाशी संपर्क करण्यासाठी link उघडा:*\n${url}\n\n📞 Call व WhatsApp option link मध्ये available आहे`;
+  closeShareSheet();
+  switch(platform){
+    case 'whatsapp': window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank'); break;
+    case 'facebook': window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank'); break;
+    case 'instagram': navigator.clipboard?.writeText(url).then(()=>showToast('📋 Link copied! Instagram Story मध्ये paste करा')).catch(()=>showToast('Link: '+url)); break;
+    case 'copy': navigator.clipboard?.writeText(url).then(()=>showToast('✅ Link copied!')).catch(()=>showToast('Link: '+url)); break;
+    default:
+      if(navigator.share) navigator.share({title,text:`${curL.location} | ${fp(curL.price)}`,url}).catch(()=>{});
+      else { navigator.clipboard?.writeText(url); showToast('🔗 Link copied!'); }
+  }
+}
+
+function shareLink(){ openShareSheet(); }
   const u='https://vidarbhproperties.in';
   const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;
   if(navigator.share) navigator.share({title:curL?.title, text:txt, url:u});
@@ -1482,6 +1578,7 @@ function showPage(page){
     document.getElementById('bn-home').classList.add('active');
     document.getElementById('searchInput').value='';
     loadListings(true);
+    resetOGTags();
   }
   if(page==='dash'){document.getElementById('bn-dash').classList.add('active');updateDashUI();}
   if(page==='saved'){document.getElementById('bn-saved').classList.add('active');renderSavedPage();}
@@ -1530,7 +1627,25 @@ function showToast(m){const t=document.getElementById('toast');t.textContent=m;t
 let taps=0;
 document.querySelector('.nav-logo').addEventListener('click',()=>{if(++taps>=5){taps=0;showPage('admin');}});
 
-init();
+// ── DEEP LINK HANDLER ──
+async function handleDeepLink(){
+  const hash=window.location.hash;
+  if(hash && hash.startsWith('#listing-')){
+    const id=hash.replace('#listing-','').trim();
+    if(id && id.length>10) await openDetail(id);
+  }
+}
+window.addEventListener('popstate',()=>{
+  const hash=window.location.hash;
+  if(!hash||!hash.startsWith('#listing-')){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-home').classList.add('active');
+    document.getElementById('bottomNav').style.display='flex';
+    document.getElementById('bn-home').classList.add('active');
+  }
+});
+async function initApp(){ await init(); await handleDeepLink(); }
+initApp();
 </script>
 </body>
 </html>

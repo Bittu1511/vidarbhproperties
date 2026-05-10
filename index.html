@@ -1108,11 +1108,6 @@ function shareVia(platform){
 }
 
 function shareLink(){ openShareSheet(); }
-  const u='https://vidarbhproperties.in';
-  const txt = curL ? `${curL.title} - ${fp(curL.price)} | VidarbhProperties\n${u}` : u;
-  if(navigator.share) navigator.share({title:curL?.title, text:txt, url:u});
-  else { navigator.clipboard?.writeText(u); showToast('🔗 Link copied!'); }
-}
 async function logInq(lid,type){try{await sb.from('inquiries').insert({listing_id:lid,contact_type:type,user_phone:curUser?.email||'anon'});}catch(e){}}
 
 // ── SAVED LISTINGS (localStorage) ──

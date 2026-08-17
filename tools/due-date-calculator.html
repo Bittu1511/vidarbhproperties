@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-IN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E0507A">
+<title>Pregnancy Due Date Calculator — EDD, Week &amp; Trimester | Bloom</title>
+<meta name="description" content="Free due date calculator. Work out your estimated delivery date from your last period, conception date or IVF transfer — plus how many weeks pregnant you are today.">
+<meta name="keywords" content="due date calculator, EDD calculator, pregnancy calculator, how many weeks pregnant am I, delivery date calculator, IVF due date">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://YOUR-DOMAIN.in/tools/due-date-calculator.html">
+<link rel="alternate" hreflang="en-in" href="https://YOUR-DOMAIN.in/tools/due-date-calculator.html">
+<link rel="alternate" hreflang="x-default" href="https://YOUR-DOMAIN.in/tools/due-date-calculator.html">
+<meta name="geo.region" content="IN">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bloom">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Pregnancy Due Date Calculator">
+<meta property="og:description" content="Your estimated delivery date, current week and trimester — on a visual pregnancy timeline.">
+<meta property="og:url" content="https://YOUR-DOMAIN.in/tools/due-date-calculator.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
+<link rel="stylesheet" href="../assets/app.css?v=3">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Pregnancy Due Date Calculator","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://YOUR-DOMAIN.in/tools/due-date-calculator.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How is a pregnancy due date calculated?","acceptedAnswer":{"@type":"Answer","text":"The standard method (Naegele's rule) adds 280 days — 40 weeks — to the first day of your last menstrual period. If your cycle is longer or shorter than 28 days, the estimate is shifted by the difference."}},
+{"@type":"Question","name":"Why is pregnancy counted from my last period when I was not pregnant yet?","acceptedAnswer":{"@type":"Answer","text":"Because the last period is a date most people can identify, while the exact moment of conception usually is not known. It means the first two weeks of a 40-week pregnancy happen before conception."}},
+{"@type":"Question","name":"How accurate is the estimated due date?","acceptedAnswer":{"@type":"Answer","text":"It is an estimate. Only a small percentage of babies arrive exactly on the due date, and a normal term birth spans roughly 37 to 42 weeks. A first-trimester dating scan is more accurate than calendar calculation."}},
+{"@type":"Question","name":"How do I calculate a due date after IVF?","acceptedAnswer":{"@type":"Answer","text":"From the embryo transfer date, counting back the embryo's age. For a day-5 blastocyst transfer the due date is 261 days from transfer; for a day-3 embryo it is 263 days."}},
+{"@type":"Question","name":"Which is more accurate, my dates or the scan?","acceptedAnswer":{"@type":"Answer","text":"An early ultrasound, especially in the first trimester, is generally more accurate than calendar dating. If the scan differs significantly from your dates, your doctor will usually re-date the pregnancy from the scan."}}]}
+</script>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#tool">Skip to calculator</a>
+
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
+    <span>Bloom</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html#tools">All tools</a>
+    <a href="ovulation-calculator.html">Ovulation</a>
+    <a href="safe-days-calculator.html">Safe days</a>
+    <a href="due-date-calculator.html">Due date</a>
+    <a href="pregnancy-tracker.html">Week by week</a>
+    <a href="../about.html">About</a>
+  </div>
+  <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+</div></nav>
+
+<main>
+<header class="wrap thead">
+  <nav class="crumb"><a href="../index.html">Home</a> › <a href="../index.html#tools">Tools</a> › Due date calculator</nav>
+  <h1>Due Date <span class="grad">Calculator</span></h1>
+  <p>Find your estimated delivery date and see exactly how far along you are today — from your last period, a known conception date, or an IVF transfer.</p>
+</header>
+
+<section class="wrap" id="tool">
+  <div class="grid-2">
+    <div>
+      <div class="card rv">
+        <h3>Calculate from</h3>
+        <div class="field">
+          <label for="mode">Method</label>
+          <select id="mode">
+            <option value="lmp" selected>Last menstrual period (most common)</option>
+            <option value="conc">Known conception / ovulation date</option>
+            <option value="ivf5">IVF — day-5 blastocyst transfer</option>
+            <option value="ivf3">IVF — day-3 embryo transfer</option>
+            <option value="edd">I already know my due date</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="d0" id="dLabel">First day of your last period</label>
+          <input type="date" id="d0">
+        </div>
+        <div class="field" id="cycleRow">
+          <label for="clen">Average cycle length <span class="hint">— adjusts the estimate if you are not 28 days</span></label>
+          <div class="slider">
+            <input type="range" id="clen" min="21" max="40" value="28" step="1">
+            <span class="val" id="clenv">28d</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card rv">
+        <h3>Key milestones</h3>
+        <div class="tblbox">
+          <table>
+            <thead><tr><th>Milestone</th><th>Week</th><th>Date</th></tr></thead>
+            <tbody id="miles"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="result rv">
+        <div class="k">Estimated due date</div>
+        <div class="hero-fig" id="eddOut">–</div>
+        <div class="sub" id="eddSub">Enter a date to begin</div>
+        <div class="tiles">
+          <div class="tile"><div class="k">You are</div><div class="v" id="gaOut">–</div><div class="m">pregnant today</div></div>
+          <div class="tile"><div class="k">Trimester</div><div class="v" id="triOut">–</div><div class="m" id="triSub"></div></div>
+          <div class="tile"><div class="k">Days to go</div><div class="v" id="dtgOut">–</div><div class="m" id="dtgSub"></div></div>
+          <div class="tile"><div class="k">Conceived around</div><div class="v" id="concOut">–</div><div class="m">approximate</div></div>
+        </div>
+      </div>
+
+      <div class="card rv">
+        <h3>Your pregnancy timeline</h3>
+        <div class="tl">
+          <div class="tl-track" id="tlTrack" role="img" aria-labelledby="tlDesc">
+            <div class="tl-seg" style="flex:13"></div>
+            <div class="tl-seg" style="flex:14"></div>
+            <div class="tl-seg" style="flex:13"></div>
+            <div class="tl-fill" id="tlFill"></div>
+          </div>
+          <p id="tlDesc" style="position:absolute;left:-9999px">Progress bar across three trimesters</p>
+          <div class="tl-marks"><span>Week 0</span><span>Week 13</span><span>Week 27</span><span>Week 40</span></div>
+        </div>
+        <div class="tri-row" id="triRow">
+          <div class="tri" data-t="1"><div class="k">1st trimester</div><div class="v">Weeks 1–13</div></div>
+          <div class="tri" data-t="2"><div class="k">2nd trimester</div><div class="v">Weeks 14–27</div></div>
+          <div class="tri" data-t="3"><div class="k">3rd trimester</div><div class="v">Weeks 28–40</div></div>
+        </div>
+        <div class="note info" style="margin-bottom:0">
+          A normal term birth spans roughly <strong>37 to 42 weeks</strong>. Only about 1 in 20 babies arrives exactly on the estimated date — treat it as the centre of a range, not a deadline.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note med">
+    <strong>An estimate, not a diagnosis.</strong> A first-trimester dating scan is more accurate than any calendar calculation. If your scan date differs from this one, go with your doctor's date.
+  </div>
+
+  <div class="share">
+    <span>Share:</span>
+    <button class="wa" onclick="share('wa')">WhatsApp</button>
+    <button onclick="share('tg')">Telegram</button>
+    <button onclick="share('copy')">Copy link</button>
+  </div>
+</section>
+
+<section class="wrap section">
+  <h2 style="font-size:24px;letter-spacing:-.025em;margin-bottom:16px">Frequently asked questions</h2>
+  <div class="faq-grid">
+    <details class="faq"><summary>How is a due date calculated?</summary><div class="a">The standard method, Naegele's rule, adds 280 days (40 weeks) to the first day of your last menstrual period. This calculator also adjusts for cycle length — if your cycle runs 32 days rather than 28, ovulation happened later and the estimate shifts accordingly.</div></details>
+    <details class="faq"><summary>Why count from my last period when I wasn't pregnant then?</summary><div class="a">Because it is a date you can actually identify. The exact moment of conception usually isn't known. The consequence is that the first two weeks of a "40-week" pregnancy happen before conception — which is why you are considered "4 weeks pregnant" about two weeks after conception.</div></details>
+    <details class="faq"><summary>How accurate is the estimated due date?</summary><div class="a">Roughly 1 in 20 babies arrives on the exact date. A normal term birth is anywhere from 37 to 42 weeks. Early ultrasound dating is more accurate than calendar dating, particularly if your cycles are irregular.</div></details>
+    <details class="faq"><summary>How do I calculate a due date after IVF?</summary><div class="a">From the transfer date, accounting for embryo age. A day-5 blastocyst transfer gives a due date 261 days later; a day-3 embryo transfer gives 263 days. Select the matching option above.</div></details>
+    <details class="faq"><summary>What if my scan gives a different date?</summary><div class="a">Follow the scan. First-trimester ultrasound measurement is the most reliable dating method, and clinicians will usually re-date the pregnancy if the scan differs from your dates by more than about a week.</div></details>
+  </div>
+</section>
+</main>
+
+<footer class="f"><div class="wrap">
+  <div class="f-grid">
+    <div>
+      <a class="brand" href="../index.html" style="margin-bottom:10px">
+        <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
+        <span>Bloom</span>
+      </a>
+      <p style="color:var(--ink-2);max-width:36ch">Free, private fertility and pregnancy calculators. Everything runs in your browser.</p>
+    </div>
+    <div><h4>Tools</h4><ul>
+      <li><a href="ovulation-calculator.html">Ovulation calculator</a></li>
+      <li><a href="due-date-calculator.html">Due date calculator</a></li>
+      <li><a href="pregnancy-tracker.html">Week-by-week tracker</a></li>
+      <li><a href="period-tracker.html">Period tracker</a></li>
+      <li><a href="safe-days-calculator.html">Fertility awareness calendar</a></li>
+    </ul></div>
+    <div><h4>Site</h4><ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../about.html">About &amp; editorial policy</a></li>
+      <li><a href="../about.html#privacy">Privacy</a></li>
+    </ul></div>
+  </div>
+  <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only — not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional.</p>
+</div></footer>
+
+<script src="../assets/app.js?v=3"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+const LABELS = {
+  lmp:  "First day of your last period",
+  conc: "Date of conception / ovulation",
+  ivf5: "Date of day-5 blastocyst transfer",
+  ivf3: "Date of day-3 embryo transfer",
+  edd:  "Your known due date"
+};
+
+const MILESTONES = [
+  ["End of 1st trimester", 13],
+  ["Anomaly / anatomy scan window", 20],
+  ["Viability milestone", 24],
+  ["End of 2nd trimester", 27],
+  ["Third trimester begins", 28],
+  ["Considered full term", 37],
+  ["Estimated due date", 40]
+];
+
+function eddFrom(mode, d0, cycle) {
+  if (!d0) return null;
+  switch (mode) {
+    case "lmp":  return addDays(d0, 280 + (cycle - 28));
+    case "conc": return addDays(d0, 266);
+    case "ivf5": return addDays(d0, 261);
+    case "ivf3": return addDays(d0, 263);
+    case "edd":  return d0;
+  }
+}
+
+function calc() {
+  const mode = $("mode").value;
+  const cycle = +$("clen").value;
+  $("clenv").textContent = cycle + "d";
+  $("dLabel").textContent = LABELS[mode];
+  $("cycleRow").style.display = mode === "lmp" ? "" : "none";
+
+  const d0 = parseDate($("d0").value);
+  const edd = eddFrom(mode, d0, cycle);
+
+  if (!edd) {
+    $("eddOut").textContent = "–";
+    $("eddSub").textContent = "Enter a date to begin";
+    ["gaOut","triOut","dtgOut","concOut"].forEach(i => $(i).textContent = "–");
+    $("tlFill").style.width = "0%";
+    $("miles").innerHTML = `<tr><td colspan="3" style="color:var(--ink-3)">Enter a date</td></tr>`;
+    return;
+  }
+
+  // gestational age is measured from the notional LMP = EDD - 280 days
+  const start = addDays(edd, -280);
+  const gaDays = Math.max(0, daysBetween(start, today()));
+  const w = Math.floor(gaDays / 7), d = gaDays % 7;
+  const pct = Math.max(0, Math.min(100, gaDays / 280 * 100));
+
+  $("eddOut").textContent = fmt(edd);
+  $("eddSub").textContent = DAYS[edd.getDay()] + " · " + (
+    daysBetween(today(), edd) > 0 ? `${daysBetween(today(), edd)} days away` : "date has passed"
+  );
+
+  $("gaOut").textContent = gaDays > 0 ? `${w}w ${d}d` : "–";
+  const tri = w < 14 ? 1 : w < 28 ? 2 : 3;
+  $("triOut").textContent = gaDays > 0 ? ["1st","2nd","3rd"][tri - 1] : "–";
+  $("triSub").textContent = gaDays > 0 ? `${pct.toFixed(0)}% complete` : "";
+  const dtg = daysBetween(today(), edd);
+  $("dtgOut").textContent = dtg >= 0 ? dtg : "—";
+  $("dtgSub").textContent = dtg >= 0 ? `about ${Math.max(0, Math.round(dtg / 7))} weeks` : "past due date";
+  $("concOut").textContent = fmt(addDays(edd, -266), "short");
+
+  requestAnimationFrame(() => { $("tlFill").style.width = pct + "%"; });
+  $("triRow").querySelectorAll(".tri").forEach(el =>
+    el.classList.toggle("now", gaDays > 0 && +el.dataset.t === tri));
+
+  $("miles").innerHTML = MILESTONES.map(([name, week]) => {
+    const dt = addDays(start, week * 7);
+    const done = gaDays >= week * 7;
+    return `<tr><td>${done ? "✓ " : ""}${name}</td><td>Week ${week}</td>
+            <td style="${done ? "color:var(--ink-3)" : "font-weight:700"}">${fmt(dt)}</td></tr>`;
+  }).join("");
+}
+
+["mode","d0","clen"].forEach(id => {
+  $(id).addEventListener("input", calc);
+  $(id).addEventListener("change", calc);
+});
+persist(["mode","d0","clen"], "duedate");
+if (!$("d0").value) $("d0").value = toISO(addDays(today(), -70));
+calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en-IN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E0507A">
+<title>Pregnancy Week by Week — Baby Size &amp; Growth Chart | Bloom</title>
+<meta name="description" content="Track your pregnancy week by week. See your baby's size and weight, what is developing this week, and what to expect — weeks 4 to 40, with a growth chart.">
+<meta name="keywords" content="pregnancy week by week, baby size by week, how big is my baby, fetal growth chart, 20 weeks pregnant, pregnancy tracker India">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
+<link rel="alternate" hreflang="en-in" href="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
+<link rel="alternate" hreflang="x-default" href="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
+<meta name="geo.region" content="IN">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bloom">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Pregnancy Week by Week Tracker">
+<meta property="og:description" content="Your baby's size, weight and development for every week from 4 to 40.">
+<meta property="og:url" content="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
+<link rel="stylesheet" href="../assets/app.css?v=3">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Pregnancy Week by Week Tracker","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How big is my baby right now?","acceptedAnswer":{"@type":"Answer","text":"Average length runs from about 0.1 cm at week 4 to roughly 51 cm at week 40, and average weight from under a gram to around 3.4 kg. These are population averages — healthy babies vary considerably either side."}},
+{"@type":"Question","name":"Why is length measured differently early on?","acceptedAnswer":{"@type":"Answer","text":"Up to about week 20, length is measured crown to rump because the legs are curled against the body. From around week 20 it is measured crown to heel, which is why the figure jumps at that point."}},
+{"@type":"Question","name":"When will I feel the baby move?","acceptedAnswer":{"@type":"Answer","text":"First movements are typically felt between 16 and 25 weeks. First-time mothers usually notice them later than those who have been pregnant before."}},
+{"@type":"Question","name":"What is the anomaly scan and when is it done?","acceptedAnswer":{"@type":"Answer","text":"It is a detailed ultrasound checking the baby's anatomy, usually performed between 18 and 22 weeks."}}]}
+</script>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#tool">Skip to tracker</a>
+
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
+    <span>Bloom</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html#tools">All tools</a>
+    <a href="ovulation-calculator.html">Ovulation</a>
+    <a href="safe-days-calculator.html">Safe days</a>
+    <a href="due-date-calculator.html">Due date</a>
+    <a href="pregnancy-tracker.html">Week by week</a>
+    <a href="../about.html">About</a>
+  </div>
+  <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+</div></nav>
+
+<main>
+<header class="wrap thead">
+  <nav class="crumb"><a href="../index.html">Home</a> › <a href="../index.html#tools">Tools</a> › Week by week</nav>
+  <h1>Pregnancy <span class="grad">Week by Week</span></h1>
+  <p>Pick a week — or enter your due date to jump straight to where you are — and see your baby's size, weight and what is developing right now.</p>
+</header>
+
+<section class="wrap" id="tool">
+  <div class="card rv">
+    <div class="two">
+      <div class="field" style="margin-bottom:0">
+        <label for="edd">Your due date <span class="hint">— optional, jumps to your week</span></label>
+        <input type="date" id="edd">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label for="wk">Week <span class="hint">— or choose directly</span></label>
+        <div class="slider">
+          <input type="range" id="wk" min="4" max="40" value="20" step="1">
+          <span class="val" id="wkv">20</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:18px">
+    <div>
+      <div class="result rv">
+        <div class="k">Week <span id="wkNum">20</span> — your baby is about the size of</div>
+        <div class="hero-fig" id="fruit">–</div>
+        <div class="sub" id="triLine"></div>
+        <div class="tiles">
+          <div class="tile"><div class="k">Length</div><div class="v" id="lenV">–</div><div class="m" id="lenM"></div></div>
+          <div class="tile"><div class="k">Weight</div><div class="v" id="wtV">–</div><div class="m">average</div></div>
+          <div class="tile"><div class="k">Trimester</div><div class="v" id="triV">–</div><div class="m" id="triM"></div></div>
+          <div class="tile"><div class="k">Weeks to go</div><div class="v" id="togoV">–</div><div class="m">until week 40</div></div>
+        </div>
+      </div>
+
+      <div class="card rv">
+        <h3>What is happening this week</h3>
+        <p id="devText" style="font-size:15.5px;line-height:1.72;color:var(--ink-2)"></p>
+        <div class="note info" id="tipBox" style="margin-bottom:0"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card rv">
+        <h3>Average weight through pregnancy</h3>
+        <p style="font-size:13px;color:var(--ink-3);margin-top:-8px;margin-bottom:6px">Grams, weeks 4–40. Tap a bar to jump to that week.</p>
+        <div class="bars" id="bars" role="img" aria-label="Bar chart of average fetal weight in grams from week 4 to week 40"></div>
+        <div class="tl-marks"><span>4</span><span>13</span><span>22</span><span>31</span><span>40</span></div>
+
+        <button class="tbl-toggle" data-target="wkTable" aria-expanded="false">▸ Show data table</button>
+        <div class="tblbox" id="wkTable">
+          <table>
+            <thead><tr><th>Week</th><th>Size</th><th>Length</th><th>Weight</th></tr></thead>
+            <tbody id="wkRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note med">
+    <strong>Averages, not targets.</strong> Healthy babies vary widely in size at every week. Only your own scan measurements, read by your doctor, say anything about your baby.
+  </div>
+
+  <div class="share">
+    <span>Share:</span>
+    <button class="wa" onclick="share('wa')">WhatsApp</button>
+    <button onclick="share('tg')">Telegram</button>
+    <button onclick="share('copy')">Copy link</button>
+  </div>
+</section>
+
+<section class="wrap section">
+  <h2 style="font-size:24px;letter-spacing:-.025em;margin-bottom:16px">Frequently asked questions</h2>
+  <div class="faq-grid">
+    <details class="faq"><summary>How big is my baby right now?</summary><div class="a">Average length runs from about 0.1 cm at week 4 to roughly 51 cm at week 40, and weight from under a gram to around 3.4 kg. These are population averages and healthy babies vary considerably either side of them.</div></details>
+    <details class="faq"><summary>Why does the length jump around week 20?</summary><div class="a">Before about week 20 the legs are curled against the body, so length is measured crown to rump. From week 20 it is measured crown to heel. The figure jumps because the measurement changed, not the baby.</div></details>
+    <details class="faq"><summary>When will I feel the baby move?</summary><div class="a">Usually between 16 and 25 weeks. First-time mothers tend to notice movement later than those who have been pregnant before, often closer to 20–22 weeks.</div></details>
+    <details class="faq"><summary>When is the anomaly scan?</summary><div class="a">Typically between 18 and 22 weeks. It is a detailed ultrasound examining the baby's anatomy and organ development.</div></details>
+  </div>
+</section>
+</main>
+
+<footer class="f"><div class="wrap">
+  <div class="f-grid">
+    <div>
+      <a class="brand" href="../index.html" style="margin-bottom:10px">
+        <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
+        <span>Bloom</span>
+      </a>
+      <p style="color:var(--ink-2);max-width:36ch">Free, private fertility and pregnancy calculators. Everything runs in your browser.</p>
+    </div>
+    <div><h4>Tools</h4><ul>
+      <li><a href="ovulation-calculator.html">Ovulation calculator</a></li>
+      <li><a href="due-date-calculator.html">Due date calculator</a></li>
+      <li><a href="pregnancy-tracker.html">Week-by-week tracker</a></li>
+      <li><a href="period-tracker.html">Period tracker</a></li>
+      <li><a href="safe-days-calculator.html">Fertility awareness calendar</a></li>
+    </ul></div>
+    <div><h4>Site</h4><ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../about.html">About &amp; editorial policy</a></li>
+      <li><a href="../about.html#privacy">Privacy</a></li>
+    </ul></div>
+  </div>
+  <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only — not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional.</p>
+</div></footer>
+
+<script src="../assets/app.js?v=3"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+/* week: [size comparison, length cm, weight g, crown measure, development] */
+const W = {
+  4:["a poppy seed",0.1,0,"CR","The embryo implants and the placenta begins to form. A pregnancy test can usually detect hCG now."],
+  5:["a sesame seed",0.3,0,"CR","The neural tube — which becomes the brain and spinal cord — starts closing. The heart begins to form."],
+  6:["a lentil",0.6,0,"CR","A heartbeat may be visible on an early scan. Facial features and limb buds are appearing."],
+  7:["a blueberry",1.3,1,"CR","The brain is growing rapidly. Arm and leg buds lengthen; the umbilical cord is established."],
+  8:["a rajma bean",1.6,1,"CR","Fingers and toes begin to separate. All essential organs have started forming."],
+  9:["a grape",2.3,2,"CR","The embryo is now called a fetus. Tiny muscles are forming and the first movements begin — far too small to feel."],
+  10:["a strawberry",3.1,4,"CR","Vital organs are functioning. Nails start forming and the bones begin to harden."],
+  11:["a fig",4.1,7,"CR","The head is about half the body length. Tooth buds appear and the diaphragm forms — hiccups can start."],
+  12:["a lime",5.4,14,"CR","Reflexes develop; the baby can open and close its fingers. The kidneys begin producing urine."],
+  13:["a pea pod",7.4,23,"CR","Vocal cords form. Fingerprints are developing. The first trimester ends this week."],
+  14:["a lemon",8.7,43,"CR","The baby can squint, frown and grimace. Fine lanugo hair begins covering the body."],
+  15:["an apple",10.1,70,"CR","Bones continue hardening. The baby may sense light through closed eyelids."],
+  16:["an avocado",11.6,100,"CR","Facial muscles allow expressions. The heart pumps a substantial volume of blood daily."],
+  17:["a turnip",13.0,140,"CR","Fat stores begin forming. The umbilical cord thickens and strengthens."],
+  18:["a capsicum",14.2,190,"CR","Hearing develops — the baby may respond to sound. Myelin begins coating the nerves."],
+  19:["a mango",15.3,240,"CR","Vernix caseosa, a protective waxy coating, forms on the skin."],
+  20:["a small banana",25.6,300,"CH","The halfway point. The anomaly scan usually happens around now. Length is measured crown to heel from this week."],
+  21:["a carrot",26.7,360,"CH","The baby swallows amniotic fluid regularly. Movements become more coordinated."],
+  22:["a papaya",27.8,430,"CH","Eyebrows and eyelashes appear. The sense of touch is developing."],
+  23:["a grapefruit",28.9,501,"CH","The lungs begin producing surfactant. Blood vessels in the lungs develop."],
+  24:["an ear of corn",30.0,600,"CH","A key viability milestone. The inner ear is fully formed, controlling balance."],
+  25:["a cauliflower",34.6,660,"CH","Hair begins to grow with real colour and texture. The baby responds to your voice."],
+  26:["a head of lettuce",35.6,760,"CH","Eyes begin to open. The baby takes practice breaths of amniotic fluid."],
+  27:["a cabbage",36.6,875,"CH","Brain activity increases sharply. The third trimester begins next week."],
+  28:["an aubergine",37.6,1005,"CH","Eyes can open and close, and blink. REM sleep begins."],
+  29:["a butternut squash",38.6,1153,"CH","Muscles and lungs mature. Bones absorb calcium rapidly — kicks get stronger."],
+  30:["a cucumber",39.9,1319,"CH","Bone marrow takes over red blood cell production. Lanugo starts disappearing."],
+  31:["a coconut",41.1,1502,"CH","All five senses are working. The baby can process information and track light."],
+  32:["a jackfruit segment",42.4,1702,"CH","Toenails are fully formed. The baby usually settles into a head-down position."],
+  33:["a pineapple",43.7,1918,"CH","Skull bones remain soft and unfused to ease passage through the birth canal."],
+  34:["a musk melon",45.0,2146,"CH","The central nervous system and lungs continue maturing. Fat gives the skin a smoother look."],
+  35:["a honeydew melon",46.2,2383,"CH","Most physical development is complete; the remaining weeks are mainly weight gain."],
+  36:["a bunch of coriander",47.4,2622,"CH","The baby drops lower into the pelvis. Considered early term from next week."],
+  37:["a bunch of chard",48.6,2859,"CH","Now early term. The baby practises breathing, sucking and blinking."],
+  38:["a leek",49.8,3083,"CH","Organs are ready to function outside the womb. Vernix and lanugo mostly shed."],
+  39:["a small watermelon",50.7,3288,"CH","Full term. The brain and lungs keep maturing right up to birth."],
+  40:["a pumpkin",51.2,3462,"CH","Your due date week. Only about 1 in 20 babies arrives exactly today — this is the middle of a range."]
+};
+
+const TIPS = {
+  1: "First trimester: folic acid matters most now. Nausea and fatigue are common and usually ease by week 12–14.",
+  2: "Second trimester: often the most comfortable stretch. Book your anomaly scan for weeks 18–22.",
+  3: "Third trimester: start counting daily movements. Pack your hospital bag by around week 36."
+};
+
+function triOf(w) { return w < 14 ? 1 : w < 28 ? 2 : 3; }
+
+function drawBars(cur) {
+  const box = $("bars");
+  const weeks = Object.keys(W).map(Number);
+  const max = Math.max(...weeks.map(w => W[w][2]));
+  box.innerHTML = weeks.map(w => {
+    const g = W[w][2];
+    const h = Math.max(3, (g / max) * 100);
+    const on = w === cur;
+    return `<button class="bar" data-w="${w}"
+      style="height:${h}%;background:${on ? "var(--rose)" : "var(--ph-follicular)"};opacity:${on ? 1 : .78};border:none;padding:0;cursor:pointer"
+      aria-label="Week ${w}, ${g} grams"
+      data-tip="<b>Week ${w}</b><br>${W[w][1]} cm · ${g < 1000 ? g + " g" : (g / 1000).toFixed(2) + " kg"}<br>${W[w][0]}"></button>`;
+  }).join("");
+  box.querySelectorAll(".bar").forEach(b =>
+    b.addEventListener("click", () => { $("wk").value = b.dataset.w; render(); }));
+  bindTips(box);
+}
+
+function render() {
+  const w = +$("wk").value;
+  const [fruit, len, wt, measure, dev] = W[w];
+  $("wkv").textContent = w;
+  $("wkNum").textContent = w;
+  $("fruit").textContent = fruit;
+  $("lenV").textContent = len + " cm";
+  $("lenM").textContent = measure === "CR" ? "crown to rump" : "crown to heel";
+  $("wtV").textContent = wt < 1 ? "<1 g" : wt < 1000 ? wt + " g" : (wt / 1000).toFixed(2) + " kg";
+  const t = triOf(w);
+  $("triV").textContent = ["1st","2nd","3rd"][t - 1];
+  $("triM").textContent = ["weeks 1–13","weeks 14–27","weeks 28–40"][t - 1];
+  $("togoV").textContent = Math.max(0, 40 - w);
+  $("devText").textContent = dev;
+  $("tipBox").textContent = TIPS[t];
+
+  const edd = parseDate($("edd").value);
+  $("triLine").textContent = edd
+    ? "Due " + fmt(edd) + " · week " + w + " runs " + fmt(addDays(edd, -280 + w * 7), "short")
+      + " – " + fmt(addDays(edd, -280 + w * 7 + 6), "short")
+    : ["First trimester","Second trimester","Third trimester"][t - 1];
+
+  drawBars(w);
+
+  $("wkRows").innerHTML = Object.keys(W).map(Number).map(k => {
+    const [f, l, g] = W[k];
+    return `<tr${k === w ? ' style="background:var(--rose-soft);font-weight:700"' : ""}>
+      <td>${k}</td><td>${f}</td><td>${l} cm</td>
+      <td>${g < 1 ? "<1 g" : g < 1000 ? g + " g" : (g / 1000).toFixed(2) + " kg"}</td></tr>`;
+  }).join("");
+}
+
+$("wk").addEventListener("input", render);
+$("edd").addEventListener("change", () => {
+  const edd = parseDate($("edd").value);
+  if (edd) {
+    const gaDays = daysBetween(addDays(edd, -280), today());
+    const w = Math.min(40, Math.max(4, Math.floor(gaDays / 7)));
+    $("wk").value = w;
+  }
+  render();
+});
+persist(["edd","wk"], "tracker");
+render();
+document.addEventListener("themechange", render);
+</script>
+</body>
+</html>

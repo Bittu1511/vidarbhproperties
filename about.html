@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-IN" data-theme="light">
+<html lang="en-IN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,29 +7,42 @@
 <title>About, Privacy &amp; Editorial Policy | Bloom</title>
 <meta name="description" content="How Bloom's fertility calculators work, the formulas behind them, our privacy approach, and how to contact us. No data leaves your browser.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://YOUR-DOMAIN.in/about.html">
-<link rel="alternate" hreflang="en-in" href="https://YOUR-DOMAIN.in/about.html">
-<link rel="alternate" hreflang="x-default" href="https://YOUR-DOMAIN.in/about.html">
+<link rel="canonical" href="https://vidarbhproperties.in/about.html">
+<link rel="alternate" hreflang="en-in" href="https://vidarbhproperties.in/about.html">
+<link rel="alternate" hreflang="x-default" href="https://vidarbhproperties.in/about.html">
 <meta name="geo.region" content="IN">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bloom">
 <meta property="og:locale" content="en_IN">
 <meta property="og:title" content="About &amp; Privacy | Bloom">
 <meta property="og:description" content="The formulas, the limits, and our privacy approach.">
-<meta property="og:url" content="https://YOUR-DOMAIN.in/about.html">
+<meta property="og:url" content="https://vidarbhproperties.in/about.html">
 <meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://vidarbhproperties.in/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bloom — free ovulation, due date and pregnancy calculators">
+<meta name="twitter:image" content="https://vidarbhproperties.in/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
-<link rel="stylesheet" href="assets/app.css?v=3">
+<script>(function(){try{var s=localStorage.getItem("bloom-theme");document.documentElement.dataset.theme=(s?s==="dark":matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})();</script>
+<link rel="stylesheet" href="assets/app.css?v=5">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"AboutPage","name":"About, Privacy & Editorial Policy","url":"https://vidarbhproperties.in/about.html","inLanguage":"en-IN","description":"How Bloom's fertility calculators work, the formulas behind them, our privacy approach, and how to contact us.","publisher":{"@type":"Organization","name":"Bloom","url":"https://vidarbhproperties.in/","email":"hello@vidarbhproperties.in","logo":{"@type":"ImageObject","url":"https://vidarbhproperties.in/assets/og.png"}}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Bloom","url":"https://vidarbhproperties.in/","email":"hello@vidarbhproperties.in","description":"Free, private fertility and pregnancy calculators. All calculations run in the browser.","logo":{"@type":"ImageObject","url":"https://vidarbhproperties.in/assets/og.png","width":1200,"height":630},"contactPoint":{"@type":"ContactPoint","contactType":"editorial corrections","email":"hello@vidarbhproperties.in","availableLanguage":["en"]}}
+</script>
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#about">Skip to content</a>
 
 <nav class="nav"><div class="wrap nav-in">
   <a class="brand" href="index.html">
     <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
     <span>Bloom</span>
   </a>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="#tools">All tools</a>
     <a href="tools/ovulation-calculator.html">Ovulation</a>
     <a href="tools/safe-days-calculator.html">Safe days</a>
@@ -38,9 +51,15 @@
     <a href="about.html">About</a>
   </div>
   <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <path class="m-bars" d="M4 7h16M4 12h16M4 17h16"/>
+      <path class="m-x" d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
 </div></nav>
 
-<main class="wrap narrow section">
+<main class="wrap narrow section" id="about">
   <h1 style="font-size:clamp(28px,4.6vw,40px);letter-spacing:-.03em;font-weight:800;margin-bottom:14px">About Bloom</h1>
   <p style="font-size:17px;color:var(--ink-2);margin-bottom:26px">Simple, honest calculators for the questions people actually have about cycles and pregnancy — with the reasoning shown and the limits stated.</p>
 
@@ -65,6 +84,8 @@
       </tbody>
     </table>
   </div>
+  <p style="margin-top:14px"><strong>Bleeding and fertility are shown as separate layers.</strong> The fertile window is fixed relative to ovulation, not to menstruation, so on a short cycle or with a long period the two overlap — and sperm surviving up to five days means intercourse during bleeding can still result in pregnancy. Our cycle wheels therefore draw them as two concentric rings rather than one, so neither can hide the other, and both calculators name the overlapping dates explicitly when they occur. We treat "you cannot get pregnant on your period" as a claim to correct, not a simplification to preserve. Menstruation is likewise part of the early follicular phase rather than a separate hormonal phase; we label it separately only because bleeding is the observable part.</p>
+
   <p style="margin-top:14px">Fetal length and weight figures are population averages from standard growth references. Individual healthy babies vary substantially at every week, and only your own scan measurements mean anything about your pregnancy.</p>
 
   <h2 style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">Where these estimates stop being reliable</h2>
@@ -88,7 +109,7 @@
   <p>Colour is never the only carrier of meaning. Every chart ships a legend, direct labels and a data table, and the categorical palette is validated for colour-vision deficiency against both the light and dark surfaces. Charts are keyboard-focusable and carry text descriptions.</p>
 
   <h2 id="contact" style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">Contact &amp; corrections</h2>
-  <p>If a formula looks wrong or a figure is out of date, tell us and we will fix it and note the change. Write to <strong>hello@YOUR-DOMAIN.in</strong>.</p>
+  <p>If a formula looks wrong or a figure is out of date, tell us and we will fix it and note the change. Write to <strong><a href="mailto:hello@vidarbhproperties.in">hello@vidarbhproperties.in</a></strong>.</p>
 
   <h2 style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">Disclaimer</h2>
   <p style="color:var(--ink-2)">Bloom is an independent educational resource. Nothing here is medical advice, diagnosis or treatment, and using this site does not create a doctor–patient relationship. Never delay seeking medical advice because of something you read here. In an emergency, contact your doctor or nearest hospital.</p>
@@ -103,6 +124,6 @@
   </p>
 </div></footer>
 
-<script src="assets/app.js?v=3"></script>
+<script src="assets/app.js?v=5"></script>
 </body>
 </html>

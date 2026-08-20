@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-IN" data-theme="light">
+<html lang="en-IN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +8,27 @@
 <meta name="description" content="Free period calculator. Log your recent periods to get your average cycle length and see the predicted dates of your next 12 periods on a calendar.">
 <meta name="keywords" content="period tracker, next period calculator, menstrual cycle calculator, period date calculator, cycle length average, when is my next period">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-<link rel="canonical" href="https://YOUR-DOMAIN.in/tools/period-tracker.html">
-<link rel="alternate" hreflang="en-in" href="https://YOUR-DOMAIN.in/tools/period-tracker.html">
-<link rel="alternate" hreflang="x-default" href="https://YOUR-DOMAIN.in/tools/period-tracker.html">
+<link rel="canonical" href="https://vidarbhproperties.in/tools/period-tracker.html">
+<link rel="alternate" hreflang="en-in" href="https://vidarbhproperties.in/tools/period-tracker.html">
+<link rel="alternate" hreflang="x-default" href="https://vidarbhproperties.in/tools/period-tracker.html">
 <meta name="geo.region" content="IN">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bloom">
 <meta property="og:locale" content="en_IN">
 <meta property="og:title" content="Period Tracker &amp; Next Period Calculator">
 <meta property="og:description" content="Log your periods, get your average cycle, and see your next 12 predicted dates.">
-<meta property="og:url" content="https://YOUR-DOMAIN.in/tools/period-tracker.html">
+<meta property="og:url" content="https://vidarbhproperties.in/tools/period-tracker.html">
 <meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://vidarbhproperties.in/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bloom — free ovulation, due date and pregnancy calculators">
+<meta name="twitter:image" content="https://vidarbhproperties.in/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
-<link rel="stylesheet" href="../assets/app.css?v=3">
+<script>(function(){try{var s=localStorage.getItem("bloom-theme");document.documentElement.dataset.theme=(s?s==="dark":matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})();</script>
+<link rel="stylesheet" href="../assets/app.css?v=5">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Period Tracker and Next Period Calculator","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://YOUR-DOMAIN.in/tools/period-tracker.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Period Tracker and Next Period Calculator","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://vidarbhproperties.in/tools/period-tracker.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
@@ -30,6 +36,9 @@
 {"@type":"Question","name":"How many periods should I log for an accurate prediction?","acceptedAnswer":{"@type":"Answer","text":"At least three, ideally six. A single cycle tells you very little because natural variation is wide."}},
 {"@type":"Question","name":"My period is late — am I pregnant?","acceptedAnswer":{"@type":"Answer","text":"A late period can mean pregnancy, but stress, illness, weight change, travel, exercise and thyroid or hormonal conditions all delay periods too. A home test taken from the day of your missed period gives a reliable answer."}},
 {"@type":"Question","name":"When are irregular periods a concern?","acceptedAnswer":{"@type":"Answer","text":"See a doctor if cycles are consistently shorter than 21 days or longer than 35, if you skip three or more in a row, if bleeding is unusually heavy or lasts more than seven days, or if you bleed between periods."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidarbhproperties.in/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://vidarbhproperties.in/#tools"},{"@type":"ListItem","position":3,"name":"Period Tracker","item":"https://vidarbhproperties.in/tools/period-tracker.html"}]}
 </script>
 </head>
 <body>
@@ -41,7 +50,7 @@
     <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
     <span>Bloom</span>
   </a>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="../index.html#tools">All tools</a>
     <a href="ovulation-calculator.html">Ovulation</a>
     <a href="safe-days-calculator.html">Safe days</a>
@@ -50,13 +59,19 @@
     <a href="../about.html">About</a>
   </div>
   <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <path class="m-bars" d="M4 7h16M4 12h16M4 17h16"/>
+      <path class="m-x" d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
 </div></nav>
 
 <main>
 <header class="wrap thead">
   <nav class="crumb"><a href="../index.html">Home</a> › <a href="../index.html#tools">Tools</a> › Period tracker</nav>
   <h1>Period <span class="grad">Tracker</span></h1>
-  <p>Log the first day of your recent periods. You'll get your true average cycle length, how regular you actually are, and the predicted dates of your next twelve periods.</p>
+  <p>Log the first day of your recent periods to get your true average cycle, how regular you are, and your next twelve dates.</p>
 </header>
 
 <section class="wrap" id="tool">
@@ -108,7 +123,7 @@
     <strong>Predictions, not contraception.</strong> Cycle timing shifts with stress, illness, travel and weight change. Never rely on a predicted date to avoid pregnancy.
   </div>
   <div class="note info">
-    Everything you enter stays in your own browser — nothing is uploaded. See a doctor if your cycles are consistently under 21 or over 35 days, if you skip three or more, or if bleeding is unusually heavy.
+    See a doctor if your cycles are consistently under 21 or over 35 days, if you skip three or more, or if bleeding is unusually heavy.
   </div>
 
   <div class="share">
@@ -155,7 +170,7 @@
   <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only — not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional.</p>
 </div></footer>
 
-<script src="../assets/app.js?v=3"></script>
+<script src="../assets/app.js?v=5"></script>
 <script>
 const $ = id => document.getElementById(id);
 const KEY = "bloom-periods";

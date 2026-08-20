@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-IN" data-theme="light">
+<html lang="en-IN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +8,27 @@
 <meta name="description" content="Track your pregnancy week by week. See your baby's size and weight, what is developing this week, and what to expect — weeks 4 to 40, with a growth chart.">
 <meta name="keywords" content="pregnancy week by week, baby size by week, how big is my baby, fetal growth chart, 20 weeks pregnant, pregnancy tracker India">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-<link rel="canonical" href="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
-<link rel="alternate" hreflang="en-in" href="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
-<link rel="alternate" hreflang="x-default" href="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
+<link rel="canonical" href="https://vidarbhproperties.in/tools/pregnancy-tracker.html">
+<link rel="alternate" hreflang="en-in" href="https://vidarbhproperties.in/tools/pregnancy-tracker.html">
+<link rel="alternate" hreflang="x-default" href="https://vidarbhproperties.in/tools/pregnancy-tracker.html">
 <meta name="geo.region" content="IN">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bloom">
 <meta property="og:locale" content="en_IN">
 <meta property="og:title" content="Pregnancy Week by Week Tracker">
 <meta property="og:description" content="Your baby's size, weight and development for every week from 4 to 40.">
-<meta property="og:url" content="https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html">
+<meta property="og:url" content="https://vidarbhproperties.in/tools/pregnancy-tracker.html">
 <meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://vidarbhproperties.in/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bloom — free ovulation, due date and pregnancy calculators">
+<meta name="twitter:image" content="https://vidarbhproperties.in/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
-<link rel="stylesheet" href="../assets/app.css?v=3">
+<script>(function(){try{var s=localStorage.getItem("bloom-theme");document.documentElement.dataset.theme=(s?s==="dark":matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})();</script>
+<link rel="stylesheet" href="../assets/app.css?v=5">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Pregnancy Week by Week Tracker","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://YOUR-DOMAIN.in/tools/pregnancy-tracker.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Pregnancy Week by Week Tracker","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://vidarbhproperties.in/tools/pregnancy-tracker.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
@@ -30,6 +36,9 @@
 {"@type":"Question","name":"Why is length measured differently early on?","acceptedAnswer":{"@type":"Answer","text":"Up to about week 20, length is measured crown to rump because the legs are curled against the body. From around week 20 it is measured crown to heel, which is why the figure jumps at that point."}},
 {"@type":"Question","name":"When will I feel the baby move?","acceptedAnswer":{"@type":"Answer","text":"First movements are typically felt between 16 and 25 weeks. First-time mothers usually notice them later than those who have been pregnant before."}},
 {"@type":"Question","name":"What is the anomaly scan and when is it done?","acceptedAnswer":{"@type":"Answer","text":"It is a detailed ultrasound checking the baby's anatomy, usually performed between 18 and 22 weeks."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidarbhproperties.in/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://vidarbhproperties.in/#tools"},{"@type":"ListItem","position":3,"name":"Pregnancy Week by Week","item":"https://vidarbhproperties.in/tools/pregnancy-tracker.html"}]}
 </script>
 </head>
 <body>
@@ -41,7 +50,7 @@
     <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
     <span>Bloom</span>
   </a>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="../index.html#tools">All tools</a>
     <a href="ovulation-calculator.html">Ovulation</a>
     <a href="safe-days-calculator.html">Safe days</a>
@@ -50,13 +59,19 @@
     <a href="../about.html">About</a>
   </div>
   <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <path class="m-bars" d="M4 7h16M4 12h16M4 17h16"/>
+      <path class="m-x" d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
 </div></nav>
 
 <main>
 <header class="wrap thead">
   <nav class="crumb"><a href="../index.html">Home</a> › <a href="../index.html#tools">Tools</a> › Week by week</nav>
   <h1>Pregnancy <span class="grad">Week by Week</span></h1>
-  <p>Pick a week — or enter your due date to jump straight to where you are — and see your baby's size, weight and what is developing right now.</p>
+  <p>Pick a week, or enter your due date to jump to where you are, and see your baby's size and what is developing.</p>
 </header>
 
 <section class="wrap" id="tool">
@@ -163,7 +178,7 @@
   <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only — not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional.</p>
 </div></footer>
 
-<script src="../assets/app.js?v=3"></script>
+<script src="../assets/app.js?v=5"></script>
 <script>
 const $ = id => document.getElementById(id);
 

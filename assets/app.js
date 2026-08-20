@@ -18,7 +18,11 @@ function toggleTheme() {
 }
 function paintThemeBtn() {
   const b = document.getElementById("themeBtn");
-  if (b) b.textContent = document.documentElement.dataset.theme === "dark" ? "☀" : "☾";
+  if (!b) return;
+  const dark = document.documentElement.dataset.theme === "dark";
+  b.textContent = dark ? "☀" : "☾";
+  /* the label must name the action, not the current state */
+  b.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
 }
 
 /* ---------- dates ---------- */
@@ -42,6 +46,36 @@ function today() { const d = new Date(); d.setHours(0,0,0,0); return d; }
 function daysBetween(a, b) { return Math.round((b - a) / MS_DAY); }
 function toISO(d) {
   return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+/* Cycle-day numbers make the reader do arithmetic the summary card has already
+   done, so the wheels and phase tables lead with real dates. Given the first day
+   of the last period, turn a cycle-day span into dates; return null without one
+   so callers can fall back to day numbers before a date has been entered. */
+function spanDates(lmp, from, to, style) {
+  if (!lmp) return null;
+  const a = addDays(lmp, from - 1), b = addDays(lmp, to - 1);
+  return from === to ? fmt(a, style || "short")
+                     : `${fmt(a, style || "short")} – ${fmt(b, style || "short")}`;
+}
+function spanDays(from, to) {
+  return from === to ? `Day ${from}` : `Day ${from}–${to}`;
+}
+/* the two-line tooltip body shared by both cycle wheels */
+function phaseTip(name, lmp, from, to, what) {
+  const len = to - from + 1;
+  const plural = `${len} day${len > 1 ? "s" : ""}`;
+  const dates = spanDates(lmp, from, to);
+  const days = spanDays(from, to);
+  return dates
+    ? `<b>${name}</b><br>${dates} · ${plural}<br><span class="tip-2">${days} · ${what}</span>`
+    : `<b>${name}</b><br>${days} · ${plural}<br><span class="tip-2">${what}</span>`;
+}
+function phaseLabel(name, lmp, from, to) {
+  const len = to - from + 1;
+  const long = spanDates(lmp, from, to, "long");
+  return long ? `${name}, ${long}, cycle ${spanDays(from, to).toLowerCase()}, ${len} days`
+              : `${name}, ${spanDays(from, to).toLowerCase()}, ${len} days`;
 }
 
 /* ---------- ui helpers ---------- */
@@ -156,6 +190,70 @@ function bindTableToggles() {
   });
 }
 
+/* The data tables are the accessibility fallback for the sub-3:1 chart fills, and
+   they scroll sideways on narrow screens. A scroll container with no focusable
+   child cannot be scrolled from the keyboard, so make the container itself one. */
+function bindTableScrollers() {
+  document.querySelectorAll(".tblbox").forEach(box => {
+    if (box.hasAttribute("tabindex")) return;
+    box.setAttribute("tabindex", "0");
+    box.setAttribute("role", "region");
+    const cap = box.querySelector("caption");
+    let label = cap && cap.textContent.trim();
+    if (!label) {
+      // fall back to the nearest heading above the table
+      let p = box.previousElementSibling;
+      while (p && !/^H[1-6]$/.test(p.tagName)) p = p.previousElementSibling;
+      label = p ? p.textContent.trim() : "Data";
+    }
+    box.setAttribute("aria-label", label.replace(/\s+/g, " ").slice(0, 80) + " — data table, scrollable");
+  });
+}
+
+/* Mobile navigation. Below 760px the link row collapses behind a menu button:
+   a hidden-scrollbar horizontal scroller gave no hint that more links existed,
+   so on a phone the nav simply looked truncated. */
+function initNav() {
+  const nav = document.querySelector(".nav");
+  const btn = document.getElementById("menuBtn");
+  const links = document.getElementById("navLinks");
+  if (!nav || !btn || !links) return;
+
+  const setOpen = on => {
+    nav.classList.toggle("open", on);
+    btn.setAttribute("aria-expanded", String(on));
+    btn.setAttribute("aria-label", on ? "Close menu" : "Open menu");
+  };
+
+  setOpen(false);   // never trust the markup's initial state
+
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    setOpen(!nav.classList.contains("open"));
+  });
+  // a tap on a link, outside the panel, or Escape all dismiss it
+  links.addEventListener("click", e => { if (e.target.closest("a")) setOpen(false); });
+  document.addEventListener("click", e => {
+    if (nav.classList.contains("open") && !nav.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && nav.classList.contains("open")) { setOpen(false); btn.focus(); }
+  });
+  // never leave the panel stuck open when the layout returns to the desktop row
+  matchMedia("(min-width: 761px)").addEventListener("change", ev => { if (ev.matches) setOpen(false); });
+
+  // mark the page you are on, so the menu says where you are
+  const norm = u => u.endsWith("/index.html") ? u.slice(0, -10) : u;
+  const here = norm(location.pathname);
+  links.querySelectorAll("a").forEach(a => {
+    const href = a.getAttribute("href") || "";
+    if (href.startsWith("#")) return;
+    let p;
+    try { p = norm(new URL(a.href).pathname); } catch (e) { return; }
+    if (p === here) a.setAttribute("aria-current", "page");
+  });
+}
+
 /* remember the last inputs on a tool page */
 function persist(ids, key) {
   const K = "bloom-" + key;
@@ -190,4 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (y) y.textContent = new Date().getFullYear();
   initReveal();
   bindTableToggles();
+  bindTableScrollers();
+  initNav();
 });

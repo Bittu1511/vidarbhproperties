@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://YOUR-DOMAIN.in/sitemap.xml
+Sitemap: https://vidarbhproperties.in/sitemap.xml

@@ -21,11 +21,12 @@
 <meta property="og:image" content="https://vidarbhproperties.in/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Bloom — free ovulation, due date and pregnancy calculators">
+<meta property="og:image:alt" content="Bloom - free ovulation, due date and pregnancy calculators">
 <meta name="twitter:image" content="https://vidarbhproperties.in/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
 <script>(function(){try{var s=localStorage.getItem("bloom-theme");document.documentElement.dataset.theme=(s?s==="dark":matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})();</script>
-<link rel="stylesheet" href="assets/app.css?v=5">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/app.css?v=16">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AboutPage","name":"About, Privacy & Editorial Policy","url":"https://vidarbhproperties.in/about.html","inLanguage":"en-IN","description":"How Bloom's fertility calculators work, the formulas behind them, our privacy approach, and how to contact us.","publisher":{"@type":"Organization","name":"Bloom","url":"https://vidarbhproperties.in/","email":"hello@vidarbhproperties.in","logo":{"@type":"ImageObject","url":"https://vidarbhproperties.in/assets/og.png"}}}
 </script>
@@ -45,9 +46,9 @@
   <div class="nav-links" id="navLinks">
     <a href="#tools">All tools</a>
     <a href="tools/ovulation-calculator.html">Ovulation</a>
-    <a href="tools/safe-days-calculator.html">Safe days</a>
-    <a href="tools/due-date-calculator.html">Due date</a>
-    <a href="tools/pregnancy-tracker.html">Week by week</a>
+    <a href="tools/safe-days-calculator.html">Safe sex days</a>
+    <a href="tools/due-date-calculator.html">Delivery date</a>
+    <a href="tools/pregnancy-tracker.html">Baby size</a>
     <a href="about.html">About</a>
   </div>
   <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
@@ -60,8 +61,8 @@
 </div></nav>
 
 <main class="wrap narrow section" id="about">
-  <h1 style="font-size:clamp(28px,4.6vw,40px);letter-spacing:-.03em;font-weight:800;margin-bottom:14px">About Bloom</h1>
-  <p style="font-size:17px;color:var(--ink-2);margin-bottom:26px">Simple, honest calculators for the questions people actually have about cycles and pregnancy — with the reasoning shown and the limits stated.</p>
+  <h1 style="font-size:clamp(28px,4.6vw,40px);letter-spacing:-.03em;font-weight:700;margin-bottom:14px">About Bloom</h1>
+  <p style="font-size:17px;color:var(--ink-2);margin-bottom:26px">Simple, honest calculators for the questions people actually have about cycles and pregnancy - with the reasoning shown and the limits stated.</p>
 
   <h2 style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">What we do and do not do</h2>
   <p>Bloom provides <strong>calculators</strong>. We compute dates and averages from formulas that are standard in obstetric practice, and we show you how each figure was reached.</p>
@@ -72,19 +73,19 @@
     <table>
       <thead><tr><th>Calculation</th><th>Method</th></tr></thead>
       <tbody>
-        <tr><td>Due date from last period</td><td>Naegele's rule — last period + 280 days, adjusted by (cycle length − 28)</td></tr>
+        <tr><td>Due date from last period</td><td>Naegele's rule - last period + 280 days, adjusted by (cycle length − 28)</td></tr>
         <tr><td>Due date from conception</td><td>Conception date + 266 days</td></tr>
         <tr><td>Due date from IVF transfer</td><td>Day-5 blastocyst + 261 days; day-3 embryo + 263 days</td></tr>
         <tr><td>Ovulation day</td><td>Cycle length − luteal phase length, counted from day 1</td></tr>
         <tr><td>Fertile window</td><td>Ovulation − 5 days through ovulation + 1 day</td></tr>
         <tr><td>Gestational age</td><td>Days since (due date − 280), expressed as weeks + days</td></tr>
         <tr><td>Average cycle</td><td>Mean interval between the first days of logged periods</td></tr>
-        <tr><td>Calendar rhythm window</td><td>First fertile day = shortest cycle − 19; last fertile day = longest cycle − 11. Textbook Ogino–Knaus uses − 18; we widen by one day so the window always covers the ovulation calculator's fertile days</td></tr>
-        <tr><td>Standard Days Method</td><td>Days 8–19 treated as fertile; valid only for cycles of 26–32 days</td></tr>
+        <tr><td>Calendar rhythm window</td><td>First fertile day = shortest cycle − 19; last fertile day = longest cycle − 11. Textbook Ogino-Knaus uses − 18; we widen by one day so the window always covers the ovulation calculator's fertile days</td></tr>
+        <tr><td>Standard Days Method</td><td>Days 8-19 treated as fertile; valid only for cycles of 26-32 days</td></tr>
       </tbody>
     </table>
   </div>
-  <p style="margin-top:14px"><strong>Bleeding and fertility are shown as separate layers.</strong> The fertile window is fixed relative to ovulation, not to menstruation, so on a short cycle or with a long period the two overlap — and sperm surviving up to five days means intercourse during bleeding can still result in pregnancy. Our cycle wheels therefore draw them as two concentric rings rather than one, so neither can hide the other, and both calculators name the overlapping dates explicitly when they occur. We treat "you cannot get pregnant on your period" as a claim to correct, not a simplification to preserve. Menstruation is likewise part of the early follicular phase rather than a separate hormonal phase; we label it separately only because bleeding is the observable part.</p>
+  <p style="margin-top:14px"><strong>Bleeding and fertility are shown as separate layers.</strong> The fertile window is fixed relative to ovulation, not to menstruation, so on a short cycle or with a long period the two overlap - and sperm surviving up to five days means intercourse during bleeding can still result in pregnancy. Our cycle wheels therefore draw them as two concentric rings rather than one, so neither can hide the other, and both calculators name the overlapping dates explicitly when they occur. We treat "you cannot get pregnant on your period" as a claim to correct, not a simplification to preserve. Menstruation is likewise part of the early follicular phase rather than a separate hormonal phase; we label it separately only because bleeding is the observable part.</p>
 
   <p style="margin-top:14px">Fetal length and weight figures are population averages from standard growth references. Individual healthy babies vary substantially at every week, and only your own scan measurements mean anything about your pregnancy.</p>
 
@@ -92,18 +93,18 @@
   <ul style="margin-left:20px;line-height:1.8">
     <li>Calendar prediction assumes fairly regular cycles. If yours vary by more than about a week, accuracy drops sharply.</li>
     <li>A first-trimester dating scan is more accurate than any calendar calculation. If they disagree, follow the scan.</li>
-    <li>Ovulation shifts with stress, illness, travel and weight change — it is not a fixed calendar event.</li>
+    <li>Ovulation shifts with stress, illness, travel and weight change - it is not a fixed calendar event.</li>
     <li>Only about 1 in 20 babies is born on the estimated due date. Term birth spans roughly 37 to 42 weeks.</li>
   </ul>
 
   <div class="note med">
-    <strong>On using this to avoid pregnancy.</strong> Calendar-based fertility awareness is a recognised contraceptive approach, but a weak one: roughly <strong>12–24 pregnancies per 100 women per year</strong> with typical use, against about 7 for the pill and under 1 for an IUD. Our <a href="tools/safe-days-calculator.html">Fertility Awareness Calendar</a> shows those figures on the page rather than hiding them, and refuses to produce a window when your cycles are too irregular for the method to apply. The <a href="tools/ovulation-calculator.html">ovulation calculator</a> is built for people trying to conceive and uses a narrower window — do not use it in reverse to pick "safe" days.
+    <strong>On using this to avoid pregnancy.</strong> Calendar-based fertility awareness is a recognised contraceptive approach, but a weak one: roughly <strong>12-24 pregnancies per 100 women per year</strong> with typical use, against about 7 for the pill and under 1 for an IUD. Our <a href="tools/safe-days-calculator.html">safe sex days calculator</a> shows those figures on the page rather than hiding them, and refuses to produce a window when your cycles are too irregular for the method to apply. The <a href="tools/ovulation-calculator.html">ovulation calculator</a> is built for people trying to conceive and uses a narrower window - do not use it in reverse to pick "safe" days.
   </div>
 
   <h2 id="privacy" style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">Privacy</h2>
-  <p>Every calculation runs in your browser using JavaScript. <strong>The dates you enter are never transmitted to us or anyone else</strong> — there is no server that receives them and no account system.</p>
+  <p>Every calculation runs in your browser using JavaScript. <strong>The dates you enter are never transmitted to us or anyone else</strong> - there is no server that receives them and no account system.</p>
   <p style="margin-top:12px">To save you re-typing, your last inputs are kept in your browser's local storage on your own device. Clearing your browser data deletes them. The period tracker's logged dates work the same way.</p>
-  <p style="margin-top:12px">If advertising or analytics are added to this site in future, those third parties may set their own cookies to measure page traffic. That would apply to page visits only — never to the health data you type into a calculator, which stays local by design.</p>
+  <p style="margin-top:12px">If advertising or analytics are added to this site in future, those third parties may set their own cookies to measure page traffic. That would apply to page visits only - never to the health data you type into a calculator, which stays local by design.</p>
 
   <h2 style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">Accessibility</h2>
   <p>Colour is never the only carrier of meaning. Every chart ships a legend, direct labels and a data table, and the categorical palette is validated for colour-vision deficiency against both the light and dark surfaces. Charts are keyboard-focusable and carry text descriptions.</p>
@@ -112,7 +113,7 @@
   <p>If a formula looks wrong or a figure is out of date, tell us and we will fix it and note the change. Write to <strong><a href="mailto:hello@vidarbhproperties.in">hello@vidarbhproperties.in</a></strong>.</p>
 
   <h2 style="font-size:21px;margin:28px 0 10px;letter-spacing:-.02em">Disclaimer</h2>
-  <p style="color:var(--ink-2)">Bloom is an independent educational resource. Nothing here is medical advice, diagnosis or treatment, and using this site does not create a doctor–patient relationship. Never delay seeking medical advice because of something you read here. In an emergency, contact your doctor or nearest hospital.</p>
+  <p style="color:var(--ink-2)">Bloom is an independent educational resource. Nothing here is medical advice, diagnosis or treatment, and using this site does not create a doctor-patient relationship. Never delay seeking medical advice because of something you read here. In an emergency, contact your doctor or nearest hospital.</p>
 </main>
 
 <footer class="f"><div class="wrap">
@@ -124,6 +125,6 @@
   </p>
 </div></footer>
 
-<script src="assets/app.js?v=5"></script>
+<script src="assets/app.js?v=16"></script>
 </body>
 </html>

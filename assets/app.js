@@ -1,5 +1,5 @@
 /* ============================================================
-   Bloom — shared runtime
+   Bloom - shared runtime
    ============================================================ */
 
 /* ---------- theme ---------- */
@@ -37,7 +37,7 @@ function parseDate(v) {
 }
 function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
 function fmt(d, style) {
-  if (!d) return "–";
+  if (!d) return "-";
   if (style === "long")  return `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
   if (style === "short") return `${d.getDate()} ${MONTHS[d.getMonth()].slice(0,3)}`;
   return `${d.getDate()} ${MONTHS[d.getMonth()].slice(0,3)} ${d.getFullYear()}`;
@@ -56,10 +56,10 @@ function spanDates(lmp, from, to, style) {
   if (!lmp) return null;
   const a = addDays(lmp, from - 1), b = addDays(lmp, to - 1);
   return from === to ? fmt(a, style || "short")
-                     : `${fmt(a, style || "short")} – ${fmt(b, style || "short")}`;
+                     : `${fmt(a, style || "short")} - ${fmt(b, style || "short")}`;
 }
 function spanDays(from, to) {
-  return from === to ? `Day ${from}` : `Day ${from}–${to}`;
+  return from === to ? `Day ${from}` : `Day ${from}-${to}`;
 }
 /* the two-line tooltip body shared by both cycle wheels */
 function phaseTip(name, lmp, from, to, what) {
@@ -130,7 +130,7 @@ function initReveal() {
   els.forEach(e => io.observe(e));
 }
 
-/* shared tooltip — used by the wheel and the bar chart */
+/* shared tooltip - used by the wheel and the bar chart */
 const Tip = (() => {
   let el;
   function node() {
@@ -206,7 +206,7 @@ function bindTableScrollers() {
       while (p && !/^H[1-6]$/.test(p.tagName)) p = p.previousElementSibling;
       label = p ? p.textContent.trim() : "Data";
     }
-    box.setAttribute("aria-label", label.replace(/\s+/g, " ").slice(0, 80) + " — data table, scrollable");
+    box.setAttribute("aria-label", label.replace(/\s+/g, " ").slice(0, 80) + " - data table, scrollable");
   });
 }
 
@@ -260,7 +260,7 @@ function persist(ids, key) {
   try {
     const saved = JSON.parse(localStorage.getItem(K) || "{}");
     ids.forEach(id => { const el = document.getElementById(id); if (el && saved[id] != null) el.value = saved[id]; });
-  } catch (e) { /* corrupt entry — ignore and overwrite on next change */ }
+  } catch (e) { /* corrupt entry - ignore and overwrite on next change */ }
   const save = () => {
     const o = {};
     ids.forEach(id => { const el = document.getElementById(id); if (el) o[id] = el.value; });

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E0507A">
-<title>Period Tracker — Next Period Calculator &amp; Cycle Average | Bloom</title>
+<title>Period Tracker - Next Period Calculator &amp; Cycle Average | Bloom</title>
 <meta name="description" content="Free period calculator. Log your recent periods to get your average cycle length and see the predicted dates of your next 12 periods on a calendar.">
 <meta name="keywords" content="period tracker, next period calculator, menstrual cycle calculator, period date calculator, cycle length average, when is my next period">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
@@ -22,11 +22,12 @@
 <meta property="og:image" content="https://vidarbhproperties.in/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Bloom — free ovulation, due date and pregnancy calculators">
+<meta property="og:image:alt" content="Bloom - free ovulation, due date and pregnancy calculators">
 <meta name="twitter:image" content="https://vidarbhproperties.in/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
 <script>(function(){try{var s=localStorage.getItem("bloom-theme");document.documentElement.dataset.theme=(s?s==="dark":matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})();</script>
-<link rel="stylesheet" href="../assets/app.css?v=5">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/app.css?v=16">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Period Tracker and Next Period Calculator","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://vidarbhproperties.in/tools/period-tracker.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
 </script>
@@ -34,7 +35,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"What is a normal menstrual cycle length?","acceptedAnswer":{"@type":"Answer","text":"Most cycles run between 21 and 35 days, measured from the first day of one period to the first day of the next. Variation of a few days between cycles is normal."}},
 {"@type":"Question","name":"How many periods should I log for an accurate prediction?","acceptedAnswer":{"@type":"Answer","text":"At least three, ideally six. A single cycle tells you very little because natural variation is wide."}},
-{"@type":"Question","name":"My period is late — am I pregnant?","acceptedAnswer":{"@type":"Answer","text":"A late period can mean pregnancy, but stress, illness, weight change, travel, exercise and thyroid or hormonal conditions all delay periods too. A home test taken from the day of your missed period gives a reliable answer."}},
+{"@type":"Question","name":"My period is late - am I pregnant?","acceptedAnswer":{"@type":"Answer","text":"A late period can mean pregnancy, but stress, illness, weight change, travel, exercise and thyroid or hormonal conditions all delay periods too. A home test taken from the day of your missed period gives a reliable answer."}},
 {"@type":"Question","name":"When are irregular periods a concern?","acceptedAnswer":{"@type":"Answer","text":"See a doctor if cycles are consistently shorter than 21 days or longer than 35, if you skip three or more in a row, if bleeding is unusually heavy or lasts more than seven days, or if you bleed between periods."}}]}
 </script>
 <script type="application/ld+json">
@@ -53,9 +54,9 @@
   <div class="nav-links" id="navLinks">
     <a href="../index.html#tools">All tools</a>
     <a href="ovulation-calculator.html">Ovulation</a>
-    <a href="safe-days-calculator.html">Safe days</a>
-    <a href="due-date-calculator.html">Due date</a>
-    <a href="pregnancy-tracker.html">Week by week</a>
+    <a href="safe-days-calculator.html">Safe sex days</a>
+    <a href="due-date-calculator.html">Delivery date</a>
+    <a href="pregnancy-tracker.html">Baby size</a>
     <a href="../about.html">About</a>
   </div>
   <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
@@ -96,13 +97,13 @@
     <div>
       <div class="result rv">
         <div class="k">Your next period</div>
-        <div class="hero-fig" id="nextOut">–</div>
+        <div class="hero-fig" id="nextOut">-</div>
         <div class="sub" id="nextSub">Add at least two dates</div>
         <div class="tiles">
-          <div class="tile"><div class="k">Average cycle</div><div class="v" id="avgOut">–</div><div class="m" id="avgM"></div></div>
-          <div class="tile"><div class="k">Range</div><div class="v" id="rangeOut">–</div><div class="m">shortest – longest</div></div>
-          <div class="tile"><div class="k">Regularity</div><div class="v" id="regOut">–</div><div class="m" id="regM"></div></div>
-          <div class="tile"><div class="k">Cycle day today</div><div class="v" id="cdOut">–</div><div class="m" id="cdM"></div></div>
+          <div class="tile"><div class="k">Average cycle</div><div class="v" id="avgOut">-</div><div class="m" id="avgM"></div></div>
+          <div class="tile"><div class="k">Range</div><div class="v" id="rangeOut">-</div><div class="m">shortest - longest</div></div>
+          <div class="tile"><div class="k">Regularity</div><div class="v" id="regOut">-</div><div class="m" id="regM"></div></div>
+          <div class="tile"><div class="k">Cycle day today</div><div class="v" id="cdOut">-</div><div class="m" id="cdM"></div></div>
         </div>
       </div>
 
@@ -119,27 +120,27 @@
     </div>
   </div>
 
-  <div class="note med">
-    <strong>Predictions, not contraception.</strong> Cycle timing shifts with stress, illness, travel and weight change. Never rely on a predicted date to avoid pregnancy.
-  </div>
-  <div class="note info">
-    See a doctor if your cycles are consistently under 21 or over 35 days, if you skip three or more, or if bleeding is unusually heavy.
+  <div class="fineprint">
+    <div>
+      <p><strong>Predictions, not contraception.</strong> Cycle timing shifts with stress, illness, travel and weight change. Never rely on a predicted date to avoid pregnancy.</p>
+      <p>See a doctor if your cycles are consistently under 21 or over 35 days, if you skip three or more, or if bleeding is unusually heavy. Heavy periods are a common cause of depleted iron stores - see <a href="../articles/hair-loss-in-women.html">hair fall and the ferritin test</a>.</p>
+    </div>
   </div>
 
   <div class="share">
-    <span>Share:</span>
-    <button class="wa" onclick="share('wa')">WhatsApp</button>
-    <button onclick="share('tg')">Telegram</button>
-    <button onclick="share('copy')">Copy link</button>
+    <span>Share with loved ones</span>
+    <button class="wa" onclick="share('wa')"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.18-.3-.02-.46.13-.6.13-.14.35-.35.52-.52.17-.18.23-.3.35-.5.11-.2.06-.37-.01-.52-.07-.15-.64-1.53-.87-2.09-.24-.57-.47-.49-.65-.49h-.57c-.2 0-.52.08-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.4"/></svg> WhatsApp</button>
+    <button onclick="share('tg')"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.91 3.79 20.3 20.84c-.25 1.21-.98 1.5-1.99.94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.09.56-.54 0-.46-.2-.65-.72L6.54 13.4 1.2 11.73C.05 11.37.04 10.58 1.4 10.03l20.62-7.96c.94-.43 1.83.24 1.89 1.72"/></svg> Telegram</button>
+    <button onclick="share('copy')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 13.5a4.5 4.5 0 0 0 6.36.19l2.83-2.83a4.5 4.5 0 0 0-6.36-6.36l-1.42 1.41"/><path d="M14.5 10.5a4.5 4.5 0 0 0-6.36-.19L5.31 13.1a4.5 4.5 0 0 0 6.36 6.36l1.41-1.41"/></svg> Copy link</button>
   </div>
 </section>
 
 <section class="wrap section">
   <h2 style="font-size:24px;letter-spacing:-.025em;margin-bottom:16px">Frequently asked questions</h2>
   <div class="faq-grid">
-    <details class="faq"><summary>What is a normal cycle length?</summary><div class="a">Most cycles run 21 to 35 days, measured from the first day of one period to the first day of the next. A few days' variation between cycles is entirely normal — perfectly identical cycles are the exception, not the rule.</div></details>
+    <details class="faq"><summary>What is a normal cycle length?</summary><div class="a">Most cycles run 21 to 35 days, measured from the first day of one period to the first day of the next. A few days' variation between cycles is entirely normal - perfectly identical cycles are the exception, not the rule.</div></details>
     <details class="faq"><summary>How many periods should I log?</summary><div class="a">At least three, ideally six. One cycle tells you almost nothing, because natural variation is wide enough that any single number could be an outlier.</div></details>
-    <details class="faq"><summary>My period is late — does that mean I'm pregnant?</summary><div class="a">It might, but stress, illness, significant weight change, travel across time zones, heavy exercise and thyroid or hormonal conditions all delay periods. A home pregnancy test from the day of your missed period is reliable.</div></details>
+    <details class="faq"><summary>My period is late - does that mean I'm pregnant?</summary><div class="a">It might, but stress, illness, significant weight change, travel across time zones, heavy exercise and thyroid or hormonal conditions all delay periods. A home pregnancy test from the day of your missed period is reliable.</div></details>
     <details class="faq"><summary>When should irregular periods be checked?</summary><div class="a">See a gynaecologist if cycles are consistently under 21 days or over 35, if you skip three or more in a row, if bleeding lasts more than seven days or is unusually heavy, or if you bleed between periods. PCOS and thyroid conditions are common and treatable.</div></details>
   </div>
 </section>
@@ -156,10 +157,10 @@
     </div>
     <div><h4>Tools</h4><ul>
       <li><a href="ovulation-calculator.html">Ovulation calculator</a></li>
-      <li><a href="due-date-calculator.html">Due date calculator</a></li>
-      <li><a href="pregnancy-tracker.html">Week-by-week tracker</a></li>
+      <li><a href="due-date-calculator.html">Delivery date calculator</a></li>
+      <li><a href="pregnancy-tracker.html">Baby size week by week</a></li>
       <li><a href="period-tracker.html">Period tracker</a></li>
-      <li><a href="safe-days-calculator.html">Fertility awareness calendar</a></li>
+      <li><a href="safe-days-calculator.html">Safe sex days</a></li>
     </ul></div>
     <div><h4>Site</h4><ul>
       <li><a href="../index.html">Home</a></li>
@@ -167,10 +168,10 @@
       <li><a href="../about.html#privacy">Privacy</a></li>
     </ul></div>
   </div>
-  <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only — not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional.</p>
+  <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only - not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional.</p>
 </div></footer>
 
-<script src="../assets/app.js?v=5"></script>
+<script src="../assets/app.js?v=16"></script>
 <script>
 const $ = id => document.getElementById(id);
 const KEY = "bloom-periods";
@@ -201,7 +202,7 @@ function calc() {
   const ds = dates.map(parseDate).filter(Boolean).sort((a, b) => a - b);
 
   if (ds.length < 2) {
-    ["nextOut","avgOut","rangeOut","regOut","cdOut"].forEach(i => $(i).textContent = "–");
+    ["nextOut","avgOut","rangeOut","regOut","cdOut"].forEach(i => $(i).textContent = "-");
     $("nextSub").textContent = "Add at least two dates";
     $("predRows").innerHTML = `<tr><td colspan="4" style="color:var(--ink-3)">Add two or more periods</td></tr>`;
     $("varBars").innerHTML = ""; $("varLabels").innerHTML = "";
@@ -225,14 +226,14 @@ function calc() {
 
   $("avgOut").textContent = avg + " days";
   $("avgM").textContent = `from ${gaps.length} cycle${gaps.length > 1 ? "s" : ""}`;
-  $("rangeOut").textContent = min === max ? min + "d" : `${min}–${max}d`;
+  $("rangeOut").textContent = min === max ? min + "d" : `${min}-${max}d`;
 
   const reg = spread <= 3 ? "Regular" : spread <= 7 ? "Fairly regular" : "Irregular";
   $("regOut").textContent = reg;
   $("regM").textContent = `varies by ${spread} day${spread === 1 ? "" : "s"}`;
 
   const cd = daysBetween(last, today()) + 1;
-  $("cdOut").textContent = cd > 0 ? "Day " + cd : "–";
+  $("cdOut").textContent = cd > 0 ? "Day " + cd : "-";
   $("cdM").textContent = cd > 0 && cd <= avg ? `of ~${avg}` : cd > avg ? "past average" : "";
 
   // warn honestly when the spread makes prediction weak
@@ -251,13 +252,13 @@ function calc() {
   }
   $("predRows").innerHTML = rows;
 
-  // variation bars — single series, sequential hue, no legend needed
+  // variation bars - single series, sequential hue, no legend needed
   const hi = Math.max(...gaps, 35);
   $("varBars").innerHTML = gaps.map((g, i) => {
     const off = g < 21 || g > 35;
     return `<div class="bar" style="height:${(g / hi) * 100}%;background:${off ? "var(--ph-luteal)" : "var(--ph-follicular)"}"
       tabindex="0" role="img" aria-label="Cycle ${i + 1}, ${g} days"
-      data-tip="<b>Cycle ${i + 1}</b><br>${g} days${off ? "<br>outside the typical 21–35 range" : ""}"></div>`;
+      data-tip="<b>Cycle ${i + 1}</b><br>${g} days${off ? "<br>outside the typical 21-35 range" : ""}"></div>`;
   }).join("");
   $("varLabels").innerHTML = gaps.map((g, i) => `<span>${g}d</span>`).join("");
   bindTips($("varBars"));

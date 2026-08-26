@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E0507A">
-<title>Ovulation Calculator — Your Fertile Days &amp; Best Time | Bloom</title>
-<meta name="description" content="Free ovulation calculator. Enter your last period and cycle length to see your fertile window, ovulation day and the best days to try for a baby — with a visual cycle wheel.">
+<title>Ovulation Calculator - Your Fertile Days &amp; Best Time | Bloom</title>
+<meta name="description" content="Free ovulation calculator. Enter your last period and cycle length to see your fertile window, ovulation day and the best days to try for a baby - with a visual cycle wheel.">
 <meta name="keywords" content="ovulation calculator, fertile days calculator, best days to get pregnant, fertile window, ovulation date calculator, conception calculator India">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="https://vidarbhproperties.in/tools/ovulation-calculator.html">
@@ -15,18 +15,19 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bloom">
 <meta property="og:locale" content="en_IN">
-<meta property="og:title" content="Ovulation Calculator — Find Your Fertile Days">
+<meta property="og:title" content="Ovulation Calculator - Find Your Fertile Days">
 <meta property="og:description" content="See your fertile window, ovulation day and best days to conceive on a visual cycle wheel. Free, private, instant.">
 <meta property="og:url" content="https://vidarbhproperties.in/tools/ovulation-calculator.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:image" content="https://vidarbhproperties.in/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Bloom — free ovulation, due date and pregnancy calculators">
+<meta property="og:image:alt" content="Bloom - free ovulation, due date and pregnancy calculators">
 <meta name="twitter:image" content="https://vidarbhproperties.in/assets/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E0507A'/><path d='M50 76C30 62 22 52 22 42a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 10-8 20-28 34z' fill='white'/></svg>">
 <script>(function(){try{var s=localStorage.getItem("bloom-theme");document.documentElement.dataset.theme=(s?s==="dark":matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})();</script>
-<link rel="stylesheet" href="../assets/app.css?v=5">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/app.css?v=16">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Ovulation Calculator","applicationCategory":"HealthApplication","operatingSystem":"Any","url":"https://vidarbhproperties.in/tools/ovulation-calculator.html","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"inLanguage":"en-IN","publisher":{"@type":"Organization","name":"Bloom"}}
 </script>
@@ -56,9 +57,9 @@
   <div class="nav-links" id="navLinks">
     <a href="../index.html#tools">All tools</a>
     <a href="ovulation-calculator.html">Ovulation</a>
-    <a href="safe-days-calculator.html">Safe days</a>
-    <a href="due-date-calculator.html">Due date</a>
-    <a href="pregnancy-tracker.html">Week by week</a>
+    <a href="safe-days-calculator.html">Safe sex days</a>
+    <a href="due-date-calculator.html">Delivery date</a>
+    <a href="pregnancy-tracker.html">Baby size</a>
     <a href="../about.html">About</a>
   </div>
   <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
@@ -89,21 +90,21 @@
           <input type="date" id="lmp">
         </div>
         <div class="field">
-          <label for="clen">Average cycle length <span class="hint">— first day of one period to the first day of the next</span></label>
+          <label for="clen">Average cycle length <span class="hint">- first day of one period to the first day of the next</span></label>
           <div class="slider">
             <input type="range" id="clen" min="21" max="40" value="28" step="1" aria-describedby="clenv">
             <span class="val" id="clenv">28d</span>
           </div>
         </div>
         <div class="field">
-          <label for="llen">Luteal phase length <span class="hint">— leave at 14 if unsure</span></label>
+          <label for="llen">Luteal phase length <span class="hint">- leave at 14 if unsure</span></label>
           <div class="slider">
             <input type="range" id="llen" min="9" max="16" value="14" step="1" aria-describedby="llenv">
             <span class="val" id="llenv">14d</span>
           </div>
         </div>
         <div class="field">
-          <label for="plen">Period length <span class="hint">— days of bleeding</span></label>
+          <label for="plen">Period length <span class="hint">- days of bleeding</span></label>
           <div class="slider">
             <input type="range" id="plen" min="2" max="9" value="5" step="1" aria-describedby="plenv">
             <span class="val" id="plenv">5d</span>
@@ -126,14 +127,14 @@
     <div>
       <div class="result rv" id="resultBox">
         <div class="k">Your fertile window</div>
-        <div class="hero-fig" id="fwText">–</div>
+        <div class="hero-fig" id="fwText">-</div>
         <div class="sub" id="fwSub">Enter your last period date to begin</div>
 
         <div class="tiles">
-          <div class="tile"><div class="k">Ovulation day</div><div class="v" id="ovDate">–</div><div class="m" id="ovRel"></div></div>
-          <div class="tile"><div class="k">Best 3 days</div><div class="v" id="best3">–</div><div class="m">Highest chance</div></div>
-          <div class="tile"><div class="k">Next period</div><div class="v" id="npDate">–</div><div class="m" id="npRel"></div></div>
-          <div class="tile"><div class="k">If you conceive</div><div class="v" id="edd">–</div><div class="m">Estimated due date</div></div>
+          <div class="tile"><div class="k">Ovulation day</div><div class="v" id="ovDate">-</div><div class="m" id="ovRel"></div></div>
+          <div class="tile"><div class="k">Best 3 days</div><div class="v" id="best3">-</div><div class="m">Highest chance</div></div>
+          <div class="tile"><div class="k">Next period</div><div class="v" id="npDate">-</div><div class="m" id="npRel"></div></div>
+          <div class="tile"><div class="k">If you conceive</div><div class="v" id="edd">-</div><div class="m">Estimated due date</div></div>
         </div>
       </div>
 
@@ -144,7 +145,7 @@
             <title id="wheelTitle">Cycle wheel. The outer ring shows the menstrual, follicular and luteal phases. The inner ring shows the fertile window, which is set by ovulation and can overlap bleeding on a short cycle.</title>
             <g id="segs"></g>
             <g id="pin"></g>
-            <text class="cen-n" id="cenN" x="130" y="126" text-anchor="middle">–</text>
+            <text class="cen-n" id="cenN" x="130" y="126" text-anchor="middle">-</text>
             <text class="cen-l" id="cenL" x="130" y="142" text-anchor="middle">of your cycle</text>
             <text class="cen-l" id="cenP" x="130" y="158" text-anchor="middle" style="fill:var(--rose-deep)"></text>
           </svg>
@@ -169,31 +170,31 @@
     </div>
   </div>
 
-  <div class="note med">
-    <strong>Not a contraceptive method.</strong> Ovulation shifts between cycles, so calendar timing is unreliable for <em>avoiding</em> pregnancy. Use a proven contraceptive instead.
-  </div>
-  <div class="note info">
-    Trying for over a year — or six months if you are over 35 — or cycles very irregular? See a gynaecologist.
+  <div class="fineprint">
+    <div>
+      <p><strong>Not a contraceptive method.</strong> Ovulation shifts between cycles, so calendar timing is unreliable for <em>avoiding</em> pregnancy. Use a proven contraceptive instead.</p>
+      <p>Trying for over a year - or six months if you are over 35 - or cycles very irregular? See a gynaecologist.</p>
+    </div>
   </div>
 
   <div class="share">
-    <span>Share:</span>
-    <button class="wa" onclick="share('wa')">WhatsApp</button>
-    <button onclick="share('tg')">Telegram</button>
-    <button onclick="share('copy')">Copy link</button>
+    <span>Share with loved ones</span>
+    <button class="wa" onclick="share('wa')"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.18-.3-.02-.46.13-.6.13-.14.35-.35.52-.52.17-.18.23-.3.35-.5.11-.2.06-.37-.01-.52-.07-.15-.64-1.53-.87-2.09-.24-.57-.47-.49-.65-.49h-.57c-.2 0-.52.08-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.4"/></svg> WhatsApp</button>
+    <button onclick="share('tg')"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.91 3.79 20.3 20.84c-.25 1.21-.98 1.5-1.99.94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.09.56-.54 0-.46-.2-.65-.72L6.54 13.4 1.2 11.73C.05 11.37.04 10.58 1.4 10.03l20.62-7.96c.94-.43 1.83.24 1.89 1.72"/></svg> Telegram</button>
+    <button onclick="share('copy')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 13.5a4.5 4.5 0 0 0 6.36.19l2.83-2.83a4.5 4.5 0 0 0-6.36-6.36l-1.42 1.41"/><path d="M14.5 10.5a4.5 4.5 0 0 0-6.36-.19L5.31 13.1a4.5 4.5 0 0 0 6.36 6.36l1.41-1.41"/></svg> Copy link</button>
   </div>
 </section>
 
 <section class="wrap section">
   <h2 style="font-size:24px;letter-spacing:-.025em;margin-bottom:16px">Frequently asked questions</h2>
   <div class="faq-grid">
-    <details class="faq"><summary>When am I most likely to get pregnant?</summary><div class="a">The fertile window is roughly the five days before ovulation plus the day of ovulation. Chances peak in the two to three days immediately <em>before</em> ovulation — sperm survive several days in the reproductive tract, while the egg lives only about 12 to 24 hours after release.</div></details>
-    <details class="faq"><summary>How is the ovulation date calculated?</summary><div class="a">By counting the luteal phase backwards from your expected next period. The luteal phase (ovulation to period) is the more consistent half of the cycle, typically 12–16 days. For a 28-day cycle with a 14-day luteal phase, ovulation lands around day 14.</div></details>
-    <details class="faq"><summary>Can my fertile window overlap my period?</summary><div class="a">Yes, and on a short cycle it often does. The fertile window is fixed relative to ovulation, not to bleeding — so if you have a short cycle, a long period, or both, ovulation follows soon enough after your period that the window reaches back into the bleeding days. Because sperm survive up to five days, <strong>sex during your period can result in pregnancy</strong>. This is why the wheel above draws bleeding and the fertile window as two separate rings rather than one: they are different things about the same day, and neither cancels the other. "You cannot get pregnant on your period" is false.</div></details>
-    <details class="faq"><summary>Is the menstrual phase separate from the follicular phase?</summary><div class="a">Not really — menstruation happens <em>during</em> the early follicular phase. The follicular phase runs from day 1, the first day of bleeding, until ovulation. Most cycle charts show "menstrual" as its own slice because bleeding is the part you can actually observe, and this one does too, but the underlying hormonal phase continues straight through it.</div></details>
+    <details class="faq"><summary>When am I most likely to get pregnant?</summary><div class="a">The fertile window is roughly the five days before ovulation plus the day of ovulation. Chances peak in the two to three days immediately <em>before</em> ovulation - sperm survive several days in the reproductive tract, while the egg lives only about 12 to 24 hours after release.</div></details>
+    <details class="faq"><summary>How is the ovulation date calculated?</summary><div class="a">By counting the luteal phase backwards from your expected next period. The luteal phase (ovulation to period) is the more consistent half of the cycle, typically 12-16 days. For a 28-day cycle with a 14-day luteal phase, ovulation lands around day 14.</div></details>
+    <details class="faq"><summary>Can my fertile window overlap my period?</summary><div class="a">Yes, and on a short cycle it often does. The fertile window is fixed relative to ovulation, not to bleeding - so if you have a short cycle, a long period, or both, ovulation follows soon enough after your period that the window reaches back into the bleeding days. Because sperm survive up to five days, <strong>sex during your period can result in pregnancy</strong>. This is why the wheel above draws bleeding and the fertile window as two separate rings rather than one: they are different things about the same day, and neither cancels the other. "You cannot get pregnant on your period" is false.</div></details>
+    <details class="faq"><summary>Is the menstrual phase separate from the follicular phase?</summary><div class="a">Not really - menstruation happens <em>during</em> the early follicular phase. The follicular phase runs from day 1, the first day of bleeding, until ovulation. Most cycle charts show "menstrual" as its own slice because bleeding is the part you can actually observe, and this one does too, but the underlying hormonal phase continues straight through it.</div></details>
     <details class="faq"><summary>Is an ovulation calculator accurate?</summary><div class="a">It is an estimate from averages, not a measurement. Real ovulation varies cycle to cycle. For a sharper signal, combine it with ovulation predictor kits, basal body temperature charting, or cervical mucus observation.</div></details>
-    <details class="faq"><summary>Can I use this to avoid pregnancy?</summary><div class="a">No. Calendar-based prediction is not reliable contraception — ovulation can shift by several days with illness, stress or travel. Use a proven contraceptive method.</div></details>
-    <details class="faq"><summary>What if my cycles are irregular?</summary><div class="a">If your cycle length varies by more than a few days, calendar prediction loses accuracy. Track three to six cycles to find your range and use the shortest and longest to bracket a wider fertile window. Persistent irregularity is worth raising with a gynaecologist — conditions like PCOS and thyroid disorders are common and treatable.</div></details>
+    <details class="faq"><summary>Can I use this to avoid pregnancy?</summary><div class="a">No. Calendar-based prediction is not reliable contraception - ovulation can shift by several days with illness, stress or travel. Use a proven contraceptive method.</div></details>
+    <details class="faq"><summary>What if my cycles are irregular?</summary><div class="a">If your cycle length varies by more than a few days, calendar prediction loses accuracy. Track three to six cycles to find your range and use the shortest and longest to bracket a wider fertile window. Persistent irregularity is worth raising with a gynaecologist - conditions like PCOS and thyroid disorders are common and treatable.</div></details>
   </div>
 </section>
 </main>
@@ -205,14 +206,14 @@
         <span class="brand-mark"><svg viewBox="0 0 100 100" fill="#fff"><path d="M50 78C28 63 19 52 19 41a16 16 0 0 1 31-9 16 16 0 0 1 31 9c0 11-9 22-31 37z"/></svg></span>
         <span>Bloom</span>
       </a>
-      <p style="color:var(--ink-2);max-width:36ch">Free, private fertility and pregnancy calculators. Everything runs in your browser — nothing you type is sent anywhere.</p>
+      <p style="color:var(--ink-2);max-width:36ch">Free, private fertility and pregnancy calculators. Everything runs in your browser - nothing you type is sent anywhere.</p>
     </div>
     <div><h4>Tools</h4><ul>
       <li><a href="ovulation-calculator.html">Ovulation calculator</a></li>
-      <li><a href="due-date-calculator.html">Due date calculator</a></li>
-      <li><a href="pregnancy-tracker.html">Week-by-week tracker</a></li>
+      <li><a href="due-date-calculator.html">Delivery date calculator</a></li>
+      <li><a href="pregnancy-tracker.html">Baby size week by week</a></li>
       <li><a href="period-tracker.html">Period tracker</a></li>
-      <li><a href="safe-days-calculator.html">Fertility awareness calendar</a></li>
+      <li><a href="safe-days-calculator.html">Safe sex days</a></li>
     </ul></div>
     <div><h4>Site</h4><ul>
       <li><a href="../index.html">Home</a></li>
@@ -220,15 +221,15 @@
       <li><a href="../about.html#privacy">Privacy</a></li>
     </ul></div>
   </div>
-  <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only — not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional about your own situation.</p>
+  <p class="f-legal">© <span id="yr"></span> Bloom. Educational information only - not medical advice, diagnosis or treatment. Always consult a qualified healthcare professional about your own situation.</p>
 </div></footer>
 
-<script src="../assets/app.js?v=5"></script>
+<script src="../assets/app.js?v=16"></script>
 <script>
 /* The cycle has two things going on at once, and they are not alternatives:
    a sequential hormonal phase, and a fertile window fixed relative to ovulation.
    Menstruation is the visible start of the follicular phase, not a phase of its
-   own — and because the fertile window is set by ovulation, on a short cycle it
+   own - and because the fertile window is set by ovulation, on a short cycle it
    can fall on bleeding days. Drawing them as one exclusive ring forced one to
    erase the other, which taught the false and harmful "you cannot conceive
    during your period". They are now separate layers. */
@@ -239,11 +240,11 @@ const PHASES = [
 ];
 const FERTILE = {
   key: "fertile", name: "Fertile window", varc: "--ph-fertile",
-  what: "Sperm survive up to ~5 days; the egg about 12–24 hours"
+  what: "Sperm survive up to ~5 days; the egg about 12-24 hours"
 };
 
 const $ = id => document.getElementById(id);
-/* spanDates / spanDays / phaseTip / phaseLabel come from app.js — shared with
+/* spanDates / spanDays / phaseTip / phaseLabel come from app.js - shared with
    the safe-days wheel so both read in dates rather than cycle-day numbers. */
 
 function runLength(cycle, keyFn) {
@@ -267,12 +268,12 @@ function computePhases(cycle, luteal, period) {
   // peak probability is the two to three days before ovulation, plus the day itself
   const peakStart = Math.max(1, ovDay - 2);
 
-  // base layer — sequential, mutually exclusive. Bleeding takes the day where it
+  // base layer - sequential, mutually exclusive. Bleeding takes the day where it
   // coincides with the early follicular phase, because it is what is observable.
   const base = runLength(cycle, d =>
     d <= mEnd ? "menstrual" : d <= ovDay ? "follicular" : "luteal");
 
-  // overlay layer — set by ovulation, independent of the base layer
+  // overlay layer - set by ovulation, independent of the base layer
   const fertile = { from: fertStart, to: fertEnd };
   const oFrom = fertStart, oTo = Math.min(fertEnd, mEnd);
   const overlap = oTo >= oFrom ? { from: oFrom, to: oTo } : null;
@@ -291,8 +292,8 @@ function drawWheel(cycle, model, todayDay, lmp) {
   const segs = $("segs"), pin = $("pin");
   segs.innerHTML = ""; pin.innerHTML = "";
   const CX = 130, CY = 130;
-  const RO = 108, RI = 86;          // outer ring — hormonal phase / bleeding
-  const FO = 82,  FI = 64;          // inner ring — fertile window overlay
+  const RO = 108, RI = 86;          // outer ring - hormonal phase / bleeding
+  const FO = 82,  FI = 64;          // inner ring - fertile window overlay
   const per = 360 / cycle;
   const NS = "http://www.w3.org/2000/svg";
 
@@ -324,7 +325,7 @@ function drawWheel(cycle, model, todayDay, lmp) {
     p.setAttribute("aria-label", phaseLabel(meta.name, lmp, s.from, s.to));
     p.dataset.tip = phaseTip(meta.name, lmp, s.from, s.to, meta.what);
     segs.appendChild(p);
-    // selective direct label — only where the wedge is wide enough to hold it
+    // selective direct label - only where the wedge is wide enough to hold it
     if ((a1 - a0) > 34) label((RO + RI) / 2, a0, a1, meta.name);
   });
 
@@ -348,7 +349,7 @@ function drawWheel(cycle, model, todayDay, lmp) {
   const peakTxt = `Peak ${spanDates(lmp, peakStart, ovDay) || spanDays(peakStart, ovDay).toLowerCase()}`;
   fp.setAttribute("aria-label",
     phaseLabel(FERTILE.name, lmp, fertile.from, fertile.to) +
-    (overlap ? ". This overlaps your period — conception is possible during bleeding" : ""));
+    (overlap ? ". This overlaps your period - conception is possible during bleeding" : ""));
   fp.dataset.tip = phaseTip(FERTILE.name, lmp, fertile.from, fertile.to,
     `${peakTxt} · ${FERTILE.what}`);
   segs.appendChild(fp);
@@ -366,7 +367,7 @@ function drawWheel(cycle, model, todayDay, lmp) {
     segs.appendChild(op);
   }
 
-  // ovulation marker — a pointer across both rings, not a colour slot
+  // ovulation marker - a pointer across both rings, not a colour slot
   const oa = (ovDay - 0.5) * per, orad = (oa - 90) * Math.PI / 180;
   const om = document.createElementNS(NS, "g");
   om.innerHTML =
@@ -398,7 +399,7 @@ function drawWheel(cycle, model, todayDay, lmp) {
     g.setAttribute("role", "img");
     const bn = baseNameOf(base, todayDay), ft = isFertile(model, todayDay);
     const both = `${bn ? bn.name : ""}${ft ? (bn ? " · fertile" : "fertile") : ""}`;
-    g.setAttribute("aria-label", `Today, ${fmt(today(), "long")}, is day ${todayDay} of your cycle — ${both}`);
+    g.setAttribute("aria-label", `Today, ${fmt(today(), "long")}, is day ${todayDay} of your cycle - ${both}`);
     g.dataset.tip = `<b>Today</b><br>${fmt(today(), "short")}<br><span class="tip-2">Day ${todayDay} · ${both}</span>`;
     pin.appendChild(g);
   }
@@ -428,7 +429,7 @@ function calc() {
     + `<span><i style="background:var(${FERTILE.varc})"></i>${FERTILE.name}</span>`
     + `<span><i style="background:var(--ph-ovulation)"></i>Ovulation day</span>`;
 
-  const dash = `<td style="color:var(--ink-3)">–</td>`;
+  const dash = `<td style="color:var(--ink-3)">-</td>`;
   const dcell = (from, to) => {
     const d = spanDates(lmp, from, to);
     return d ? `<td>${d}</td>` : dash;
@@ -444,17 +445,17 @@ function calc() {
           `${FERTILE.what}. Peak ${spanDates(lmp, peakStart, ovDay) || spanDays(peakStart, ovDay).toLowerCase()}`,
           ` <span style="color:var(--ink-3);font-weight:400">(overlay)</span>`)
     + `<tr><td><span class="swatch" style="background:var(--ph-ovulation)"></span>Ovulation</td>
-       ${dcell(ovDay, ovDay)}<td>Day ${ovDay}</td><td>1</td><td>Egg released; viable ~12–24 hours</td></tr>`;
+       ${dcell(ovDay, ovDay)}<td>Day ${ovDay}</td><td>1</td><td>Egg released; viable ~12-24 hours</td></tr>`;
 
   /* The fertile window is set by ovulation, so on a short cycle it lands on
-     bleeding days. Say so explicitly — this is the case people get wrong. */
+     bleeding days. Say so explicitly - this is the case people get wrong. */
   $("overlapNote").innerHTML = overlap
-    ? `<div class="note warn" style="margin:10px 0 0"><strong>Your fertile window overlaps your period.</strong> ${spanDates(lmp, overlap.from, overlap.to) || spanDays(overlap.from, overlap.to)} ${overlap.to > overlap.from ? "are" : "is"} both bleeding and fertile — conception during bleeding is possible.</div>`
+    ? `<div class="note warn" style="margin:10px 0 0"><strong>Your fertile window overlaps your period.</strong> ${spanDates(lmp, overlap.from, overlap.to) || spanDays(overlap.from, overlap.to)} ${overlap.to > overlap.from ? "are" : "is"} both bleeding and fertile - conception during bleeding is possible.</div>`
     : "";
 
   if (!lmp) {
     drawWheel(cycle, model, -1, null);
-    $("cenN").textContent = "–";
+    $("cenN").textContent = "-";
     $("cenP").textContent = "";
     $("future").innerHTML = `<tr><td colspan="4" style="color:var(--ink-3)">Enter your last period date</td></tr>`;
     return;
@@ -466,17 +467,17 @@ function calc() {
   const npDate = addDays(lmp, cycle);
   const eddDate = addDays(ovDate, 266);           // ~38 weeks from conception
 
-  $("fwText").textContent = `${fmt(fsDate, "short")} – ${fmt(feDate, "short")}`;
+  $("fwText").textContent = `${fmt(fsDate, "short")} - ${fmt(feDate, "short")}`;
   const n = daysBetween(today(), fsDate);
   $("fwSub").textContent =
     n > 0  ? `Starts in ${n} day${n > 1 ? "s" : ""} · ${fertEnd - fertStart + 1} fertile days`
   : n === 0 ? "Your fertile window starts today"
-  : (daysBetween(today(), feDate) >= 0 ? "You are in your fertile window now" : "This window has passed — see the next cycles below");
+  : (daysBetween(today(), feDate) >= 0 ? "You are in your fertile window now" : "This window has passed - see the next cycles below");
 
   $("ovDate").textContent = fmt(ovDate, "short");
   const od = daysBetween(today(), ovDate);
   $("ovRel").textContent = od === 0 ? "Today" : od > 0 ? `In ${od} days` : `${-od} days ago`;
-  $("best3").textContent = `${fmt(addDays(ovDate, -2), "short")} – ${fmt(ovDate, "short")}`;
+  $("best3").textContent = `${fmt(addDays(ovDate, -2), "short")} - ${fmt(ovDate, "short")}`;
   $("npDate").textContent = fmt(npDate, "short");
   const nd = daysBetween(today(), npDate);
   $("npRel").textContent = nd === 0 ? "Today" : nd > 0 ? `In ${nd} days` : `${-nd} days late`;
@@ -488,7 +489,7 @@ function calc() {
   if (inCycle) {
     const ph = baseNameOf(base, tDay);
     $("cenN").textContent = "Day " + tDay;
-    // fertile leads when both apply — it is the question this tool answers
+    // fertile leads when both apply - it is the question this tool answers
     $("cenP").textContent = isFertile(model, tDay)
       ? (ph && ph.key === "menstrual" ? "FERTILE · PERIOD" : "FERTILE WINDOW")
       : (ph ? ph.name.toUpperCase() : "");
@@ -505,7 +506,7 @@ function calc() {
     const start = addDays(lmp, cycle * i);
     const ov = addDays(start, ovDay - 1);
     rows += `<tr><td>${i + 1}</td>
-      <td>${fmt(addDays(start, fertStart - 1), "short")} – ${fmt(addDays(start, fertEnd - 1), "short")}</td>
+      <td>${fmt(addDays(start, fertStart - 1), "short")} - ${fmt(addDays(start, fertEnd - 1), "short")}</td>
       <td>${fmt(ov, "short")}</td>
       <td>${fmt(addDays(start, cycle), "short")}</td></tr>`;
   }
